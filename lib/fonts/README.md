@@ -100,6 +100,25 @@ lineHeight(font) = height if height < smallest line box, else null
 The generator measures every variant (about 7,600 files). Files that are
 not in the cache are downloaded into memory, not written to disk.
 
+## Size adjust
+
+`MonetFonts.install(sizeAdjust: true)` moves the visual-height scale from the
+font size into the font bytes: the font transform writes
+`head.unitsPerEm = round(unitsPerEm / scale)` (CSS `size-adjust`). Every
+glyph is in font units, so the letters come out at the reference size at
+the requested font size. Fallback fonts, such as emoji, are separate fonts
+and keep their own size. The design is in
+`docs/design/ADR_font_size_adjust.md` in telosnex.
+
+- Only families with Latin ink data are adjusted. Emoji fonts have a scale
+  but no Latin ink, so they are not.
+- `kFontSizeAdjustExcludedFontFamilies`: families whose rounded unitsPerEm
+  would be outside 16 to 16384 or more than 0.1% off (Bytesized).
+- With the size adjust on, `visualHeightScaleForFontFamily` is 1.0 for an
+  adjusted font, and the em accessors are times `fontEmScale`.
+  `rasterVisualHeightScaleForFontFamily` is the table value.
+- The generator fails on a font without TrueType outlines.
+
 ## Matching one font to another
 
 To size text in one font so it looks as large as text in another font, use

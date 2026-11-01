@@ -1,4 +1,5 @@
 import 'package:monet_ui/fonts/font_height_equalizer.g.dart';
+import 'package:monet_ui/fonts/font_size_adjust.dart';
 
 /// Clearance between adjacent lines, as a fraction of the requested size.
 ///
@@ -45,20 +46,22 @@ double? lineHeightForFontFamily(
 /// the original line height. The letters are centred in it.
 double? naturalLineHeightForFontFamily(String? fontFamily) {
   if (latinInkForFontFamily(fontFamily) == null) return null;
-  final key = normalizeFontFamilyForFontMetrics(fontFamily!);
-  final ascent = kAscentEmByFontFamily[key];
-  final descent = kDescentEmByFontFamily[key];
+  final ascent = ascentEmForFontFamily(fontFamily);
+  final descent = descentEmForFontFamily(fontFamily);
   if (ascent == null || descent == null) return null;
   return ascent + descent;
 }
 
 /// How far the Latin letter ink of [fontFamily] reaches (above, below) the
 /// baseline in em, over every weight and style. Null if it is unknown.
+///
+/// In the em of the font as it loads ([fontEmScale]).
 (double, double)? latinInkForFontFamily(String? fontFamily) {
   if (fontFamily == null) return null;
   final key = normalizeFontFamilyForFontMetrics(fontFamily);
   final above = kLatinInkAboveEmByFontFamily[key];
   final below = kLatinInkBelowEmByFontFamily[key];
   if (above == null || below == null) return null;
-  return (above, below);
+  final em = fontEmScale(fontFamily);
+  return (above * em, below * em);
 }

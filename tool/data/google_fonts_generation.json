@@ -2,8 +2,8 @@
   "version": "9.0.0",
   "descriptors": "fe538a4053f42ba6024885cf4f01e241f52200afad442414bc0778ef6afd45aa",
   "metadata": "ce1b6baa8aff9b83e2ec233132e845818505c54e342a5eaf0803712e444e0686",
-  "metrics": "4769ec87b981a477411d599c62bf71aa1b67db0679c64f68d016550a8188ae5e",
-  "rasterizer": "3f93af329453c985d4358aac100f784d4a1c325f5826a3b3f304b7777e7e3b3d",
+  "metrics": "e1309ad748fcfaecbc0110c4d53783b286c764fca65bcdc09e888b4794bd810d",
+  "rasterizer": "43d8c1fa83c62bec9cb13abac57622962c2fc83d118d4477d45e981a60fe14a5",
   "pillow": "12.1.1",
   "metricExclusions": [
     "Karla Tamil Inclined",

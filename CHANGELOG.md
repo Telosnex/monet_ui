@@ -1,5 +1,17 @@
 ## Unreleased
 
+- Size adjust (docs/design/ADR_font_size_adjust.md in telosnex), off by
+  default: `MonetFonts.install(sizeAdjust: true)` scales each Google Font's
+  letters to the reference size in its bytes (`head.unitsPerEm`), like CSS
+  `size-adjust`, instead of in its font size. Fallback fonts, such as emoji,
+  then keep their own size. With it on, `visualHeightScaleForFontFamily` is
+  1.0 for adjusted fonts, and the em accessors (`rasterCapHeightEmForFontFamily`,
+  `latinInkForFontFamily`, ...) give values in the em of the loaded font.
+  New: `font_size_adjust.dart` (`fontSizeAdjustEnabled`,
+  `isFontSizeAdjusted`, `fontEmScale`, `adjustedUnitsPerEm`),
+  `rasterVisualHeightScaleForFontFamily`,
+  `kFontSizeAdjustExcludedFontFamilies` (Bytesized), and the `unitsPerEm`
+  argument of `patchFontAscentDescent`. The generator fails on a CFF font.
 - Font code from telosnex (docs/design/ADR_fonts_in_monet_ui.md there):
   - `font_file.dart`: `fontTableRecords`, `cmapCodePoints`, `colorTables`,
     `unitsPerEm`, `fontOutlines`, `hasLatinLetters`.

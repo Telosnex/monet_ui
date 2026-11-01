@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:monet_ui/fonts/font_file.dart';
+import 'package:monet_ui/fonts/font_size_adjust.dart';
 import 'package:monet_ui/fonts/line_height.dart';
 
 /// [bytes] with the ascent and descent centred on the font's Latin ink.
@@ -28,17 +29,32 @@ ByteData patchFontLineMetrics(
   final height = lineHeightForFontFamily(fontFamily, clearance: clearance);
   if (ink == null || height == null) return bytes;
   final pad = (height - ink.$1 - ink.$2) / 2;
-  return patchFontAscentDescent(bytes, ink.$1 + pad, ink.$2 + pad);
+  final fileUnitsPerEm = unitsPerEm(bytes);
+  return patchFontAscentDescent(
+    bytes,
+    ink.$1 + pad,
+    ink.$2 + pad,
+    unitsPerEm:
+        fileUnitsPerEm == null || fontOutlines(bytes) != FontOutlines.trueType
+        ? null
+        : adjustedUnitsPerEm(fontFamily, fileUnitsPerEm),
+  );
 }
 
 /// [bytes] with the ascent and descent [ascentEm] and [descentEm], in em,
 /// and no line gap. Returns [bytes] if it is not a TrueType or OpenType file
 /// with head and hhea tables.
+///
+/// With [unitsPerEm], also writes head.unitsPerEm: the size adjust
+/// (docs/design/ADR_font_size_adjust.md in telosnex, D1). Every glyph is in
+/// font units, so the whole font scales by the old over the new value.
+/// [ascentEm] and [descentEm] are then in the new em.
 ByteData patchFontAscentDescent(
   ByteData bytes,
   double ascentEm,
-  double descentEm,
-) {
+  double descentEm, {
+  int? unitsPerEm,
+}) {
   final tables = fontTableRecords(bytes);
   if (tables == null) return bytes;
   final out = ByteData(bytes.lengthInBytes)
@@ -56,10 +72,16 @@ ByteData patchFontAscentDescent(
     return bytes;
   }
   final head = offsetOf('head');
-  final unitsPerEm = out.getUint16(head + 18);
+  if (unitsPerEm != null) {
+    if (unitsPerEm < 16 || unitsPerEm > 16384) {
+      throw ArgumentError.value(unitsPerEm, 'unitsPerEm', 'not 16 to 16384');
+    }
+    out.setUint16(head + 18, unitsPerEm);
+  }
+  final em = out.getUint16(head + 18);
   // Ceil, so that the box never cuts the ink.
-  final ascent = (ascentEm * unitsPerEm).ceil().clamp(0, 0x7fff);
-  final descent = (descentEm * unitsPerEm).ceil().clamp(0, 0x7fff);
+  final ascent = (ascentEm * em).ceil().clamp(0, 0x7fff);
+  final descent = (descentEm * em).ceil().clamp(0, 0x7fff);
 
   final hhea = offsetOf('hhea');
   out
