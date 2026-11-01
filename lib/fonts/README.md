@@ -85,8 +85,11 @@ lineHeight(font) = height if height < smallest line box, else null
 ```
 
 - Latin letter ink: A–Z, a–z, and the letters in U+00C0–U+00FF, or only A–Z
-  and a–z if the font does not have the others. A family without them, or
-  without the `latin` subset, does not change.
+  and a–z if the font does not draw all of the others. The font's `cmap`
+  decides, not the catalog's `latin` subset: the Playwrite and math families
+  have no subsets in the catalog and draw English. A family without A–Z and
+  a–z does not change.
+- A family with only italics (Molle) is measured from its italic.
 - Other scripts can need more than this. `compactLineHeights: false` keeps
   every font's natural line box.
 - `scale` is `visualHeightScaleForFontFamily`, so the clearance and the floor

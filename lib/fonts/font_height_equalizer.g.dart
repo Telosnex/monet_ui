@@ -968,6 +968,7 @@ const kRasterXHeightEmByFontFamily = <String, double>{
   'mohave': 0.546875, // Mohave w500
   'moiraione': 0.511719, // Moirai One w400
   'molengo': 0.458984, // Molengo w400
+  'molle': 0.453125, // Molle w400
   'momosignature': 0.628906, // Momo Signature w400
   'momotrustdisplay': 0.570312, // Momo Trust Display w400
   'momotrustsans': 0.529297, // Momo Trust Sans w500
@@ -2897,6 +2898,7 @@ const kRasterCapHeightEmByFontFamily = <String, double>{
   'mohave': 0.751953, // Mohave w500
   'moiraione': 0.781250, // Moirai One w400
   'molengo': 0.679688, // Molengo w400
+  'molle': 0.820312, // Molle w400
   'momosignature': 0.960938, // Momo Signature w400
   'momotrustdisplay': 0.751953, // Momo Trust Display w400
   'momotrustsans': 0.751953, // Momo Trust Sans w500
@@ -4826,6 +4828,7 @@ const kRasterLowercaseP60HeightEmByFontFamily = <String, double>{
   'mohave': 0.726562, // Mohave w500
   'moiraione': 0.734375, // Moirai One w400
   'molengo': 0.701172, // Molengo w400
+  'molle': 0.675781, // Molle w400
   'momosignature': 0.878906, // Momo Signature w400
   'momotrustdisplay': 0.751953, // Momo Trust Display w400
   'momotrustsans': 0.726562, // Momo Trust Sans w500
@@ -6755,6 +6758,7 @@ const kRasterUppercaseMedianHeightEmByFontFamily = <String, double>{
   'mohave': 0.751953, // Mohave w500
   'moiraione': 0.791016, // Moirai One w400
   'molengo': 0.679688, // Molengo w400
+  'molle': 0.799805, // Molle w400
   'momosignature': 0.949219, // Momo Signature w400
   'momotrustdisplay': 0.751953, // Momo Trust Display w400
   'momotrustsans': 0.750000, // Momo Trust Sans w500
@@ -8684,6 +8688,7 @@ const kRasterPhraseHeightEmByFontFamily = <String, double>{
   'mohave': 0.882422, // Mohave w500
   'moiraione': 0.932813, // Moirai One w400
   'molengo': 0.858594, // Molengo w400
+  'molle': 0.927344, // Molle w400
   'momosignature': 1.284375, // Momo Signature w400
   'momotrustdisplay': 0.892578, // Momo Trust Display w400
   'momotrustsans': 0.882031, // Momo Trust Sans w500
@@ -10613,6 +10618,7 @@ const kRasterAveragePhraseCharacterAdvanceEmByFontFamily = <String, double>{
   'mohave': 0.390106, // Mohave w500
   'moiraione': 0.591177, // Moirai One w400
   'molengo': 0.435445, // Molengo w400
+  'molle': 0.518239, // Molle w400
   'momosignature': 0.612900, // Momo Signature w400
   'momotrustdisplay': 0.546196, // Momo Trust Display w400
   'momotrustsans': 0.516984, // Momo Trust Sans w500
@@ -12542,6 +12548,7 @@ const kRasterVisualHeightEmByFontFamily = <String, double>{
   'mohave': 0.603198, // Mohave w500
   'moiraione': 0.638514, // Moirai One w400
   'molengo': 0.554157, // Molengo w400
+  'molle': 0.587366, // Molle w400
   'momosignature': 0.835117, // Momo Signature w400
   'momotrustdisplay': 0.651601, // Momo Trust Display w400
   'momotrustsans': 0.618890, // Momo Trust Sans w500
@@ -14472,6 +14479,7 @@ const kAscentEmByFontFamily = <String, double>{
   'mohave': 0.990000, // Mohave w500
   'moiraione': 1.160000, // Moirai One w400
   'molengo': 0.941406, // Molengo w400
+  'molle': 0.904297, // Molle w400
   'momosignature': 1.145000, // Momo Signature w400
   'momotrustdisplay': 1.025000, // Momo Trust Display w400
   'momotrustsans': 1.025000, // Momo Trust Sans w500
@@ -16402,6 +16410,7 @@ const kDescentEmByFontFamily = <String, double>{
   'mohave': 0.403000, // Mohave w500
   'moiraione': 0.288000, // Moirai One w400
   'molengo': 0.254883, // Molengo w400
+  'molle': 0.342285, // Molle w400
   'momosignature': 0.285000, // Momo Signature w400
   'momotrustdisplay': 0.275000, // Momo Trust Display w400
   'momotrustsans': 0.275000, // Momo Trust Sans w500
@@ -18156,6 +18165,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'kiteone': 1.095703, // Kite One, 1 variants
   'kiwimaru': 0.960938, // Kiwi Maru, 3 variants
   'kleeone': 0.910156, // Klee One, 2 variants
+  'knewave': 0.837891, // Knewave, 1 variants
   'kodchasan': 1.015625, // Kodchasan, 12 variants
   'kodemono': 0.974609, // Kode Mono, 4 variants
   'koho': 0.960938, // KoHo, 12 variants
@@ -18205,6 +18215,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'lexendtera': 0.964844, // Lexend Tera, 9 variants
   'lexendzetta': 0.974609, // Lexend Zetta, 9 variants
   'libertinuskeyboard': 0.753906, // Libertinus Keyboard, 1 variants
+  'libertinusmath': 0.822266, // Libertinus Math, 1 variants
   'libertinusmono': 0.820312, // Libertinus Mono, 1 variants
   'libertinussans': 0.851562, // Libertinus Sans, 3 variants
   'libertinusserif': 0.839844, // Libertinus Serif, 6 variants
@@ -18228,6 +18239,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'lilyscriptone': 1.019531, // Lily Script One, 1 variants
   'limelight': 0.896484, // Limelight, 1 variants
   'lindenhill': 0.888672, // Linden Hill, 2 variants
+  'linefont': 1.115234, // Linefont, 9 variants
   'lineseedjp': 1.082031, // LINE Seed JP, 4 variants
   'lisubosa': 0.835938, // Lisu Bosa, 16 variants
   'liter': 0.951172, // Liter, 1 variants
@@ -18333,6 +18345,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'mohave': 0.992188, // Mohave, 10 variants
   'moiraione': 0.986328, // Moirai One, 1 variants
   'molengo': 0.943359, // Molengo, 1 variants
+  'molle': 0.906250, // Molle, 1 variants
   'momosignature': 1.205078, // Momo Signature, 1 variants
   'momotrustdisplay': 1.021484, // Momo Trust Display, 1 variants
   'momotrustsans': 1.021484, // Momo Trust Sans, 7 variants
@@ -18500,6 +18513,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'notosansmanichaean': 0.945312, // Noto Sans Manichaean, 1 variants
   'notosansmarchen': 0.945312, // Noto Sans Marchen, 1 variants
   'notosansmasaramgondi': 0.945312, // Noto Sans Masaram Gondi, 1 variants
+  'notosansmath': 0.767578, // Noto Sans Math, 1 variants
   'notosansmayannumerals': 0.945312, // Noto Sans Mayan Numerals, 1 variants
   'notosansmedefaidrin': 0.945312, // Noto Sans Medefaidrin, 4 variants
   'notosansmeeteimayek': 0.955078, // Noto Sans Meetei Mayek, 9 variants
@@ -18721,6 +18735,113 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'playpensansdeva': 1.093750, // Playpen Sans Deva, 8 variants
   'playpensanshebrew': 1.093750, // Playpen Sans Hebrew, 8 variants
   'playpensansthai': 1.093750, // Playpen Sans Thai, 8 variants
+  'playwritear': 1.359375, // Playwrite AR, 4 variants
+  'playwritearguides': 1.353516, // Playwrite AR Guides, 1 variants
+  'playwriteat': 1.166016, // Playwrite AT, 8 variants
+  'playwriteatguides': 1.160156, // Playwrite AT Guides, 2 variants
+  'playwriteaunsw': 1.294922, // Playwrite AU NSW, 4 variants
+  'playwriteaunswguides': 1.287109, // Playwrite AU NSW Guides, 1 variants
+  'playwriteauqld': 1.298828, // Playwrite AU QLD, 4 variants
+  'playwriteauqldguides': 1.287109, // Playwrite AU QLD Guides, 1 variants
+  'playwriteausa': 1.287109, // Playwrite AU SA, 4 variants
+  'playwriteausaguides': 1.275391, // Playwrite AU SA Guides, 1 variants
+  'playwriteautas': 1.294922, // Playwrite AU TAS, 4 variants
+  'playwriteautasguides': 1.287109, // Playwrite AU TAS Guides, 1 variants
+  'playwriteauvic': 1.294922, // Playwrite AU VIC, 4 variants
+  'playwriteauvicguides': 1.287109, // Playwrite AU VIC Guides, 1 variants
+  'playwritebevlg': 1.294922, // Playwrite BE VLG, 4 variants
+  'playwritebevlgguides': 1.287109, // Playwrite BE VLG Guides, 1 variants
+  'playwritebewal': 1.705078, // Playwrite BE WAL, 4 variants
+  'playwritebewalguides': 1.699219, // Playwrite BE WAL Guides, 1 variants
+  'playwritebr': 1.427734, // Playwrite BR, 4 variants
+  'playwritebrguides': 1.421875, // Playwrite BR Guides, 1 variants
+  'playwriteca': 1.289062, // Playwrite CA, 4 variants
+  'playwritecaguides': 1.281250, // Playwrite CA Guides, 1 variants
+  'playwritecl': 1.429688, // Playwrite CL, 4 variants
+  'playwriteclguides': 1.423828, // Playwrite CL Guides, 1 variants
+  'playwriteco': 1.314453, // Playwrite CO, 4 variants
+  'playwritecoguides': 1.308594, // Playwrite CO Guides, 1 variants
+  'playwritecu': 1.412109, // Playwrite CU, 4 variants
+  'playwritecuguides': 1.404297, // Playwrite CU Guides, 1 variants
+  'playwritecz': 1.277344, // Playwrite CZ, 4 variants
+  'playwriteczguides': 1.271484, // Playwrite CZ Guides, 1 variants
+  'playwritedegrund': 1.212891, // Playwrite DE Grund, 4 variants
+  'playwritedegrundguides': 1.205078, // Playwrite DE Grund Guides, 1 variants
+  'playwritedela': 1.212891, // Playwrite DE LA, 4 variants
+  'playwritedelaguides': 1.205078, // Playwrite DE LA Guides, 1 variants
+  'playwritedesas': 1.179688, // Playwrite DE SAS, 4 variants
+  'playwritedesasguides': 1.173828, // Playwrite DE SAS Guides, 1 variants
+  'playwritedeva': 1.269531, // Playwrite DE VA, 4 variants
+  'playwritedevaguides': 1.263672, // Playwrite DE VA Guides, 1 variants
+  'playwritedkloopet': 1.166016, // Playwrite DK Loopet, 4 variants
+  'playwritedkloopetguides': 1.160156, // Playwrite DK Loopet Guides, 1 variants
+  'playwritedkuloopet': 1.166016, // Playwrite DK Uloopet, 4 variants
+  'playwritedkuloopetguides':
+      1.160156, // Playwrite DK Uloopet Guides, 1 variants
+  'playwritees': 1.294922, // Playwrite ES, 4 variants
+  'playwriteesdeco': 1.294922, // Playwrite ES Deco, 4 variants
+  'playwriteesdecoguides': 1.287109, // Playwrite ES Deco Guides, 1 variants
+  'playwriteesguides': 1.287109, // Playwrite ES Guides, 1 variants
+  'playwritefrmoderne': 1.396484, // Playwrite FR Moderne, 4 variants
+  'playwritefrmoderneguides':
+      1.388672, // Playwrite FR Moderne Guides, 1 variants
+  'playwritefrtrad': 1.708984, // Playwrite FR Trad, 4 variants
+  'playwritefrtradguides': 1.703125, // Playwrite FR Trad Guides, 1 variants
+  'playwritegbj': 1.166016, // Playwrite GB J, 8 variants
+  'playwritegbjguides': 1.160156, // Playwrite GB J Guides, 2 variants
+  'playwritegbs': 1.166016, // Playwrite GB S, 8 variants
+  'playwritegbsguides': 1.160156, // Playwrite GB S Guides, 2 variants
+  'playwritehr': 1.169922, // Playwrite HR, 4 variants
+  'playwritehrguides': 1.164062, // Playwrite HR Guides, 1 variants
+  'playwritehrlijeva': 1.169922, // Playwrite HR Lijeva, 4 variants
+  'playwritehrlijevaguides': 1.164062, // Playwrite HR Lijeva Guides, 1 variants
+  'playwritehu': 1.238281, // Playwrite HU, 4 variants
+  'playwritehuguides': 1.232422, // Playwrite HU Guides, 1 variants
+  'playwriteid': 1.740234, // Playwrite ID, 4 variants
+  'playwriteidguides': 1.734375, // Playwrite ID Guides, 1 variants
+  'playwriteie': 1.271484, // Playwrite IE, 4 variants
+  'playwriteieguides': 1.265625, // Playwrite IE Guides, 1 variants
+  'playwritein': 1.316406, // Playwrite IN, 4 variants
+  'playwriteinguides': 1.310547, // Playwrite IN Guides, 1 variants
+  'playwriteis': 1.166016, // Playwrite IS, 4 variants
+  'playwriteisguides': 1.160156, // Playwrite IS Guides, 1 variants
+  'playwriteitmoderna': 1.166016, // Playwrite IT Moderna, 4 variants
+  'playwriteitmodernaguides':
+      1.160156, // Playwrite IT Moderna Guides, 1 variants
+  'playwriteittrad': 1.251953, // Playwrite IT Trad, 4 variants
+  'playwriteittradguides': 1.246094, // Playwrite IT Trad Guides, 1 variants
+  'playwritemx': 1.294922, // Playwrite MX, 4 variants
+  'playwritemxguides': 1.287109, // Playwrite MX Guides, 1 variants
+  'playwritengmodern': 1.294922, // Playwrite NG Modern, 4 variants
+  'playwritengmodernguides': 1.287109, // Playwrite NG Modern Guides, 1 variants
+  'playwritenl': 1.572266, // Playwrite NL, 4 variants
+  'playwritenlguides': 1.564453, // Playwrite NL Guides, 1 variants
+  'playwriteno': 1.263672, // Playwrite NO, 4 variants
+  'playwritenoguides': 1.257812, // Playwrite NO Guides, 1 variants
+  'playwritenz': 1.177734, // Playwrite NZ, 4 variants
+  'playwritenzbasic': 1.166016, // Playwrite NZ Basic, 4 variants
+  'playwritenzbasicguides': 1.160156, // Playwrite NZ Basic Guides, 1 variants
+  'playwritenzguides': 1.160156, // Playwrite NZ Guides, 1 variants
+  'playwritepe': 1.294922, // Playwrite PE, 4 variants
+  'playwritepeguides': 1.287109, // Playwrite PE Guides, 1 variants
+  'playwritepl': 1.279297, // Playwrite PL, 4 variants
+  'playwriteplguides': 1.273438, // Playwrite PL Guides, 1 variants
+  'playwritept': 1.376953, // Playwrite PT, 4 variants
+  'playwriteptguides': 1.369141, // Playwrite PT Guides, 1 variants
+  'playwritero': 1.294922, // Playwrite RO, 4 variants
+  'playwriteroguides': 1.287109, // Playwrite RO Guides, 1 variants
+  'playwritesk': 1.277344, // Playwrite SK, 4 variants
+  'playwriteskguides': 1.271484, // Playwrite SK Guides, 1 variants
+  'playwritetz': 1.294922, // Playwrite TZ, 4 variants
+  'playwritetzguides': 1.287109, // Playwrite TZ Guides, 1 variants
+  'playwriteusmodern': 1.230469, // Playwrite US Modern, 4 variants
+  'playwriteusmodernguides': 1.224609, // Playwrite US Modern Guides, 1 variants
+  'playwriteustrad': 1.294922, // Playwrite US Trad, 4 variants
+  'playwriteustradguides': 1.287109, // Playwrite US Trad Guides, 1 variants
+  'playwritevn': 1.554688, // Playwrite VN, 4 variants
+  'playwritevnguides': 1.548828, // Playwrite VN Guides, 1 variants
+  'playwriteza': 1.294922, // Playwrite ZA, 4 variants
+  'playwritezaguides': 1.287109, // Playwrite ZA Guides, 1 variants
   'pliant': 0.978516, // Pliant, 18 variants
   'plusjakartasans': 1.044922, // Plus Jakarta Sans, 14 variants
   'pochaevsk': 0.857422, // Pochaevsk, 1 variants
@@ -19006,6 +19127,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'sticknobills': 0.919922, // Stick No Bills, 7 variants
   'stintultracondensed': 0.892578, // Stint Ultra Condensed, 1 variants
   'stintultraexpanded': 0.906250, // Stint Ultra Expanded, 1 variants
+  'stixtwomath': 0.888672, // STIX Two Math, 1 variants
   'stixtwotext': 0.898438, // STIX Two Text, 8 variants
   'stoke': 0.992188, // Stoke, 2 variants
   'storyscript': 0.843750, // Story Script, 1 variants
@@ -19136,6 +19258,7 @@ const kLatinInkAboveEmByFontFamily = <String, double>{
   'warnes': 0.996094, // Warnes, 1 variants
   'waterbrush': 1.017578, // Water Brush, 1 variants
   'waterfall': 0.746094, // Waterfall, 1 variants
+  'wavefont': 1.001953, // Wavefont, 9 variants
   'wdxllubrifontjpn': 1.019531, // WDXL Lubrifont JP N, 1 variants
   'wdxllubrifontsc': 1.019531, // WDXL Lubrifont SC, 1 variants
   'wdxllubrifonttc': 1.019531, // WDXL Lubrifont TC, 1 variants
@@ -19979,6 +20102,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'kiteone': 0.351562, // Kite One, 1 variants
   'kiwimaru': 0.265625, // Kiwi Maru, 3 variants
   'kleeone': 0.181641, // Klee One, 2 variants
+  'knewave': 0.341797, // Knewave, 1 variants
   'kodchasan': 0.300781, // Kodchasan, 12 variants
   'kodemono': 0.220703, // Kode Mono, 4 variants
   'koho': 0.234375, // KoHo, 12 variants
@@ -20028,6 +20152,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'lexendtera': 0.248047, // Lexend Tera, 9 variants
   'lexendzetta': 0.248047, // Lexend Zetta, 9 variants
   'libertinuskeyboard': 0.212891, // Libertinus Keyboard, 1 variants
+  'libertinusmath': 0.238281, // Libertinus Math, 1 variants
   'libertinusmono': 0.236328, // Libertinus Mono, 1 variants
   'libertinussans': 0.238281, // Libertinus Sans, 3 variants
   'libertinusserif': 0.240234, // Libertinus Serif, 6 variants
@@ -20051,6 +20176,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'lilyscriptone': 0.343750, // Lily Script One, 1 variants
   'limelight': 0.173828, // Limelight, 1 variants
   'lindenhill': 0.271484, // Linden Hill, 2 variants
+  'linefont': 0.101562, // Linefont, 9 variants
   'lineseedjp': 0.333984, // LINE Seed JP, 4 variants
   'lisubosa': 0.230469, // Lisu Bosa, 16 variants
   'liter': 0.242188, // Liter, 1 variants
@@ -20156,6 +20282,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'mohave': 0.271484, // Mohave, 10 variants
   'moiraione': 0.253906, // Moirai One, 1 variants
   'molengo': 0.242188, // Molengo, 1 variants
+  'molle': 0.271484, // Molle, 1 variants
   'momosignature': 0.371094, // Momo Signature, 1 variants
   'momotrustdisplay': 0.291016, // Momo Trust Display, 1 variants
   'momotrustsans': 0.250000, // Momo Trust Sans, 7 variants
@@ -20323,6 +20450,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'notosansmanichaean': 0.240234, // Noto Sans Manichaean, 1 variants
   'notosansmarchen': 0.240234, // Noto Sans Marchen, 1 variants
   'notosansmasaramgondi': 0.240234, // Noto Sans Masaram Gondi, 1 variants
+  'notosansmath': 0.240234, // Noto Sans Math, 1 variants
   'notosansmayannumerals': 0.240234, // Noto Sans Mayan Numerals, 1 variants
   'notosansmedefaidrin': 0.240234, // Noto Sans Medefaidrin, 4 variants
   'notosansmeeteimayek': 0.244141, // Noto Sans Meetei Mayek, 9 variants
@@ -20544,6 +20672,113 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'playpensansdeva': 0.304688, // Playpen Sans Deva, 8 variants
   'playpensanshebrew': 0.304688, // Playpen Sans Hebrew, 8 variants
   'playpensansthai': 0.304688, // Playpen Sans Thai, 8 variants
+  'playwritear': 0.583984, // Playwrite AR, 4 variants
+  'playwritearguides': 0.583984, // Playwrite AR Guides, 1 variants
+  'playwriteat': 0.394531, // Playwrite AT, 8 variants
+  'playwriteatguides': 0.394531, // Playwrite AT Guides, 2 variants
+  'playwriteaunsw': 0.519531, // Playwrite AU NSW, 4 variants
+  'playwriteaunswguides': 0.519531, // Playwrite AU NSW Guides, 1 variants
+  'playwriteauqld': 0.523438, // Playwrite AU QLD, 4 variants
+  'playwriteauqldguides': 0.519531, // Playwrite AU QLD Guides, 1 variants
+  'playwriteausa': 0.507812, // Playwrite AU SA, 4 variants
+  'playwriteausaguides': 0.507812, // Playwrite AU SA Guides, 1 variants
+  'playwriteautas': 0.519531, // Playwrite AU TAS, 4 variants
+  'playwriteautasguides': 0.519531, // Playwrite AU TAS Guides, 1 variants
+  'playwriteauvic': 0.523438, // Playwrite AU VIC, 4 variants
+  'playwriteauvicguides': 0.519531, // Playwrite AU VIC Guides, 1 variants
+  'playwritebevlg': 0.519531, // Playwrite BE VLG, 4 variants
+  'playwritebevlgguides': 0.519531, // Playwrite BE VLG Guides, 1 variants
+  'playwritebewal': 0.927734, // Playwrite BE WAL, 4 variants
+  'playwritebewalguides': 0.925781, // Playwrite BE WAL Guides, 1 variants
+  'playwritebr': 0.650391, // Playwrite BR, 4 variants
+  'playwritebrguides': 0.650391, // Playwrite BR Guides, 1 variants
+  'playwriteca': 0.515625, // Playwrite CA, 4 variants
+  'playwritecaguides': 0.515625, // Playwrite CA Guides, 1 variants
+  'playwritecl': 0.652344, // Playwrite CL, 4 variants
+  'playwriteclguides': 0.652344, // Playwrite CL Guides, 1 variants
+  'playwriteco': 0.541016, // Playwrite CO, 4 variants
+  'playwritecoguides': 0.539062, // Playwrite CO Guides, 1 variants
+  'playwritecu': 0.634766, // Playwrite CU, 4 variants
+  'playwritecuguides': 0.634766, // Playwrite CU Guides, 1 variants
+  'playwritecz': 0.503906, // Playwrite CZ, 4 variants
+  'playwriteczguides': 0.503906, // Playwrite CZ Guides, 1 variants
+  'playwritedegrund': 0.439453, // Playwrite DE Grund, 4 variants
+  'playwritedegrundguides': 0.439453, // Playwrite DE Grund Guides, 1 variants
+  'playwritedela': 0.439453, // Playwrite DE LA, 4 variants
+  'playwritedelaguides': 0.439453, // Playwrite DE LA Guides, 1 variants
+  'playwritedesas': 0.408203, // Playwrite DE SAS, 4 variants
+  'playwritedesasguides': 0.406250, // Playwrite DE SAS Guides, 1 variants
+  'playwritedeva': 0.498047, // Playwrite DE VA, 4 variants
+  'playwritedevaguides': 0.498047, // Playwrite DE VA Guides, 1 variants
+  'playwritedkloopet': 0.394531, // Playwrite DK Loopet, 4 variants
+  'playwritedkloopetguides': 0.394531, // Playwrite DK Loopet Guides, 1 variants
+  'playwritedkuloopet': 0.394531, // Playwrite DK Uloopet, 4 variants
+  'playwritedkuloopetguides':
+      0.394531, // Playwrite DK Uloopet Guides, 1 variants
+  'playwritees': 0.519531, // Playwrite ES, 4 variants
+  'playwriteesdeco': 0.519531, // Playwrite ES Deco, 4 variants
+  'playwriteesdecoguides': 0.519531, // Playwrite ES Deco Guides, 1 variants
+  'playwriteesguides': 0.519531, // Playwrite ES Guides, 1 variants
+  'playwritefrmoderne': 0.619141, // Playwrite FR Moderne, 4 variants
+  'playwritefrmoderneguides':
+      0.619141, // Playwrite FR Moderne Guides, 1 variants
+  'playwritefrtrad': 0.931641, // Playwrite FR Trad, 4 variants
+  'playwritefrtradguides': 0.927734, // Playwrite FR Trad Guides, 1 variants
+  'playwritegbj': 0.394531, // Playwrite GB J, 8 variants
+  'playwritegbjguides': 0.394531, // Playwrite GB J Guides, 2 variants
+  'playwritegbs': 0.394531, // Playwrite GB S, 8 variants
+  'playwritegbsguides': 0.394531, // Playwrite GB S Guides, 2 variants
+  'playwritehr': 0.398438, // Playwrite HR, 4 variants
+  'playwritehrguides': 0.398438, // Playwrite HR Guides, 1 variants
+  'playwritehrlijeva': 0.398438, // Playwrite HR Lijeva, 4 variants
+  'playwritehrlijevaguides': 0.398438, // Playwrite HR Lijeva Guides, 1 variants
+  'playwritehu': 0.464844, // Playwrite HU, 4 variants
+  'playwritehuguides': 0.464844, // Playwrite HU Guides, 1 variants
+  'playwriteid': 0.958984, // Playwrite ID, 4 variants
+  'playwriteidguides': 0.958984, // Playwrite ID Guides, 1 variants
+  'playwriteie': 0.500000, // Playwrite IE, 4 variants
+  'playwriteieguides': 0.500000, // Playwrite IE Guides, 1 variants
+  'playwritein': 0.542969, // Playwrite IN, 4 variants
+  'playwriteinguides': 0.542969, // Playwrite IN Guides, 1 variants
+  'playwriteis': 0.394531, // Playwrite IS, 4 variants
+  'playwriteisguides': 0.394531, // Playwrite IS Guides, 1 variants
+  'playwriteitmoderna': 0.394531, // Playwrite IT Moderna, 4 variants
+  'playwriteitmodernaguides':
+      0.394531, // Playwrite IT Moderna Guides, 1 variants
+  'playwriteittrad': 0.478516, // Playwrite IT Trad, 4 variants
+  'playwriteittradguides': 0.478516, // Playwrite IT Trad Guides, 1 variants
+  'playwritemx': 0.519531, // Playwrite MX, 4 variants
+  'playwritemxguides': 0.519531, // Playwrite MX Guides, 1 variants
+  'playwritengmodern': 0.519531, // Playwrite NG Modern, 4 variants
+  'playwritengmodernguides': 0.519531, // Playwrite NG Modern Guides, 1 variants
+  'playwritenl': 0.792969, // Playwrite NL, 4 variants
+  'playwritenlguides': 0.792969, // Playwrite NL Guides, 1 variants
+  'playwriteno': 0.492188, // Playwrite NO, 4 variants
+  'playwritenoguides': 0.490234, // Playwrite NO Guides, 1 variants
+  'playwritenz': 0.396484, // Playwrite NZ, 4 variants
+  'playwritenzbasic': 0.396484, // Playwrite NZ Basic, 4 variants
+  'playwritenzbasicguides': 0.396484, // Playwrite NZ Basic Guides, 1 variants
+  'playwritenzguides': 0.396484, // Playwrite NZ Guides, 1 variants
+  'playwritepe': 0.519531, // Playwrite PE, 4 variants
+  'playwritepeguides': 0.519531, // Playwrite PE Guides, 1 variants
+  'playwritepl': 0.505859, // Playwrite PL, 4 variants
+  'playwriteplguides': 0.505859, // Playwrite PL Guides, 1 variants
+  'playwritept': 0.599609, // Playwrite PT, 4 variants
+  'playwriteptguides': 0.599609, // Playwrite PT Guides, 1 variants
+  'playwritero': 0.519531, // Playwrite RO, 4 variants
+  'playwriteroguides': 0.519531, // Playwrite RO Guides, 1 variants
+  'playwritesk': 0.503906, // Playwrite SK, 4 variants
+  'playwriteskguides': 0.503906, // Playwrite SK Guides, 1 variants
+  'playwritetz': 0.519531, // Playwrite TZ, 4 variants
+  'playwritetzguides': 0.519531, // Playwrite TZ Guides, 1 variants
+  'playwriteusmodern': 0.457031, // Playwrite US Modern, 4 variants
+  'playwriteusmodernguides': 0.458984, // Playwrite US Modern Guides, 1 variants
+  'playwriteustrad': 0.519531, // Playwrite US Trad, 4 variants
+  'playwriteustradguides': 0.519531, // Playwrite US Trad Guides, 1 variants
+  'playwritevn': 0.777344, // Playwrite VN, 4 variants
+  'playwritevnguides': 0.777344, // Playwrite VN Guides, 1 variants
+  'playwriteza': 0.519531, // Playwrite ZA, 4 variants
+  'playwritezaguides': 0.519531, // Playwrite ZA Guides, 1 variants
   'pliant': 0.234375, // Pliant, 18 variants
   'plusjakartasans': 0.240234, // Plus Jakarta Sans, 14 variants
   'pochaevsk': 0.255859, // Pochaevsk, 1 variants
@@ -20829,6 +21064,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'sticknobills': 0.199219, // Stick No Bills, 7 variants
   'stintultracondensed': 0.201172, // Stint Ultra Condensed, 1 variants
   'stintultraexpanded': 0.203125, // Stint Ultra Expanded, 1 variants
+  'stixtwomath': 0.234375, // STIX Two Math, 1 variants
   'stixtwotext': 0.234375, // STIX Two Text, 8 variants
   'stoke': 0.257812, // Stoke, 2 variants
   'storyscript': 0.250000, // Story Script, 1 variants
@@ -20959,6 +21195,7 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
   'warnes': 0.310547, // Warnes, 1 variants
   'waterbrush': 0.470703, // Water Brush, 1 variants
   'waterfall': 0.298828, // Waterfall, 1 variants
+  'wavefont': 0.000000, // Wavefont, 9 variants
   'wdxllubrifontjpn': 0.220703, // WDXL Lubrifont JP N, 1 variants
   'wdxllubrifontsc': 0.220703, // WDXL Lubrifont SC, 1 variants
   'wdxllubrifonttc': 0.220703, // WDXL Lubrifont TC, 1 variants

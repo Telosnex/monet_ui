@@ -1,3 +1,13 @@
+## Unreleased
+
+- Font data: the font's `cmap` decides whether it has Latin letters, not the
+  catalog's `latin` subset. 111 more families get a line height, among them
+  the 104 Playwrite families and the math fonts.
+- Font data: a font that maps an accented letter to an empty glyph is
+  measured from A–Z and a–z (Knewave).
+- Font data: a family with only italics is measured from its italic (Molle).
+  It gets a visual-height scale.
+
 ## 1.0.1
 
 - Add `MonetGdtRule20261030` (`extract/monet_gdt_rule_2026_10_30.dart`):

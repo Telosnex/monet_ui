@@ -41,8 +41,12 @@ _VISUAL_HEIGHT_ADVANCE_WEIGHT = 0.15
 # setting that turns compact line heights off.
 #
 # Latin letter ink: A-Z, a-z, and the letters in U+00C0-U+00FF, or only
-# A-Z and a-z if the font does not have the others. U+00D7 and U+00F7 are
-# not letters.
+# A-Z and a-z if the font does not draw all of the others. U+00D7 and U+00F7
+# are not letters.
+#
+# The font's cmap decides, not the catalog's `latin` subset: many families
+# without that subset draw English (the Playwrite families, the math
+# fonts).
 _LATIN_BASIC_CODEPOINTS = list(range(0x41, 0x5B)) + list(range(0x61, 0x7B))
 _LATIN_ACCENTED_CODEPOINTS = [cp for cp in range(0xC0, 0x100) if cp not in (0xD7, 0xF7)]
 
@@ -117,11 +121,6 @@ def parse_args() -> argparse.Namespace:
         "--cached-only",
         action="store_true",
         help="Skip fonts whose TTF is not already present in --cache-dir.",
-    )
-    parser.add_argument(
-        "--metadata",
-        default="tool/data/google_fonts_metadata.json",
-        help="Google Fonts metadata with the subsets of each family.",
     )
     parser.add_argument(
         "--reference-family",
@@ -400,7 +399,6 @@ def _ink_reach_em(font: ImageFont.FreeTypeFont, text: str, size: int) -> tuple[f
 
 def measure_line_need(
     variant: GoogleFontVariant,
-    subsets: tuple[str, ...],
     cache_dir: str,
     font_size: int,
 ) -> LineNeedResult:
@@ -415,21 +413,33 @@ def measure_line_need(
     def absent(reason: str) -> LineNeedResult:
         return LineNeedResult(variant.family, None, reason)
 
-    if "latin" not in subsets:
-        return absent("no latin subset")
     font = ImageFont.truetype(io.BytesIO(data), font_size)
     mapped = cmap_codepoints(data)
-    letters = list(_LATIN_BASIC_CODEPOINTS)
-    if all(codepoint in mapped for codepoint in _LATIN_ACCENTED_CODEPOINTS):
-        letters += _LATIN_ACCENTED_CODEPOINTS
-    if not all(codepoint in mapped for codepoint in letters):
+    if not all(codepoint in mapped for codepoint in _LATIN_BASIC_CODEPOINTS):
         return absent("no latin letters")
-    above = below = 0.0
-    for codepoint in letters:
-        reach = _ink_reach_em(font, chr(codepoint), font_size)
-        if reach is None:
-            return absent("latin letter without ink")
-        above, below = max(above, reach[0]), max(below, reach[1])
+
+    def reaches(codepoints: list[int]) -> list[tuple[float, float]] | None:
+        result = []
+        for codepoint in codepoints:
+            reach = _ink_reach_em(font, chr(codepoint), font_size)
+            if reach is None:
+                return None
+            result.append(reach)
+        return result
+
+    basic = reaches(_LATIN_BASIC_CODEPOINTS)
+    if basic is None:
+        return absent("latin letter without ink")
+    # A font can map an accented letter to an empty glyph (Knewave's U+00DE).
+    # It then does not draw the accented letters.
+    accented = (
+        reaches(_LATIN_ACCENTED_CODEPOINTS)
+        if all(codepoint in mapped for codepoint in _LATIN_ACCENTED_CODEPOINTS)
+        else None
+    )
+    letters = basic + (accented or [])
+    above = max(reach[0] for reach in letters)
+    below = max(reach[1] for reach in letters)
     return LineNeedResult(variant.family, (above, below), None)
 
 
@@ -780,9 +790,8 @@ def measure_line_needs(
     below over the variants. A family is absent if any variant is absent. Fails on a download or measurement error, so the
     output does not depend on the network.
     """
-    metadata = json.loads(Path(args.metadata).read_text())
     tasks = [
-        (variant, tuple(metadata.get(family, {}).get("subsets", [])))
+        variant
         for family in sorted(index[0])
         for variant in variants_for_family(family, index, include_italic=True)
     ]
@@ -791,8 +800,8 @@ def measure_line_needs(
     by_family: dict[str, list[LineNeedResult]] = {}
     with ProcessPoolExecutor(max_workers=max(1, args.workers)) as executor:
         futures = [
-            executor.submit(measure_line_need, variant, subsets, str(cache_dir), args.font_size)
-            for variant, subsets in tasks
+            executor.submit(measure_line_need, variant, str(cache_dir), args.font_size)
+            for variant in tasks
         ]
         for completed, future in enumerate(as_completed(futures), start=1):
             result = future.result()
@@ -827,7 +836,10 @@ def main() -> None:
 
     tasks: list[GoogleFontVariant] = []
     for family in sorted(family_to_method):
-        variants = variants_for_family(family, index)
+        # A family with only italics (Molle) is measured from its italic.
+        variants = variants_for_family(family, index) or variants_for_family(
+            family, index, include_italic=True
+        )
         if variants:
             tasks.append(choose_variant(variants, args.preferred_weight))
 

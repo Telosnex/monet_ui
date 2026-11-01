@@ -67,7 +67,6 @@ void main() {
         'Karla Tamil Inclined',
         'Karla Tamil Upright',
         'Khmer',
-        'Molle',
         'Phetsarath',
       ]);
     },

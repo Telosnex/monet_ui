@@ -34,8 +34,8 @@ void main() {
           reason: family,
         );
       }
-      // I6: catches large data drift. 1,801 when written.
-      expect(count, inInclusiveRange(1700, 1900));
+      // I6: catches large data drift. 1,911 when written.
+      expect(count, inInclusiveRange(1850, 1950));
     });
 
     test('the clearance is relative to the requested size', () {
@@ -56,11 +56,23 @@ void main() {
     });
 
     test('I3: fonts without Latin letters have no height', () {
-      // No `latin` subset.
+      // Khmer only.
       expect(lineHeightForFontFamily('Chenla'), isNull);
+      expect(lineHeightForFontFamily('Noto Color Emoji'), isNull);
       expect(naturalLineHeightForFontFamily('Chenla'), isNull);
       expect(lineHeightForFontFamily('Not A Font'), isNull);
       expect(lineHeightForFontFamily(null), isNull);
+    });
+
+    test('the font decides, not the catalog subsets', () {
+      // No `latin` subset in the catalog, but the font draws A-Z and a-z.
+      expect(latinInkForFontFamily('Playwrite US Trad'), isNotNull);
+      expect(latinInkForFontFamily('Noto Sans Math'), isNotNull);
+      // Maps U+00DE to an empty glyph: measured from A-Z and a-z.
+      expect(latinInkForFontFamily('Knewave'), isNotNull);
+      // Only an italic: measured from it.
+      expect(visualHeightScaleForFontFamily('Molle'), isNot(1.0));
+      expect(latinInkForFontFamily('Molle'), isNotNull);
     });
 
     test('values', () {
