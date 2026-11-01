@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:monet_ui/fonts/font_file.dart';
 import 'package:monet_ui/fonts/line_height.dart';
 
 /// [bytes] with the ascent and descent centred on the font's Latin ink.
@@ -38,26 +39,16 @@ ByteData patchFontAscentDescent(
   double ascentEm,
   double descentEm,
 ) {
-  if (bytes.lengthInBytes < 12) return bytes;
-  final version = bytes.getUint32(0);
-  // 1.0 (TrueType), 'OTTO' (CFF), 'true' (Apple TrueType).
-  if (version != 0x00010000 && version != 0x4F54544F && version != 0x74727565) {
-    return bytes;
-  }
+  final tables = fontTableRecords(bytes);
+  if (tables == null) return bytes;
   final out = ByteData(bytes.lengthInBytes)
     ..buffer.asUint8List().setAll(
       0,
       bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
     );
-  final numTables = out.getUint16(4);
-  final records = <String, int>{}; // tag -> record offset
-  for (var i = 0; i < numTables; i++) {
-    final record = 12 + 16 * i;
-    if (record + 16 > out.lengthInBytes) return bytes;
-    records[String.fromCharCodes(out.buffer.asUint8List(record, 4))] = record;
-  }
-  int offsetOf(String tag) => out.getUint32(records[tag]! + 8);
-  int lengthOf(String tag) => out.getUint32(records[tag]! + 12);
+  final records = {for (final e in tables.entries) e.key: e.value.record};
+  int offsetOf(String tag) => tables[tag]!.offset;
+  int lengthOf(String tag) => tables[tag]!.length;
   if (!records.containsKey('head') ||
       !records.containsKey('hhea') ||
       lengthOf('head') < 54 ||
