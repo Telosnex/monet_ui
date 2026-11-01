@@ -1,4 +1,4 @@
-## Unreleased
+## 1.1.0
 
 - Size adjust (docs/design/ADR_font_size_adjust.md in telosnex), off by
   default: `MonetFonts.install(sizeAdjust: true)` scales each Google Font's
