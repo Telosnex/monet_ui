@@ -4,7 +4,7 @@
   - `font_file.dart`: `fontTableRecords`, `cmapCodePoints`, `colorTables`,
     `unitsPerEm`, `fontOutlines`, `hasLatinLetters`.
   - `text_metrics.dart`: `snapFontSize`, `withFontLineHeight`,
-    `lineHeightForTextStyle`, `capHeightCentringShift`,
+    `lineHeightForTextScaler`, `capHeightCentringShift`,
     `capHeightShiftForTextStyle`.
   - `monet_fonts.dart`: `MonetFonts.install()`, the one font transform, and
     `loadMonetFont` for tests.

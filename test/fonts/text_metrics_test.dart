@@ -36,15 +36,15 @@ void main() {
     );
   });
 
-  test('lineHeightForTextStyle', () {
+  test('lineHeightForTextScaler', () {
     const style = TextStyle(fontSize: 10, height: 1.2);
-    expect(lineHeightForTextStyle(TextScaler.noScaling, style), 12);
+    expect(lineHeightForTextScaler(TextScaler.noScaling, style), 12);
     expect(
-      lineHeightForTextStyle(const TextScaler.linear(2), style),
+      lineHeightForTextScaler(const TextScaler.linear(2), style),
       closeTo(24, 1e-9),
     );
     expect(
-      lineHeightForTextStyle(
+      lineHeightForTextScaler(
         TextScaler.noScaling,
         const TextStyle(fontSize: 10),
       ),

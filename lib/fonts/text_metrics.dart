@@ -44,7 +44,7 @@ TextStyle withFontLineHeight(
 ///
 /// Use it to size a box that holds one line of text. 1.5 is only for styles
 /// with no height.
-double lineHeightForTextStyle(TextScaler textScaler, TextStyle style) =>
+double lineHeightForTextScaler(TextScaler textScaler, TextStyle style) =>
     textScaler.scale(style.fontSize!) * (style.height ?? 1.5);
 
 /// Distance to move a line down so its capitals are centred in the line.
