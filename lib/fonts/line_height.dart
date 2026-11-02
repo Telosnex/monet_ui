@@ -3,8 +3,9 @@ import 'package:monet_ui/fonts/font_size_adjust.dart';
 
 /// Clearance between adjacent lines, as a fraction of the requested size.
 ///
-/// The space between the lowest ink of one line and the highest ink of the
-/// next. Taste: about 1.4 px at a 17 px label.
+/// Extra space beyond the measured A-Z and a-z envelope. Accents,
+/// punctuation, and other scripts can extend into this space or beyond it.
+/// Increase clearance if adjacent lines overlap. About 1.4 px at 17 px.
 const kLineHeightClearance = 0.08;
 
 /// Minimum baseline distance, as a fraction of the requested size.
@@ -12,11 +13,11 @@ const kLineHeightFloor = 1.0;
 
 /// TextStyle.height for [fontFamily], or null if the font has no data.
 ///
-/// The height fits the ink of the font's Latin letters, over every weight
+/// The height fits the ink of A-Z and a-z, over every weight
 /// and style, plus [clearance]. It is at least [kLineHeightFloor]. Both are
 /// fractions of the requested size: the font size before
 /// [visualHeightScaleForFontFamily] scales it. Thus the same [clearance]
-/// gives the same gap in pixels in every font.
+/// adds the same space in pixels in every font; the floor can add more.
 ///
 /// The height can be more or less than the font's own line box. Other
 /// scripts can need more room than Latin: an app that shows them turns this
@@ -43,7 +44,8 @@ double? lineHeightForFontFamily(
 /// font has no Latin ink data.
 ///
 /// For a font whose bytes [patchFontLineMetrics] changed, this height keeps
-/// the original line height. The letters are centred in it.
+/// the original line height. The measured A-Z and a-z envelope is centred
+/// in it.
 double? naturalLineHeightForFontFamily(String? fontFamily) {
   if (latinInkForFontFamily(fontFamily) == null) return null;
   final ascent = ascentEmForFontFamily(fontFamily);
@@ -52,7 +54,7 @@ double? naturalLineHeightForFontFamily(String? fontFamily) {
   return ascent + descent;
 }
 
-/// How far the Latin letter ink of [fontFamily] reaches (above, below) the
+/// How far the A-Z and a-z ink of [fontFamily] reaches (above, below) the
 /// baseline in em, over every weight and style. Null if it is unknown.
 ///
 /// In the em of the font as it loads ([fontEmScale]).

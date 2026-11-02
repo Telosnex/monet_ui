@@ -40,15 +40,13 @@ _VISUAL_HEIGHT_ADVANCE_WEIGHT = 0.15
 # the Latin letter ink. Other scripts keep their room through the user
 # setting that turns compact line heights off.
 #
-# Latin letter ink: A-Z, a-z, and the letters in U+00C0-U+00FF, or only
-# A-Z and a-z if the font does not draw all of the others. U+00D7 and U+00F7
-# are not letters.
+# Latin letter ink: A-Z and a-z. Accents and punctuation can extend
+# beyond this envelope; line-spacing clearance provides extra room.
 #
 # The font's cmap decides, not the catalog's `latin` subset: many families
 # without that subset draw English (the Playwrite families, the math
 # fonts).
 _LATIN_BASIC_CODEPOINTS = list(range(0x41, 0x5B)) + list(range(0x61, 0x7B))
-_LATIN_ACCENTED_CODEPOINTS = [cp for cp in range(0xC0, 0x100) if cp not in (0xD7, 0xF7)]
 
 
 FontMetricRow = tuple[
@@ -439,17 +437,13 @@ def measure_line_need(
             result.append(reach)
         return result
 
-    basic = reaches(_LATIN_BASIC_CODEPOINTS)
-    if basic is None:
+    # A-Z and a-z only. Accents can reach above the line box, into the
+    # line-spacing clearance (docs/design/ADR_font_line_height.md in
+    # telosnex, D5): measuring them left empty space above every line in
+    # fonts with tall accents, such as Mozilla Headline (0.21 em).
+    letters = reaches(_LATIN_BASIC_CODEPOINTS)
+    if letters is None:
         return absent("latin letter without ink")
-    # A font can map an accented letter to an empty glyph (Knewave's U+00DE).
-    # It then does not draw the accented letters.
-    accented = (
-        reaches(_LATIN_ACCENTED_CODEPOINTS)
-        if all(codepoint in mapped for codepoint in _LATIN_ACCENTED_CODEPOINTS)
-        else None
-    )
-    letters = basic + (accented or [])
     above = max(reach[0] for reach in letters)
     below = max(reach[1] for reach in letters)
     return LineNeedResult(variant.family, (above, below), None, units_per_em, outlines)
@@ -702,8 +696,8 @@ def write_dart(
             "/// How far the Latin letter ink reaches above the baseline, in em: the",
             "/// largest over every weight and style.",
             "///",
-            "/// A-Z, a-z, and U+00C0-U+00FF, or only A-Z and a-z if a variant does not",
-            "/// have the others. A family is absent if it has no Latin letters.",
+            "/// A-Z and a-z only. Accents and punctuation can extend beyond this",
+            "/// envelope. A family is absent if it has no Latin letters.",
             "const kLatinInkAboveEmByFontFamily = <String, double>{",
         ]
     )

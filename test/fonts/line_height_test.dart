@@ -75,15 +75,38 @@ void main() {
       expect(latinInkForFontFamily('Molle'), isNotNull);
     });
 
+    test('Mozilla Headline excludes accent room from the envelope', () {
+      // The old accent-inclusive envelope was 0.917969 / 0.173828 em.
+      // These are raw generated metrics, independent of size adjustment.
+      expect(
+        kLatinInkAboveEmByFontFamily['mozillaheadline'],
+        closeTo(0.701172, 0.000001),
+      );
+      expect(
+        kLatinInkBelowEmByFontFamily['mozillaheadline'],
+        closeTo(0.132812, 0.000001),
+      );
+      final scale = visualHeightScaleForFontFamily('Mozilla Headline');
+      final ink = latinInkForFontFamily('Mozilla Headline')!;
+      expect(
+        lineHeightForFontFamily('Mozilla Headline', clearance: 0),
+        closeTo(kLineHeightFloor / scale, 1e-9),
+      );
+      expect(
+        lineHeightForFontFamily('Mozilla Headline', clearance: 0.3),
+        closeTo(ink.$1 + ink.$2 + 0.3 / scale, 1e-9),
+      );
+    });
+
     test('values', () {
-      expect(lineHeightForFontFamily('Mukta'), closeTo(1.20, 0.01));
-      expect(lineHeightForFontFamily('Laila'), closeTo(1.35, 0.01));
+      expect(lineHeightForFontFamily('Mukta'), closeTo(1.07, 0.01));
+      expect(lineHeightForFontFamily('Laila'), closeTo(1.14, 0.01));
       expect(
         lineHeightForFontFamily('Tenali Ramakrishna'),
         closeTo(0.69, 0.01),
       );
-      // Roboto's own box is tighter than its ink plus the clearance.
-      expect(lineHeightForFontFamily('Roboto'), closeTo(1.26, 0.01));
+      // Roboto's unaccented ink plus clearance is tighter than its own box.
+      expect(lineHeightForFontFamily('Roboto'), closeTo(1.06, 0.01));
       expect(naturalLineHeightForFontFamily('Roboto'), closeTo(1.17, 0.01));
       expect(
         lineHeightForFontFamily('Mukta_500'),
