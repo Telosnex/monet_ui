@@ -1,3 +1,14 @@
+## 1.1.1
+
+- Fit Latin line heights to A-Z and a-z, excluding accented letters. This
+  tightens many line heights and changes vertical placement in single-line
+  controls too. The font-metrics patch centres this smaller envelope even
+  when compact line heights are disabled; natural line heights keep their
+  original total height. Accents, punctuation, and other scripts can extend
+  outside the measured envelope. Increase line-height clearance if needed
+  to avoid overlap. The default clearance stays at 0.08 and the minimum
+  baseline distance stays at 1.0 times the requested size.
+
 ## 1.1.0
 
 - Size adjust (docs/design/ADR_font_size_adjust.md in telosnex), off by
