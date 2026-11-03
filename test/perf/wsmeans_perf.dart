@@ -9,7 +9,7 @@ import 'package:monet_ui/extract/quantizer_result.dart';
 import 'package:monet_ui/extract/quantizer_wsmeans.dart';
 import 'package:monet_ui/extract/quantizer_wu.dart';
 
-import 'perf_tester.dart';
+import 'package:perf_tester/perf_tester.dart';
 
 void main(List<String> args) async {
   final profile = args.contains('--profile');
@@ -110,7 +110,7 @@ void main(List<String> args) async {
       profile: profile,
       profileRuns: profileRuns,
       profileTopN: profileTopN,
-      profileDumpDirectory: profileDumpDirectory,
+      profileSaveDir: profileDumpDirectory,
     );
   }
 }

@@ -1,5 +1,6 @@
 // A benchmark of experiments with Int64List (not in dart2js): the VM only.
 @TestOn('vm')
+@Tags(['perf'])
 library;
 
 // ignore_for_file: avoid_print
@@ -19,61 +20,62 @@ library;
 
 import 'dart:math' as math;
 
-import 'package:flutter_test/flutter_test.dart' show TestOn;
+import 'package:test/test.dart';
+import 'package:perf_tester/perf_tester.dart';
 
-import '../perf_tester.dart';
-
-import 'base/hct_from_argb.dart' as base;
 import 'attempt_3/hct_from_argb.dart' as attempt;
+import 'base/hct_from_argb.dart' as base;
 
-void main() async {
-  // ── Generate test colors ──────────────────────────────────────────────
-  // Every possible fully-opaque RGB color (256^3 = 16,777,216).
-  // That's too many for per-run overhead, so we use a large stratified
-  // sample: full sweeps of edge cases + a big random block.
-  final testCases = <int>[];
+void main() {
+  test('HCT from RGB: base vs attempt', () async {
+    // ── Generate test colors ──────────────────────────────────────────────
+    // Every possible fully-opaque RGB color (256^3 = 16,777,216).
+    // That's too many for per-run overhead, so we use a large stratified
+    // sample: full sweeps of edge cases + a big random block.
+    final testCases = <int>[];
 
-  // Edge cases: pure primaries, grays, near-black, near-white.
-  for (var v = 0; v < 256; v++) {
-    testCases.add(0xFF000000 | (v << 16)); // reds
-    testCases.add(0xFF000000 | (v << 8)); // greens
-    testCases.add(0xFF000000 | v); // blues
-    testCases.add(0xFF000000 | (v << 16) | (v << 8) | v); // grays
-  }
+    // Edge cases: pure primaries, grays, near-black, near-white.
+    for (var v = 0; v < 256; v++) {
+      testCases.add(0xFF000000 | (v << 16)); // reds
+      testCases.add(0xFF000000 | (v << 8)); // greens
+      testCases.add(0xFF000000 | v); // blues
+      testCases.add(0xFF000000 | (v << 16) | (v << 8) | v); // grays
+    }
 
-  // 50 000 random colors, seeded for reproducibility.
-  final random = math.Random(42);
-  for (var i = 0; i < 50000; i++) {
-    testCases.add(
-      0xFF000000 |
-          (random.nextInt(256) << 16) |
-          (random.nextInt(256) << 8) |
-          random.nextInt(256),
+    // 50 000 random colors, seeded for reproducibility.
+    final random = math.Random(42);
+    for (var i = 0; i < 50000; i++) {
+      testCases.add(
+        0xFF000000 |
+            (random.nextInt(256) << 16) |
+            (random.nextInt(256) << 8) |
+            random.nextInt(256),
+      );
+    }
+
+    print('Test cases: ${testCases.length}');
+
+    final tester = PerfTester<int, (double, double, double)>(
+      testName: 'HCT from RGB',
+      testCases: testCases,
+      implementation1: base.hctFromArgb,
+      implementation2: attempt.hctFromArgb,
+      impl1Name: 'Base',
+      impl2Name: 'Attempt',
+      // Tolerate tiny floating-point drift from optimizations.
+      equalityCheck: (a, b) {
+        if (a == null || b == null) return a == b;
+        return (a.$1 - b.$1).abs() < 0.01 &&
+            (a.$2 - b.$2).abs() < 0.01 &&
+            (a.$3 - b.$3).abs() < 0.01;
+      },
     );
-  }
 
-  print('Test cases: ${testCases.length}');
-
-  final tester = PerfTester<int, (double, double, double)>(
-    testName: 'HCT from RGB',
-    testCases: testCases,
-    implementation1: base.hctFromArgb,
-    implementation2: attempt.hctFromArgb,
-    impl1Name: 'Base',
-    impl2Name: 'Attempt',
-    // Tolerate tiny floating-point drift from optimizations.
-    equalityCheck: (a, b) {
-      if (a == null || b == null) return a == b;
-      return (a.$1 - b.$1).abs() < 0.01 &&
-          (a.$2 - b.$2).abs() < 0.01 &&
-          (a.$3 - b.$3).abs() < 0.01;
-    },
-  );
-
-  await tester.run(
-    warmupRuns: 50,
-    benchmarkRuns: 100,
-    profile: true,
-    profileRuns: 500,
-  );
+    await tester.run(
+      warmupRuns: 50,
+      benchmarkRuns: 100,
+      profile: true,
+      profileRuns: 500,
+    );
+  }, timeout: Timeout.none);
 }

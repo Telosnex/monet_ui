@@ -13,13 +13,16 @@
 
 // ignore_for_file: avoid_print
 
+@Tags(['perf'])
+library;
+
 import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monet_ui/monet_ui.dart';
 
-import '../perf_tester.dart';
+import 'package:perf_tester/perf_tester.dart';
 
 const _contrast = 0.5;
 

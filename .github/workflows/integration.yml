@@ -33,7 +33,7 @@ jobs:
           persist-credentials: false
       - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@0554f3662445d678e2effbd838d15968d673f7af # v0.5.6
       - run: flutter pub get
-      - run: flutter test -r expanded
+      - run: flutter test -x perf -r expanded
 
   desktop-windows-x64:
     name: Windows x64
@@ -60,7 +60,7 @@ jobs:
       # exits 1 when no file has the annotation.
       - run: |
           files=$(git ls-files 'test/**_test.dart' | xargs grep -L "@TestOn('vm')" || true)
-          flutter test --platform chrome $WASM -r expanded $files
+          flutter test --platform chrome $WASM -x perf -r expanded $files
 
   web-linux-chrome-dart2wasm:
     name: Web Linux x64 Chrome dart2wasm

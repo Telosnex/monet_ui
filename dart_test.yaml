@@ -1,0 +1,8 @@
+tags:
+  # Benchmarks that print timings rather than check correctness. CI excludes
+  # them (flutter test -x perf in .github/workflows). Run on demand:
+  #   flutter test -t perf test/perf/<file>
+  #   dart run perf_tester:aot --dart test/perf/<file>   # pure Dart, AOT
+  # Tag a whole file with `@Tags(['perf'])` + `library;`, and put the
+  # benchmark in a `test()`: tags do not stop code at the top of `main()`.
+  perf:
