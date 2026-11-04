@@ -1,3 +1,13 @@
+## 1.1.2
+
+- `AnyBackground.sharedBorder`: of the tones that work, picks the one
+  nearest its farthest surface, instead of the first working tone darker
+  than every surface, then lighter, then between. Surfaces far apart in tone
+  no longer get a near-white or near-black border when a tone between them
+  works: Telosnex's T84, T53 and T17 colors went from T94 to T38. Ties go to
+  a tone outside every surface's tone, then to the darker. Same in the JS
+  port.
+
 ## 1.1.1
 
 - Fit Latin line heights to A-Z and a-z, excluding accented letters. This
