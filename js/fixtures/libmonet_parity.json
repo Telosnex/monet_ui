@@ -9505,15 +9505,15 @@
       ],
       "contrast": 0.5,
       "algo": "apca",
-      "tone": 26.0,
+      "tone": 38.0,
       "borderArgbs": [
-        "#66008D",
-        "#4B374D",
-        "#2B4500"
+        "#9100C6",
+        "#675369",
+        "#476120"
       ],
       "clearsBackground": true,
       "meetsTarget": true,
-      "worstContrast": 69.7605156914567
+      "worstContrast": 59.50789158066294
     },
     {
       "name": "busy-wallpaper-falls-back-apca",
@@ -9592,15 +9592,15 @@
       ],
       "contrast": 0.5,
       "algo": "apca",
-      "tone": 16.0,
+      "tone": 20.0,
       "borderArgbs": [
-        "#002756",
-        "#3A1A4A",
-        "#092E19"
+        "#0B3060",
+        "#432352",
+        "#153722"
       ],
       "clearsBackground": true,
       "meetsTarget": true,
-      "worstContrast": 35.02445014485519
+      "worstContrast": 32.888585590168326
     },
     {
       "name": "solid-red-dark-chips-wcag21",
@@ -9614,15 +9614,56 @@
       ],
       "contrast": 0.5,
       "algo": "wcag21",
-      "tone": 16.0,
+      "tone": 20.0,
       "borderArgbs": [
-        "#002756",
-        "#3A1A4A",
-        "#092E19"
+        "#0B3060",
+        "#432352",
+        "#153722"
       ],
       "clearsBackground": true,
       "meetsTarget": true,
-      "worstContrast": 3.681613648389933
+      "worstContrast": 3.270407516726115
+    },
+    {
+      "name": "surfaces-far-apart-busy-grays-apca",
+      "surfaces": [
+        "#C6D4E1",
+        "#7C8083",
+        "#292B24"
+      ],
+      "backgrounds": [
+        "#222222",
+        "#2A2A2A",
+        "#323232",
+        "#3B3B3B",
+        "#444444",
+        "#4E4E4E",
+        "#575757",
+        "#616161",
+        "#6A6A6A",
+        "#747474",
+        "#7F7F7F",
+        "#898989",
+        "#939393",
+        "#9E9E9E",
+        "#A8A8A8",
+        "#B3B3B3",
+        "#BEBEBE",
+        "#C9C9C9",
+        "#D4D4D4",
+        "#DFDFDF"
+      ],
+      "contrast": 0.496,
+      "algo": "apca",
+      "tone": 38.0,
+      "borderArgbs": [
+        "#4B5C69",
+        "#565A5D",
+        "#595A53"
+      ],
+      "clearsBackground": false,
+      "meetsTarget": true,
+      "worstContrast": 14.92063763301916
     },
     {
       "name": "solid-red-light-chips-apca",
@@ -9636,15 +9677,15 @@
       ],
       "contrast": 0.5,
       "algo": "apca",
-      "tone": 81.0,
+      "tone": 85.0,
       "borderArgbs": [
-        "#ADCDED",
-        "#EFBFAF",
-        "#B2D2AA"
+        "#B8D8F8",
+        "#FACABA",
+        "#BDDDB5"
       ],
       "clearsBackground": true,
       "meetsTarget": true,
-      "worstContrast": 35.706616362019204
+      "worstContrast": 42.28439001876771
     },
     {
       "name": "solid-red-light-chips-wcag21",
@@ -9658,15 +9699,15 @@
       ],
       "contrast": 0.5,
       "algo": "wcag21",
-      "tone": 81.0,
+      "tone": 85.0,
       "borderArgbs": [
-        "#ADCDED",
-        "#EFBFAF",
-        "#B2D2AA"
+        "#B8D8F8",
+        "#FACABA",
+        "#BDDDB5"
       ],
       "clearsBackground": true,
       "meetsTarget": true,
-      "worstContrast": 2.416620099784444
+      "worstContrast": 2.698702042626807
     },
     {
       "name": "solid-red-mid-chips-apca",

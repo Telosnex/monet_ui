@@ -870,6 +870,15 @@ void main() {
           algo: Algo.wcag21,
         ),
         _sharedBorderCase(
+          name: 'surfaces-far-apart-busy-grays-apca',
+          surfaces: const [0xffc6d4e1, 0xff7c8083, 0xff292b24],
+          backgrounds: [
+            for (var l = 13; l <= 89; l += 4) argbFromLstar(l.toDouble()),
+          ],
+          contrast: 0.496,
+          algo: Algo.apca,
+        ),
+        _sharedBorderCase(
           name: 'solid-red-light-chips-apca',
           surfaces: const [0xffb0d0f0, 0xfff0c0b0, 0xffc8e8c0],
           backgrounds: const [0xffff0000],

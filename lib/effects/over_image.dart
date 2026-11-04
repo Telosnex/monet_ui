@@ -117,8 +117,14 @@ final class AnyBackground {
   /// A tone works if every border clears [usage]'s contrast against every
   /// pixel ([SharedBorder.clearsBackground]), or else against its own
   /// surface. The first lets a surface that already stands out
-  /// go without a visible border. Preferred: just darker than the darkest
-  /// surface, then just lighter than the lightest, then between.
+  /// go without a visible border.
+  ///
+  /// Of the tones that work, the one nearest its farthest surface wins, so
+  /// no surface gets a border much stronger than it needs. Ties go to a tone
+  /// outside every surface's tone, where each border has one polarity, then
+  /// to the darker. Searching darker first and stopping at the first tone
+  /// that worked put a near-white border on surfaces from T17 to T84, when a
+  /// tone between them worked too.
   ///
   /// [colorModel] is the model the surfaces' hues are read and drawn in.
   SharedBorder sharedBorder(
@@ -192,21 +198,21 @@ final class AnyBackground {
     bool valid(int t) =>
         backgroundWorst(t) >= target || surfacesWorst(t) >= target;
 
-    for (var t = darkest.floor(); t >= 0; t--) {
-      if (valid(t)) return at(t);
-    }
-    for (var t = lightest.ceil(); t <= 100; t++) {
-      if (valid(t)) return at(t);
-    }
-    final mean = tones.reduce((a, b) => a + b) / tones.length;
-    int? between;
-    for (var t = darkest.ceil(); t <= lightest.floor(); t++) {
-      if (valid(t) &&
-          (between == null || (t - mean).abs() < (between - mean).abs())) {
-        between = t;
+    // Distance to the farthest surface; lower is better.
+    double reach(int t) => math.max(t - darkest, lightest - t);
+    bool outside(int t) => t <= darkest || t >= lightest;
+    int? chosen;
+    for (var t = 0; t <= 100; t++) {
+      if (!valid(t)) continue;
+      final c = chosen;
+      // Ascending t, so on a full tie the darker one stays.
+      if (c == null ||
+          reach(t) < reach(c) ||
+          (reach(t) == reach(c) && outside(t) && !outside(c))) {
+        chosen = t;
       }
     }
-    if (between != null) return at(between);
+    if (chosen != null) return at(chosen);
 
     // Nothing works: the tone whose better guarantee is strongest.
     var best = 0;

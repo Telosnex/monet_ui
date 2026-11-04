@@ -231,7 +231,8 @@ export class AnyBackground {
   /**
    * One border tone for surfaces drawn together, so they read at one
    * elevation. `surfaceArgbs`: each surface's resting color (sets its
-   * border's hue). Hovered and pressed are deliberately excluded.
+   * border's hue). Hovered and pressed are deliberately excluded. Of the
+   * tones that work, the one nearest its farthest surface wins.
    */
   sharedBorder(
     surfaceArgbs: readonly Argb[],
@@ -294,14 +295,19 @@ export class AnyBackground {
     };
     const valid = (t: number) => backgroundWorst(t) >= target || surfacesWorst(t) >= target;
 
-    for (let t = Math.floor(darkest); t >= 0; t--) if (valid(t)) return at(t);
-    for (let t = Math.ceil(lightest); t <= 100; t++) if (valid(t)) return at(t);
-    const mean = tones.reduce((a, b) => a + b, 0) / tones.length;
-    let between: number | undefined;
-    for (let t = Math.ceil(darkest); t <= Math.floor(lightest); t++) {
-      if (valid(t) && (between === undefined || Math.abs(t - mean) < Math.abs(between - mean))) between = t;
+    // Of the tones that work, the one nearest its farthest surface; ties go
+    // outside every surface's tone (one polarity), then to the darker.
+    const reach = (t: number) => Math.max(t - darkest, lightest - t);
+    const outside = (t: number) => t <= darkest || t >= lightest;
+    let chosen: number | undefined;
+    for (let t = 0; t <= 100; t++) {
+      if (!valid(t)) continue;
+      if (chosen === undefined || reach(t) < reach(chosen) ||
+          (reach(t) === reach(chosen) && outside(t) && !outside(chosen))) {
+        chosen = t;
+      }
     }
-    if (between !== undefined) return at(between);
+    if (chosen !== undefined) return at(chosen);
 
     let best = 0;
     let bestWorst = -Infinity;

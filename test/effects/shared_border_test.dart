@@ -52,6 +52,38 @@ void main() {
         }
         if (pixels.isEmpty) expect(r.clearsBackground, isFalse);
 
+        // I6: of the tones that work, none is nearer its farthest surface.
+        final tones = surfaces.map(lstarFromArgb);
+        final darkest = tones.reduce(min), lightest = tones.reduce(max);
+        double reach(double t) => max(t - darkest, lightest - t);
+        bool works(int t) {
+          final bs = [
+            for (final s in surfaces)
+              () {
+                final h = Hct.fromInt(s);
+                return Hct.from(h.hue, h.chroma, t.toDouble()).toInt();
+              }(),
+          ];
+          final clears =
+              pixels.isNotEmpty &&
+              bs.every((b) => pixels.every((p) => sep(algo, b, p) >= target));
+          if (clears) return true;
+          for (var i = 0; i < bs.length; i++) {
+            if (sep(algo, bs[i], surfaces[i]) < target) return false;
+          }
+          return true;
+        }
+
+        final working = [
+          for (var t = 0; t <= 100; t++)
+            if (works(t)) t,
+        ];
+        if (working.isNotEmpty) {
+          expect(r.meetsTarget, isTrue);
+          final nearest = working.map((t) => reach(t.toDouble())).reduce(min);
+          expect(reach(r.tone), closeTo(nearest, 1e-9));
+        }
+
         // I4: surface order doesn't change the tone.
         final reversed = AnyBackground(
           pixels,
@@ -115,13 +147,33 @@ void main() {
       contrast: 0.5,
     ).sharedBorder(const [0xFF303030]);
     expect(r.clearsBackground, isTrue);
-    expect(r.tone, lessThanOrEqualTo(lstarFromArgb(0xFF303030)));
+    // The whole tone nearest the surface's.
+    expect((r.tone - lstarFromArgb(0xFF303030)).abs(), lessThanOrEqualTo(0.5));
+  });
+
+  test('surfaces far apart: a tone between them, not a near-white', () {
+    // Telosnex primary, secondary and tertiary at T84, T53 and T17 over a
+    // wallpaper with nearly every tone. Darker than T17 never works (APCA
+    // scores near-black on near-black at about zero); searching lighter
+    // first found T94, about Lc 75 off the T53 surface and Lc 92 off T17.
+    const surfaces = [0xffc6d4e1, 0xff7c8083, 0xff292b24];
+    final grays = [for (var l = 13; l <= 89; l++) argbFromLstar(l.toDouble())];
+    for (final bg in [
+      AnyBackground(grays, algo: Algo.apca, contrast: 0.496),
+      AnyBackground.unknown(algo: Algo.apca, contrast: 0.496),
+    ]) {
+      final r = bg.sharedBorder(surfaces);
+      expect(r.meetsTarget, isTrue);
+      expect(r.clearsBackground, isFalse);
+      expect(r.tone, inInclusiveRange(lstarFromArgb(0xff292b24), 80));
+    }
   });
 
   group('flat backgrounds', () {
     // Megalith is all photos, which span nearly every tone, so the
     // background branch almost never wins there. Flat backgrounds are where
-    // it matters: chips that already stand out keep a near-invisible border.
+    // it matters: chips that already stand out keep a near-invisible border,
+    // in the middle of their tones when that clears the background.
     const chipSets = {
       'dark': [0xff1a3a6a, 0xff3a1a4a, 0xff1f3f2a],
       'light': [0xffb0d0f0, 0xfff0c0b0, 0xffc8e8c0],
@@ -142,16 +194,14 @@ void main() {
             final lightest = tones.reduce(max);
             expect(r.meetsTarget, isTrue);
             expect(r.clearsBackground, isTrue, reason: '$algo');
-            // Outside the chips' range: never a ring cutting through them.
-            expect(
-              r.tone <= darkest || r.tone >= lightest,
-              isTrue,
-              reason: '$algo T${r.tone}',
-            );
             if (solid.key == 'red') {
-              // Red sits between every set and its border side: the border
-              // lands at the darkest chip, borderless, one elevation.
-              expect(darkest - r.tone, inInclusiveRange(0, 5), reason: '$algo');
+              // Red's tone sits apart from every set: the border lands
+              // within the chips' tones or at their edge, near-borderless.
+              expect(
+                r.tone,
+                inInclusiveRange(darkest - 2, lightest + 2),
+                reason: '$algo T${r.tone}',
+              );
             }
           }
         });
