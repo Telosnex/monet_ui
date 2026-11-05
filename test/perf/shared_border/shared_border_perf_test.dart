@@ -1,13 +1,18 @@
-// Performance: AnyBackground.sharedBorder vs today's per-palette colorBorder.
+// Performance: uncached AnyBackground.sharedBorder vs today's per-palette
+// colorBorder, per kind of background.
 //
-// Both build the same three chip palettes. Baseline reads each palette's
-// colorBorder. Candidate solves one
-// shared border over a background. Outputs differ by design, so the equality
-// check is skipped.
+// Every candidate call clears the background's answer cache first, so each
+// one is a full solve. PerfTester runs each case many times, and with the
+// cache on, nearly all of those were hits: the old version of this test
+// reported a speedup that was the cache's, not the solve's.
 //
-// Caveat: 400 chip sets over 25 backgrounds is ~16 per background, which
-// fits each 64-entry answer cache, so after warmup this mostly times cache
-// hits. Cold solves are ~20-190 µs per set (see Linear follow-up).
+// Implementations, per chip set of three:
+// - today: 3x Palette.from, reading each colorBorder.
+// - palettes + solve: the same palettes, then one uncached shared border.
+// - solve only: the uncached shared border alone, surfaces precomputed.
+//
+// Kinds: solid (one color), flat (synthetic blobs with noise), photo (the
+// Unsplash fixtures, scaled to 96px like Extract), unknown.
 //
 // Run: flutter test test/perf/shared_border/shared_border_perf_test.dart
 
@@ -16,9 +21,10 @@
 @Tags(['perf'])
 library;
 
+import 'dart:io';
 import 'dart:math' as math;
-import 'dart:ui';
 
+import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monet_ui/monet_ui.dart';
 
@@ -28,6 +34,7 @@ const _contrast = 0.5;
 
 typedef _Input = ({
   List<Color> chips,
+  List<int> surfaces,
   double backgroundTone,
   AnyBackground background,
 });
@@ -46,9 +53,10 @@ int _today(_Input input) {
   return acc;
 }
 
-/// Candidate: same palettes, one shared border over the background.
-int _shared(_Input input) {
+/// Same palettes, then one uncached shared border.
+int _palettesAndSolve(_Input input) {
   final palettes = _palettes(input);
+  input.background.clearAnswerCaches();
   final border = input.background.sharedBorder([
     for (final p in palettes) p.color.argb,
   ]);
@@ -57,6 +65,13 @@ int _shared(_Input input) {
     acc ^= palettes[i].color.argb ^ border.borderArgbs[i];
   }
   return acc;
+}
+
+/// The uncached shared border alone.
+int _solveOnly(_Input input) {
+  input.background.clearAnswerCaches();
+  final border = input.background.sharedBorder(input.surfaces);
+  return border.borderArgbs.fold(0, (a, b) => a ^ b);
 }
 
 /// A synthetic wallpaper: [regions] blobs of random color with noise.
@@ -75,62 +90,133 @@ List<int> _wallpaper(math.Random rng, int regions, int pixels) {
   ];
 }
 
+Future<List<int>> _photo(String path) async {
+  final rgba = await imageProviderToScaledRgba(FileImage(File(path)), 96);
+  final bytes = rgba.buffer.asUint8List(rgba.offsetInBytes, rgba.lengthInBytes);
+  return [
+    for (var i = 0; i + 3 < bytes.length; i += 4)
+      0xff000000 | (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2],
+  ];
+}
+
+AnyBackground _bg(List<int> argbs) =>
+    AnyBackground(argbs, algo: Algo.apca, contrast: _contrast);
+
 void main() {
-  test('shared border perf', () async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  test('clearAnswerCaches forces a fresh solve', () {
+    final bg = _bg(_wallpaper(math.Random(1), 4, 96 * 64));
+    const surfaces = [0xffb431ed, 0xff4d394f, 0xff536d2d];
+    final a = bg.sharedBorder(surfaces);
+    expect(identical(bg.sharedBorder(surfaces), a), isTrue);
+    bg.clearAnswerCaches();
+    final b = bg.sharedBorder(surfaces);
+    expect(identical(b, a), isFalse);
+    expect(b, a);
+  });
+
+  test('shared border perf, uncached, by background kind', () async {
     final rng = math.Random(42);
     // 96px wide at 3:2, as Extract downscales.
     const pixels = 96 * 64;
-    final wallpapers = [
-      for (final regions in [1, 2, 4, 8, 16, 32])
-        for (var i = 0; i < 4; i++) _wallpaper(rng, regions, pixels),
-    ];
-    final backgrounds = [
-      for (final w in wallpapers)
-        AnyBackground(w, algo: Algo.apca, contrast: _contrast),
-      AnyBackground.unknown(algo: Algo.apca, contrast: _contrast),
-    ];
+    final photoPaths = [
+      for (final f in Directory('test/fixtures/wallpapers').listSync())
+        if (f.path.endsWith('.jpg')) f.path,
+    ]..sort();
+    final photos = [for (final path in photoPaths) await _photo(path)];
+    final kinds = <String, List<List<int>>>{
+      'solid': [
+        for (var i = 0; i < 24; i++) [0xff000000 | rng.nextInt(0xffffff)],
+      ],
+      'flat': [
+        for (final regions in [1, 2, 4, 8, 16, 32])
+          for (var i = 0; i < 4; i++) _wallpaper(rng, regions, pixels),
+      ],
+      'photo': photos,
+      'unknown': [const []],
+    };
 
-    final testCases = <_Input>[];
-    for (var i = 0; i < 400; i++) {
-      testCases.add((
-        chips: [
+    final summary = <String>[];
+    for (final MapEntry(key: kind, value: images) in kinds.entries) {
+      final backgrounds = [
+        for (final w in images)
+          w.isEmpty
+              ? AnyBackground.unknown(algo: Algo.apca, contrast: _contrast)
+              : _bg(w),
+      ];
+      final testCases = <_Input>[];
+      for (var i = 0; i < 200; i++) {
+        final chips = [
           for (var c = 0; c < 3; c++)
             Hct.from(
               rng.nextDouble() * 360,
               10 + rng.nextDouble() * 60,
               5 + rng.nextDouble() * 90,
             ).color,
+        ];
+        final backgroundTone = rng.nextDouble() * 100;
+        testCases.add((
+          chips: chips,
+          surfaces: [
+            for (final c in chips)
+              Palette.from(
+                c,
+                backgroundTone: backgroundTone,
+                contrast: _contrast,
+              ).color.argb,
+          ],
+          backgroundTone: backgroundTone,
+          background: backgrounds[rng.nextInt(backgrounds.length)],
+        ));
+      }
+      // Reduce pixels outside the timed runs; that's per wallpaper change.
+      for (final b in backgrounds) {
+        b.sharedBorder(const [0xff808080]);
+      }
+      final distinct = [
+        for (final w in images) {for (final p in w) p | 0xff000000}.length,
+      ]..sort();
+
+      final result = await PerfTester<_Input, int>.multi(
+        testName:
+            'sharedBorder, uncached, $kind backgrounds '
+            '(${images.length}, distinct pixels '
+            '${distinct.first}..${distinct.last})',
+        testCases: testCases,
+        implementations: const [
+          PerfImpl('today: 3x Palette.colorBorder', _today),
+          PerfImpl('palettes + uncached sharedBorder', _palettesAndSolve),
+          PerfImpl('uncached sharedBorder only', _solveOnly),
         ],
-        backgroundTone: rng.nextDouble() * 100,
-        background: backgrounds[rng.nextInt(backgrounds.length)],
-      ));
-    }
+      ).run(warmupRuns: 10, benchmarkRuns: 20, skipEqualityCheck: true);
+      String perSet(ImplResult r) {
+        final median = r.sortedSamples[r.sortedSamples.length ~/ 2];
+        return '${(median / r.casesPerSample * 1000).toStringAsFixed(1)} µs';
+      }
 
-    await PerfTester<_Input, int>(
-      testName: 'Chip set borders: today vs AnyBackground.sharedBorder',
-      testCases: testCases,
-      implementation1: _today,
-      implementation2: _shared,
-      impl1Name: 'today: 3x Palette.colorBorder',
-      impl2Name: 'sharedBorder over a background',
-    ).run(warmupRuns: 20, benchmarkRuns: 20, skipEqualityCheck: true);
-
-    // Per-image setup: building a background and its first answer reduces
-    // the pixels. Once per wallpaper change.
-    final watch = Stopwatch()..start();
-    const runs = 200;
-    const surfaces = [0xffb431ed, 0xff4d394f, 0xff536d2d];
-    for (var i = 0; i < runs; i++) {
-      AnyBackground(
-        wallpapers[i % wallpapers.length],
-        algo: Algo.apca,
-        contrast: _contrast,
-      ).sharedBorder(surfaces);
+      summary.add(
+        '${kind.padRight(8)}${[for (final r in result.implementations) '${r.name}: ${perSet(r)}'].join(' | ')}',
+      );
     }
     print('');
-    print(
-      'New background + first sharedBorder, $pixels px: '
-      '${(watch.elapsedMicroseconds / runs / 1000).toStringAsFixed(2)} ms',
-    );
+    print('Median per chip set of three:');
+    summary.forEach(print);
+
+    // Per-image setup: a new background reducing its pixels, then its first
+    // answer. Once per wallpaper change.
+    const surfaces = [0xffb431ed, 0xff4d394f, 0xff536d2d];
+    for (final kind in ['flat', 'photo']) {
+      final images = kinds[kind]!;
+      const runs = 100;
+      final watch = Stopwatch()..start();
+      for (var i = 0; i < runs; i++) {
+        _bg(images[i % images.length]).sharedBorder(surfaces);
+      }
+      print(
+        'New $kind background + first sharedBorder: '
+        '${(watch.elapsedMicroseconds / runs / 1000).toStringAsFixed(2)} ms',
+      );
+    }
   }, timeout: Timeout.none);
 }

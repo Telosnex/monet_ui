@@ -299,15 +299,21 @@ export class AnyBackground {
     // outside every surface's tone (one polarity), then to the darker.
     const reach = (t: number) => Math.max(t - darkest, lightest - t);
     const outside = (t: number) => t <= darkest || t >= lightest;
-    let chosen: number | undefined;
-    for (let t = 0; t <= 100; t++) {
-      if (!valid(t)) continue;
-      if (chosen === undefined || reach(t) < reach(chosen) ||
-          (reach(t) === reach(chosen) && outside(t) && !outside(chosen))) {
-        chosen = t;
-      }
+    // Tones best first: nearest, then outside, then darker. The first that
+    // works wins. Reach grows strictly away from the midpoint on each side,
+    // so walk down and up from it, merging.
+    const before = (a: number, b: number): boolean => {
+      const ra = reach(a), rb = reach(b);
+      if (ra !== rb) return ra < rb;
+      if (outside(a) !== outside(b)) return outside(a);
+      return a < b;
+    };
+    let down = Math.min(100, Math.max(0, Math.floor((darkest + lightest) / 2)));
+    let up = down + 1;
+    while (down >= 0 || up <= 100) {
+      const t = up > 100 || (down >= 0 && before(down, up)) ? down-- : up++;
+      if (valid(t)) return at(t);
     }
-    if (chosen !== undefined) return at(chosen);
 
     let best = 0;
     let bestWorst = -Infinity;

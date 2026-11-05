@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:meta/meta.dart';
 import 'package:monet_ui/colorspaces/color_model.dart';
 import 'package:monet_ui/colorspaces/hct.dart';
 import 'package:monet_ui/contrast/apca.dart';
@@ -70,6 +71,14 @@ final class AnyBackground {
 
   final _scrims = LruCache<(int, Usage, int?), Scrim>(capacity: 64);
   final _borders = LruCache<_BorderKey, SharedBorder>(capacity: 64);
+
+  /// Drops cached answers, keeping the reduced pixels, so the next call
+  /// solves again. For benchmarks of uncached solves.
+  @visibleForTesting
+  void clearAnswerCaches() {
+    _scrims.clear();
+    _borders.clear();
+  }
 
   /// The minimum-opacity scrim that makes [contentArgb] meet [usage]'s
   /// contrast against every pixel, and keeps meeting it at every opacity
@@ -201,18 +210,28 @@ final class AnyBackground {
     // Distance to the farthest surface; lower is better.
     double reach(int t) => math.max(t - darkest, lightest - t);
     bool outside(int t) => t <= darkest || t >= lightest;
-    int? chosen;
-    for (var t = 0; t <= 100; t++) {
-      if (!valid(t)) continue;
-      final c = chosen;
-      // Ascending t, so on a full tie the darker one stays.
-      if (c == null ||
-          reach(t) < reach(c) ||
-          (reach(t) == reach(c) && outside(t) && !outside(c))) {
-        chosen = t;
-      }
+    // Tones best first: nearest, then outside, then darker. The first that
+    // works wins, so a solve checks a few tones, not all 101. Reach grows
+    // strictly away from the midpoint of the surfaces' tones on each side,
+    // so walk down and up from it, merging.
+    bool before(int a, int b) {
+      final ra = reach(a), rb = reach(b);
+      if (ra != rb) return ra < rb;
+      if (outside(a) != outside(b)) return outside(a);
+      return a < b;
     }
-    if (chosen != null) return at(chosen);
+
+    var down = ((darkest + lightest) / 2).floor().clamp(0, 100);
+    var up = down + 1;
+    while (down >= 0 || up <= 100) {
+      final int t;
+      if (up > 100 || (down >= 0 && before(down, up))) {
+        t = down--;
+      } else {
+        t = up++;
+      }
+      if (valid(t)) return at(t);
+    }
 
     // Nothing works: the tone whose better guarantee is strongest.
     var best = 0;
