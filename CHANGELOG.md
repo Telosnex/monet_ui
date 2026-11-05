@@ -1,3 +1,15 @@
+## 1.2.0
+
+- `MonetThemeData.transitionProgress`: how far through a theme transition a
+  theme is, 0..1, 1 at rest. The shared progress that lerps
+  `backgroundTone`, `contrast` and `scale`. Lerp values solved once per
+  endpoint by it, instead of solving each frame.
+- `AnyBackground.sharedBorder` is fast again uncached: it checks tones in
+  order of preference and stops at the first that works, with the same
+  answers as 1.1.2. 1.1.2 checked all 101 and was 3 to 20 times slower than
+  1.1.1. Same in the JS port.
+- `AnyBackground.clearAnswerCaches`, for benchmarks (`@visibleForTesting`).
+
 ## 1.1.2
 
 - `AnyBackground.sharedBorder`: of the tones that work, picks the one
