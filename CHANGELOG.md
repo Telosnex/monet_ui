@@ -1,4 +1,4 @@
-## Unreleased
+## 1.2.1
 
 - `AnyBackground.sharedBorder`: removed a tiebreak that never applied.
   1.1.2 and 1.2.0 said ties go to a tone outside every surface's tone, then
