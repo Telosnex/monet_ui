@@ -466,6 +466,7 @@ class MonetPaintColors extends ChangeNotifier with Diagnosticable {
       materialAnchor: _anchor,
       animateThemeData: _animateThemeData,
       isAnimating: moving,
+      transitionProgress: t,
       primary: frame(MonetPalette.primary),
       secondary: frame(MonetPalette.secondary),
       tertiary: frame(MonetPalette.tertiary),

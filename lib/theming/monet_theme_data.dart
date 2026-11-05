@@ -33,6 +33,16 @@ class MonetThemeData {
   MonetThemeData get target => this;
   bool get isAnimating => false;
 
+  /// How far through a theme transition this is, 0..1; 1 at rest. Shared
+  /// across the theme: it's the progress that lerps [backgroundTone],
+  /// [contrast] and [scale]. Retargeting mid-transition restarts it at 0
+  /// from what was visible.
+  ///
+  /// For values derived from two endpoints, e.g. a border solved once for
+  /// the theme before and once for [target]: lerp by this instead of solving
+  /// per frame.
+  double get transitionProgress => 1;
+
   final Palette primary;
   final Palette secondary;
   final Palette tertiary;

@@ -22,6 +22,8 @@ class InterpolatedMonetThemeData extends MonetThemeData {
   MonetThemeData get target => end.target;
   @override
   bool get isAnimating => t < 1;
+  @override
+  double get transitionProgress => t.clamp(0.0, 1.0);
 
   final MonetThemeData begin;
   final MonetThemeData end;

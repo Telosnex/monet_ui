@@ -12,6 +12,7 @@ class MonetThemeFrame extends MonetThemeData {
     required this.materialAnchor,
     required this.animateThemeData,
     this.isAnimating = true,
+    this.transitionProgress = 1,
     required super.primary,
     required super.secondary,
     required super.tertiary,
@@ -33,13 +34,16 @@ class MonetThemeFrame extends MonetThemeData {
   final MonetThemeData materialAnchor;
   final bool animateThemeData;
   @override
+  final double transitionProgress;
+  @override
   bool operator ==(Object other) =>
       super == other &&
       other is MonetThemeFrame &&
       target == other.target &&
       materialAnchor == other.materialAnchor &&
       animateThemeData == other.animateThemeData &&
-      isAnimating == other.isAnimating;
+      isAnimating == other.isAnimating &&
+      transitionProgress == other.transitionProgress;
   @override
   int get hashCode => Object.hash(
     super.hashCode,
@@ -47,6 +51,7 @@ class MonetThemeFrame extends MonetThemeData {
     materialAnchor,
     animateThemeData,
     isAnimating,
+    transitionProgress,
   );
 
   @override

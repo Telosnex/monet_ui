@@ -172,6 +172,51 @@ void main() {
     },
   );
 
+  test('frames expose the shared progress that lerps their scalars', () {
+    final first = MonetThemeData.fromColors(
+      brightness: Brightness.light,
+      backgroundTone: 90,
+      primary: Colors.blue,
+      secondary: Colors.teal,
+      tertiary: Colors.amber,
+    );
+    expect(first.transitionProgress, 1);
+    final bus = MonetPaintColors(first);
+    addTearDown(bus.dispose);
+    expect(bus.value.transitionProgress, 1);
+    bus.retarget(
+      first.copyWith(backgroundTone: 10),
+      time: 0,
+      duration: const Duration(milliseconds: 160),
+    );
+    expect(bus.value.transitionProgress, 0);
+    var previous = 0.0;
+    for (final time in [.02, .05, .1]) {
+      bus.sample(time);
+      final p = bus.value.transitionProgress;
+      expect(p, inExclusiveRange(previous, 1));
+      expect(bus.value.backgroundTone, closeTo(90 + (10 - 90) * p, 1e-9));
+      previous = p;
+    }
+    // Retargeting mid-transition restarts it from what's visible.
+    bus.retarget(
+      first.copyWith(backgroundTone: 50),
+      time: .1,
+      duration: const Duration(milliseconds: 160),
+    );
+    expect(bus.value.transitionProgress, 0);
+    bus.sample(2);
+    expect(bus.value.transitionProgress, 1);
+    expect(bus.value.isAnimating, isFalse);
+
+    final lerped = InterpolatedMonetThemeData(
+      begin: first,
+      end: first.copyWith(backgroundTone: 10),
+      t: .25,
+    );
+    expect(lerped.transitionProgress, .25);
+  });
+
   test(
     'semantic-only update does not restart shared progress or scalar values',
     () {
