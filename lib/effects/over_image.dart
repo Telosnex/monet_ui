@@ -129,9 +129,8 @@ final class AnyBackground {
   /// go without a visible border.
   ///
   /// Of the tones that work, the one nearest its farthest surface wins, so
-  /// no surface gets a border much stronger than it needs. Ties go to a tone
-  /// outside every surface's tone, where each border has one polarity, then
-  /// to the darker. Searching darker first and stopping at the first tone
+  /// no surface gets a border much stronger than it needs. Ties go to the
+  /// darker. Searching darker first and stopping at the first tone
   /// that worked put a near-white border on surfaces from T17 to T84, when a
   /// tone between them worked too.
   ///
@@ -209,23 +208,16 @@ final class AnyBackground {
 
     // Distance to the farthest surface; lower is better.
     double reach(int t) => math.max(t - darkest, lightest - t);
-    bool outside(int t) => t <= darkest || t >= lightest;
-    // Tones best first: nearest, then outside, then darker. The first that
-    // works wins, so a solve checks a few tones, not all 101. Reach grows
-    // strictly away from the midpoint of the surfaces' tones on each side,
-    // so walk down and up from it, merging.
-    bool before(int a, int b) {
-      final ra = reach(a), rb = reach(b);
-      if (ra != rb) return ra < rb;
-      if (outside(a) != outside(b)) return outside(a);
-      return a < b;
-    }
-
+    // Tones best first: nearest, then darker. The first that works wins, so
+    // a solve checks a few tones, not all 101. Reach is the distance from
+    // the midpoint of the surfaces' tones plus a constant, so walk down and
+    // up from it, merging; a tie is a tone and its mirror, and the darker
+    // (down) goes first.
     var down = ((darkest + lightest) / 2).floor().clamp(0, 100);
     var up = down + 1;
     while (down >= 0 || up <= 100) {
       final int t;
-      if (up > 100 || (down >= 0 && before(down, up))) {
+      if (up > 100 || (down >= 0 && reach(down) <= reach(up))) {
         t = down--;
       } else {
         t = up++;

@@ -1,3 +1,11 @@
+## Unreleased
+
+- `AnyBackground.sharedBorder`: removed a tiebreak that never applied.
+  1.1.2 and 1.2.0 said ties go to a tone outside every surface's tone, then
+  to the darker; tied tones mirror each other around the surfaces' midpoint,
+  so both are outside or both inside, and the darker always won. No change
+  in results.
+
 ## 1.2.0
 
 - `MonetThemeData.transitionProgress`: how far through a theme transition a
@@ -17,8 +25,7 @@
   than every surface, then lighter, then between. Surfaces far apart in tone
   no longer get a near-white or near-black border when a tone between them
   works: Telosnex's T84, T53 and T17 colors went from T94 to T38. Ties go to
-  a tone outside every surface's tone, then to the darker. Same in the JS
-  port.
+  the darker. Same in the JS port.
 
 ## 1.1.1
 

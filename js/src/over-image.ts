@@ -296,22 +296,14 @@ export class AnyBackground {
     const valid = (t: number) => backgroundWorst(t) >= target || surfacesWorst(t) >= target;
 
     // Of the tones that work, the one nearest its farthest surface; ties go
-    // outside every surface's tone (one polarity), then to the darker.
+    // to the darker. Reach is the distance from the midpoint of the
+    // surfaces' tones plus a constant, so walk down and up from it, merging;
+    // a tie is a tone and its mirror, and the darker (down) goes first.
     const reach = (t: number) => Math.max(t - darkest, lightest - t);
-    const outside = (t: number) => t <= darkest || t >= lightest;
-    // Tones best first: nearest, then outside, then darker. The first that
-    // works wins. Reach grows strictly away from the midpoint on each side,
-    // so walk down and up from it, merging.
-    const before = (a: number, b: number): boolean => {
-      const ra = reach(a), rb = reach(b);
-      if (ra !== rb) return ra < rb;
-      if (outside(a) !== outside(b)) return outside(a);
-      return a < b;
-    };
     let down = Math.min(100, Math.max(0, Math.floor((darkest + lightest) / 2)));
     let up = down + 1;
     while (down >= 0 || up <= 100) {
-      const t = up > 100 || (down >= 0 && before(down, up)) ? down-- : up++;
+      const t = up > 100 || (down >= 0 && reach(down) <= reach(up)) ? down-- : up++;
       if (valid(t)) return at(t);
     }
 
