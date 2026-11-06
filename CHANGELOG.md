@@ -1,3 +1,8 @@
+## 1.2.2
+
+- The package no longer includes Python bytecode from `lib/fonts/`. No code
+  changes.
+
 ## 1.2.1
 
 - `AnyBackground.sharedBorder`: removed a tiebreak that never applied.
