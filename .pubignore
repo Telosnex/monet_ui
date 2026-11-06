@@ -9,3 +9,7 @@ tool/
 example/build/
 example/.dart_tool/
 example/test/
+
+# Python bytecode (also in .gitignore, which pub does not read next to a
+# .pubignore).
+__pycache__/
