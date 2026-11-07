@@ -3,6 +3,7 @@
 // Source package: google_fonts-9.0.0.
 // Source descriptor SHA-256: fe538a4053f42ba6024885cf4f01e241f52200afad442414bc0778ef6afd45aa.
 // Metadata source: https://fonts.google.com/metadata/fonts.
+// dart format off
 
 const googleFontCategories = <String>[
   'serif',

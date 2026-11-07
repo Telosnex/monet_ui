@@ -40,6 +40,7 @@ String generateCatalog(FontSource source, Map<String, dynamic> metadata) {
 // Source package: google_fonts-${source.version}.
 // Source descriptor SHA-256: ${source.hash}.
 // Metadata source: $metadataUrl.
+// dart format off
 
 ''');
   void list(String name, Iterable<String> values) {
