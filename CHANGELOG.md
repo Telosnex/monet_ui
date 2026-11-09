@@ -1,3 +1,18 @@
+## 1.5.0
+
+- New in `lib/widgets/`, moved from the Telosnex app: `MonetScreen`,
+  `MonetScrollbar`, `MonetListView`, `TitleTextField`,
+  `AutoSizeTitleField` and `ExclusiveSelectionArea`.
+- New `MonetWallpaperScrollbarColor`. An app with a wallpaper provides it
+  near the root. `MonetScreen` uses its color only when
+  `hasWallpaperBackground` is true.
+- `MonetScrollbar` keeps the inherited scroll behavior. Apps set theirs
+  once, for example with `MaterialApp.scrollBehavior`.
+  `isolateScrollbarLayer` wraps that behavior and changes only vertical
+  scrollbars on desktop.
+- `MonetListView` uses a Flutter-derived `ListView` in
+  `lib/third_party/flutter/`. New dependency: `super_sliver_list_fork`.
+
 ## 1.4.0
 
 - New in `lib/widgets/`: `MonetIcon`, `MonetButton` and the controls built on
