@@ -1,3 +1,20 @@
+## 1.4.0
+
+- New in `lib/widgets/`: `MonetIcon`, `MonetButton` and the controls built on
+  them (icon buttons, chip and tooltip icons, segmented buttons, pulses,
+  chevron and lock pills, `MonetSurface`, `ProgressStepList`, `TinySpinner`
+  and more), and `snapped_icons/` `icon_box`, `icon_outline` and
+  `icon_shadow`. They moved from the Telosnex app.
+- `registerIconOutlines` adds icon outlines by font family. `MonetIcon`
+  draws registered icons as paths and other icons with their font.
+- `registerIconInkBounds` adds ink bounds by font family for
+  `MaterialIconInk`, `MonetChipIcon` and button icons. Icons without them keep
+  their square layout.
+- The package registers no icon data itself. Apps register theirs before
+  the first frame.
+- Also corrects the 1.3.0 note: `lib/widgets/` gained 69 files, not 69
+  controls; some are helpers.
+
 ## 1.3.0
 
 - New `lib/widgets/`: 69 Monet controls (buttons, fields, sliders, switches,
