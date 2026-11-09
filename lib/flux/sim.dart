@@ -3,10 +3,6 @@
 // Copyright 2017 The Fuchsia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-//
-// Copied into libmonet from telosnex's `features/flux` port so
-// `AnimatedMonetTheme` can use velocity-continuous moving-target animation
-// instead of a fixed-duration `AnimationController`.
 
 import 'package:flutter/painting.dart';
 import 'package:flutter/physics.dart';

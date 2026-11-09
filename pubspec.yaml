@@ -2,7 +2,7 @@ name: monet_ui
 description: >-
   Material You color for any Flutter design: themes from a seed or an image,
   contrast in APCA and WCAG, color spaces, Google Fonts and Material shapes.
-version: 1.2.3
+version: 1.3.0
 repository: https://github.com/Telosnex/monet_ui
 issue_tracker: https://github.com/Telosnex/monet_ui/issues
 environment:
@@ -11,13 +11,20 @@ environment:
 
 dependencies:
   androidx_graphics_shapes: ^2.0.0
+  clock: ^1.1.2
   # lib/fonts/tooling (SHA-256 of the google_fonts source).
   crypto: ^3.0.3
   flutter:
     sdk: flutter
+  # lib/widgets: the hook widgets move unchanged (ADR 003, D3).
+  flutter_hooks: ^0.21.2
+  flutter_svg: ^2.0.9
   json_annotation: ^4.9.0
+  loggy: ^2.0.3
   meta: ^1.16.0
+  pixel_snap_fork: ^0.2.0
   squadron: ^7.1.0
+  vector_graphics: ^1.1.18
 
   material_ui: ^1.4.0
   cupertino_ui: ^1.1.1

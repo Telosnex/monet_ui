@@ -1,3 +1,18 @@
+## 1.3.0
+
+- New `lib/widgets/`: 69 Monet controls (buttons, fields, sliders, switches,
+  menus, tooltips, layout helpers and more) that moved from the Telosnex app.
+  They do not import the app; a test checks this.
+- New `lib/util/` helpers the controls use: `is_web`, `blur_radius`,
+  `deep_json_equals`, `throttled_publisher`, `list_view_padding_calculator`,
+  `use_animation_controller2`, `custom_cupertino_page_route` and
+  `color_deprecated`.
+- `lib/flux/`: adds `hooks.dart`, `flux_spring_controller.dart` and
+  `spring_frame_clock.dart`; `flux.dart` exports them. Comments match the
+  original port. No change to spring results.
+- New dependencies: `clock`, `flutter_hooks`, `flutter_svg`, `loggy`,
+  `pixel_snap_fork` and `vector_graphics`.
+
 ## 1.2.3
 
 - Longer package description.

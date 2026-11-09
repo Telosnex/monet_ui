@@ -7,7 +7,9 @@
 // every spring a soft onset. Without it, the spring yanks immediately on target
 // change. With it, the spring starts gentle and builds up force.
 //
-// Copied into libmonet from telosnex's `features/flux` port.
+// This is the thing that made Armadillo's animations feel "organic instead of
+// twitchy" — and it's only possible with numerical integration (RK4), not
+// the analytical solution Flutter uses.
 
 import 'dart:math' as math;
 

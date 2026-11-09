@@ -3,11 +3,6 @@
 // Copyright 2017 The Fuchsia Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-//
-// Copied into libmonet from telosnex's `features/flux` port so
-// `AnimatedMonetTheme` can chase a moving target with velocity handoff
-// instead of resetting a fixed-duration `AnimationController` on every
-// retarget.
 
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
@@ -304,8 +299,8 @@ class MovingTargetAnimation<T> extends FluxAnimation<T>
   AnimationStatus get status =>
       _animation?.status ??
       (simulate(value, target.value, velocity).isDone(0.0)
-          ? AnimationStatus.completed
-          : AnimationStatus.forward);
+          ? .completed
+          : .forward);
 
   @override
   T get value => _animation?.value ?? _value;

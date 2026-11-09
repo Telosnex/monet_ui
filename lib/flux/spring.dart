@@ -2,8 +2,7 @@
 //
 // All values ported directly from Fuchsia's Armadillo/Mondrian source.
 // Friction is always 50 — Fuchsia only ever varied tension.
-//
-// Copied into libmonet from telosnex's `features/flux` port.
+// See FUCHSIA_SPRINGS.md for the full usage map.
 
 import 'package:flutter/physics.dart';
 
