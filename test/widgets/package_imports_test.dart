@@ -1,3 +1,7 @@
+// Reads the package's files with dart:io.
+@TestOn('vm')
+library;
+
 import 'dart:io';
 
 import 'package:test/test.dart';
