@@ -238,9 +238,27 @@ class GlyphInk {
 /// Measured [GlyphInk] for each font and grapheme. Notifies when a
 /// measurement finishes, or when fonts change and measurements are redone.
 class GlyphInkCache extends ChangeNotifier {
-  GlyphInkCache._() {
+  GlyphInkCache._() : _measureGlyph = measureGlyphInk {
     PaintingBinding.instance.systemFonts.addListener(_fontsChanged);
   }
+
+  /// Creates an isolated cache with an injectable raster measurement.
+  @visibleForTesting
+  GlyphInkCache.forTesting({
+    required Future<GlyphInk?> Function(
+      TextStyle style,
+      String grapheme, {
+      required double fontSize,
+    })
+    measure,
+  }) : _measureGlyph = measure;
+
+  final Future<GlyphInk?> Function(
+    TextStyle style,
+    String grapheme, {
+    required double fontSize,
+  })
+  _measureGlyph;
 
   static final instance = GlyphInkCache._();
 
@@ -248,12 +266,14 @@ class GlyphInkCache extends ChangeNotifier {
   /// size, so one size serves all.
   static const _measureSize = 128.0;
 
-  /// Null value: the grapheme has no ink, such as a space.
-  final _ink = LruCache<(TextStyle, String), GlyphInk?>(capacity: 512);
+  /// A null record means measurement is unavailable; a record with null ink
+  /// means the grapheme paints nothing. Both are cached to avoid retry loops.
+  final _ink = LruCache<(TextStyle, String), ({GlyphInk? ink})?>(capacity: 512);
   final _pending = <(TextStyle, String)>{};
 
   /// Increments when fonts change, so measurements of old fonts are dropped.
   int _generation = 0;
+  bool _reportedReadbackFailure = false;
 
   /// Whether every measurement started has finished.
   @visibleForTesting
@@ -336,7 +356,7 @@ class GlyphInkCache extends ChangeNotifier {
   /// Starts a measurement when there is none.
   ({GlyphInk? ink})? _lookup(TextStyle key, String grapheme) {
     final cacheKey = (key, grapheme);
-    if (_ink.containsKey(cacheKey)) return (ink: _ink[cacheKey]);
+    if (_ink.containsKey(cacheKey)) return _ink[cacheKey];
     if (_pending.add(cacheKey)) unawaited(_measure(cacheKey));
     return null;
   }
@@ -344,23 +364,24 @@ class GlyphInkCache extends ChangeNotifier {
   Future<void> _measure((TextStyle, String) cacheKey) async {
     final generation = _generation;
     final (style, grapheme) = cacheKey;
-    final GlyphInk? ink;
+    ({GlyphInk? ink})? result;
     try {
-      ink = await measureGlyphInk(style, grapheme, fontSize: _measureSize);
-    } on Object catch (error, stack) {
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: error,
-          stack: stack,
-          library: 'ink_centered_text',
-          context: ErrorDescription('measuring the ink of "$grapheme"'),
-        ),
+      result = (
+        ink: await _measureGlyph(style, grapheme, fontSize: _measureSize),
       );
-      return;
+    } on Object catch (error) {
+      // Pixel readback is optional. A missing graphics context must not turn
+      // ordinary text into an application error. Keep the estimated ink box.
+      if (!_reportedReadbackFailure) {
+        _reportedReadbackFailure = true;
+        debugPrint(
+          'Glyph ink readback unavailable; using estimated bounds: $error',
+        );
+      }
     }
     if (generation != _generation) return;
     _pending.remove(cacheKey);
-    _ink[cacheKey] = ink;
+    _ink[cacheKey] = result;
     notifyListeners();
   }
 }
@@ -396,15 +417,19 @@ Future<GlyphInk?> measureGlyphInk(
   ui.Canvas(recorder).drawParagraph(paragraph, Offset(pad, pad));
   paragraph.dispose();
   final picture = recorder.endRecording();
-  final image = picture.toImageSync(width, height);
-  picture.dispose();
+  final ui.Image image;
+  try {
+    image = picture.toImageSync(width, height);
+  } finally {
+    picture.dispose();
+  }
   final ByteData? bytes;
   try {
     bytes = await image.toByteData();
   } finally {
     image.dispose();
   }
-  if (bytes == null) return null;
+  if (bytes == null) throw StateError('Glyph pixel readback unavailable.');
   // Coverage, 0 to 1, of each row and column's most covered pixel.
   final rows = Float64List(height);
   final columns = Float64List(width);

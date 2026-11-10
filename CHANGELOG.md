@@ -1,3 +1,10 @@
+## 1.6.1
+
+- `InkCenteredText` no longer reports a FlutterError when the engine
+  cannot read glyph pixels back (for example "Impeller context was null" on
+  Windows). It keeps the layout-based position, caches the ink as unknown
+  rather than empty, and logs once.
+
 ## 1.6.0
 
 - New in `lib/widgets/`, moved from the Telosnex app: `MonetAppBar` (was
