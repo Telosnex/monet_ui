@@ -1,3 +1,7 @@
+## 1.6.2
+
+- Requires pixel_snap_fork 1.0.0. It is the same code as 0.2.0.
+
 ## 1.6.1
 
 - `InkCenteredText` no longer reports a FlutterError when the engine

@@ -2,7 +2,7 @@ name: monet_ui
 description: >-
   Material You color for any Flutter design: themes from a seed or an image,
   contrast in APCA and WCAG, color spaces, Google Fonts and Material shapes.
-version: 1.6.1
+version: 1.6.2
 repository: https://github.com/Telosnex/monet_ui
 issue_tracker: https://github.com/Telosnex/monet_ui/issues
 environment:
@@ -22,7 +22,7 @@ dependencies:
   json_annotation: ^4.9.0
   loggy: ^2.0.3
   meta: ^1.16.0
-  pixel_snap_fork: ^0.2.0
+  pixel_snap_fork: ^1.0.0
   squadron: ^7.1.0
   # lib/third_party/flutter/list_view.dart (MonetListView).
   super_sliver_list_fork: ^0.5.0
