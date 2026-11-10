@@ -1,3 +1,24 @@
+## 1.6.0
+
+- New in `lib/widgets/`, moved from the Telosnex app: `MonetAppBar` (was
+  `AppBarNx`; `AppBarNxMetrics` is now `MonetAppBarMetrics`),
+  `MonetBackButton`, `MonetAlertDialog`, `AnimatedExpandable`, `MonetDropdown`,
+  `DropdownRow`, the menu widgets in `lib/widgets/menu/`, settings rows
+  (`SettingsRow`, `SwitchRow`, `SliderRow`, `SegmentedRow`, `TextFieldRow`,
+  `KeyValueTextField`, `StringListField`), `MonetExpansion`,
+  `MonetSectionHeader`, `SupportingPane` and `ScreenConstrainedHandAligned`.
+- New scopes that apps provide near the root. Each has a fallback:
+  `MonetHandedness`, `MonetMonoTextStyle`, `MonetScreenSize` (falls back to
+  `MediaQuery`), `MonetWallpaperHeader` (falls back to no wallpaper) and
+  `MonetExpansionAnimations`.
+- `MonetMenuOverlayController.overlayScopeFor` lets an app wrap menu overlays,
+  for example to pass its state container to menu items.
+- `MenuButton.debugAnchorOffset` moves menus for screen recordings.
+- New helpers: `brightnessOfColor`, `systemUiOverlayStyleFor` and
+  `safelyUpdateText`.
+- Flutter-derived `ExpansionTile2`, `SingleChildScrollView2` and `Switch2`
+  (with `Toggleable2StateMixin`) in `lib/third_party/flutter/`.
+
 ## 1.5.0
 
 - New in `lib/widgets/`, moved from the Telosnex app: `MonetScreen`,
