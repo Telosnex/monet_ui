@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:monet_ui/colorspaces/color_model.dart';
+import 'package:monet_ui/colorspaces/hct.dart';
 import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 import 'package:monet_ui/effects/temperature.dart';
 import 'package:monet_ui/extract/quantizer_result.dart';
 import 'package:monet_ui/extract/scorer.dart';
-import 'package:monet_ui/colorspaces/hct.dart';
 
 /// Returns 3 HCTs if [result.argbToCount] is not empty, otherwise returns an
 /// empty list.

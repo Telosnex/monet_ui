@@ -4,11 +4,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:monet_ui/colorspaces/cam16V11/cam16_v11.dart';
 import 'package:monet_ui/colorspaces/hct.dart';
 import 'package:monet_ui/core/hex_codes.dart';
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/util/use_animation_controller2.dart';
 import 'package:monet_ui/widgets/hct_color_tween.dart';
 import 'package:monet_ui/widgets/hct_lerp_cartesian.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 class AnimatedColorCycleResult {
   final Color Function() getColor;

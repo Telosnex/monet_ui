@@ -1,7 +1,7 @@
-import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 import 'package:monet_ui/colorspaces/color_model.dart';
-import 'package:monet_ui/extract/quantizer_result.dart';
 import 'package:monet_ui/colorspaces/hct.dart';
+import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
+import 'package:monet_ui/extract/quantizer_result.dart';
 
 double _minChroma(ColorModel model) {
   switch (model) {

@@ -1,6 +1,5 @@
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/widgets/monet_icon_button.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// The size of every [MonetIconButton]: as wide as [icon] and [height] tall,
 /// with [icon] centered.

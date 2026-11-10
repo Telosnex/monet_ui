@@ -1,10 +1,9 @@
 // rationale: simple and tightly coupled widgets that are used in many places.
 // ignore_for_file: prefer-single-widget-per-file
 
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/util/list_view_padding_calculator.dart';
 import 'package:monet_ui/widgets/screen_breakpoints.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 class HorizontalPadding extends StatelessWidget {
   static const amount = 8.0;

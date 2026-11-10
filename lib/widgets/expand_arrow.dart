@@ -6,9 +6,9 @@ import 'package:monet_ui/theming/palette.dart';
 import 'package:monet_ui/util/lru_cache.dart';
 import 'package:monet_ui/util/use_animation_controller2.dart';
 import 'package:monet_ui/widgets/animated_color_cycle_hook.dart';
+import 'package:monet_ui/widgets/chevron_icon.dart';
 import 'package:monet_ui/widgets/icon_size.dart';
 import 'package:monet_ui/widgets/stateful_color_resolver.dart';
-import 'package:monet_ui/widgets/chevron_icon.dart';
 
 /// A reusable expand/collapse arrow animation component
 /// Optimized to handle color animations efficiently without causing widget rebuilds

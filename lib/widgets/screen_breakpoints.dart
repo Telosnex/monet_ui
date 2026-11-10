@@ -1,8 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/widgets/display_geometry.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// Quantized screen-size lookups for resize performance.
 ///

@@ -8,11 +8,11 @@ import 'package:monet_ui/theming/monet_theme_data.dart';
 import 'package:monet_ui/theming/palette.dart';
 import 'package:monet_ui/util/blur_radius.dart';
 import 'package:monet_ui/widgets/icon_size.dart';
+import 'package:monet_ui/widgets/monet_button_label.dart';
+import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_tooltip.dart';
 import 'package:monet_ui/widgets/padding.dart';
 import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/monet_button_label.dart';
-import 'package:monet_ui/widgets/monet_icon.dart';
 
 class MonetSegmented<T> extends HookWidget {
   final List<MonetSegment<T>> options;

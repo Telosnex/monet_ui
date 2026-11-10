@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:monet_ui/widgets/icon_glyph_baseline.dart';
 import 'package:monet_ui/widgets/icon_ink_bounds.dart';
-import 'package:pixel_snap_fork/material.dart' as ps;
 import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:pixel_snap_fork/material.dart' as ps;
 
 /// Removes horizontal font whitespace from icons with registered ink bounds
 /// (see [registerIconInkBounds]), and

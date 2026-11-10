@@ -1,11 +1,6 @@
 // Core color space conversions
-export 'core/argb_srgb_xyz_lab.dart';
-export 'core/hex_codes.dart';
-export 'core/math.dart';
-
 // Chart colors
 export 'charts/chart_colors.dart';
-
 // Color spaces
 export 'colorspaces/cam16/cam16.dart';
 export 'colorspaces/cam16/cam16_viewing_conditions.dart';
@@ -13,20 +8,27 @@ export 'colorspaces/gamut.dart';
 export 'colorspaces/hct.dart';
 export 'colorspaces/hct_solver.dart';
 export 'colorspaces/luma.dart';
-
 // Contrast algorithms
 export 'contrast/apca.dart';
 export 'contrast/apca_contrast.dart';
 export 'contrast/contrast.dart';
 export 'contrast/luma_contrast.dart';
 export 'contrast/wcag.dart';
-
+export 'core/argb_srgb_xyz_lab.dart';
+export 'core/hex_codes.dart';
+export 'core/math.dart';
 // Display metrics: derive px-per-logical-px scale from physical geometry
 // and viewing distance
 export 'display/display_metrics.dart';
-
+// Visual effects
+export 'effects/afterimage.dart';
+export 'effects/over_image.dart';
+export 'effects/temperature.dart';
+export 'effects/uv_harmony.dart';
 // Color extraction from images
 export 'extract/extract.dart';
+export 'extract/monet_gdt_rule_2026_10_30.dart';
+export 'extract/monet_gdt_rule_v1.dart';
 export 'extract/point_provider.dart';
 export 'extract/point_provider_lab.dart';
 export 'extract/quantizer.dart';
@@ -37,51 +39,39 @@ export 'extract/quantizer_wsmeans.dart';
 export 'extract/quantizer_wu.dart';
 export 'extract/scorer.dart';
 export 'extract/scorer_triad.dart';
-export 'extract/monet_gdt_rule_v1.dart';
-export 'extract/monet_gdt_rule_2026_10_30.dart';
 export 'extract/service/quantize_service.dart';
-
-// Visual effects
-export 'effects/afterimage.dart';
-export 'effects/over_image.dart';
-export 'effects/temperature.dart';
-export 'effects/uv_harmony.dart';
-
 // Fonts
 export 'fonts/font_file.dart';
 export 'fonts/font_height_equalizer.g.dart';
-export 'fonts/google_fonts_catalog.g.dart';
 export 'fonts/font_line_metrics_patch.dart';
 export 'fonts/font_size_adjust.dart';
+export 'fonts/google_fonts_catalog.g.dart';
 export 'fonts/line_height.dart';
 export 'fonts/monet_fonts.dart';
 export 'fonts/optical_font_size.dart';
 export 'fonts/text_metrics.dart';
-
 // Shapes
 export 'shapes/expressive_button.dart';
 export 'shapes/material_expressive_border.dart';
-
 // Theming
 export 'theming/animated_monet_theme.dart';
 export 'theming/button_style.dart';
 export 'theming/full_color_scheme.dart';
 export 'theming/interpolation_style.dart';
 export 'theming/monet_clip.dart';
+export 'theming/monet_paint_colors.dart';
 export 'theming/monet_shape_theme.dart';
 export 'theming/monet_theme.dart';
 export 'theming/monet_theme_crossfade.dart';
 export 'theming/monet_theme_data.dart';
-export 'theming/monet_paint_colors.dart';
 export 'theming/over_image_flutter.dart';
 export 'theming/palette.dart';
-export 'theming/palette_roles.dart';
 export 'theming/palette_recipe.dart';
+export 'theming/palette_roles.dart';
 export 'theming/palette_snapshot.dart';
 export 'theming/slider_flat.dart';
 export 'theming/slider_flat_shape.dart';
 export 'theming/slider_flat_thumb.dart';
-
 // Utilities
 export 'util/lru_cache.dart';
 export 'util/size_scale.dart';

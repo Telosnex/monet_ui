@@ -6,8 +6,8 @@ import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 import 'package:monet_ui/core/hex_codes.dart';
 import 'package:monet_ui/theming/monet_theme.dart';
 import 'package:monet_ui/theming/palette.dart';
-import 'package:pixel_snap_fork/material.dart' show BuildContext;
 import 'package:monet_ui/util/lru_cache.dart';
+import 'package:pixel_snap_fork/material.dart' show BuildContext;
 
 // Structural keys require every policy input and include each in equality/hash.
 final class const _PaletteCacheKey({

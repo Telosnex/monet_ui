@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:monet_ui/theming/monet_theme.dart';
 import 'package:monet_ui/theming/monet_theme_data.dart';
-import 'package:monet_ui/widgets/monet_icons.dart';
 import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:monet_ui/widgets/monet_icons.dart';
 
 class DismissibleOverlay extends StatelessWidget {
   const DismissibleOverlay({

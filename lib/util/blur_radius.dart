@@ -1,6 +1,5 @@
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/util/lru_cache.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 const _kShadowCacheCapacity = 64;
 final _ShadowListCache<Color, List<Shadow>> _headerProtectionShadowsCache =

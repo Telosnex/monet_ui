@@ -3,10 +3,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-
-import 'package:monet_ui/util/lru_cache.dart';
-
 import 'package:monet_ui/util/deep_json_equals.dart';
+import 'package:monet_ui/util/lru_cache.dart';
 
 // ============================================================================
 // Paragraph layout value types

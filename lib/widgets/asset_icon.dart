@@ -1,6 +1,5 @@
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/widgets/tool_icon_size.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// An icon rendered from an image asset that respects [IconTheme] for sizing
 /// but preserves the image's original colors (no tinting).

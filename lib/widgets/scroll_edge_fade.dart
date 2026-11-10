@@ -3,10 +3,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:flutter/widgets.dart' show ScrollController;
-
-import 'package:pixel_snap_fork/material.dart' hide ScrollController;
-
 import 'package:monet_ui/widgets/padding.dart';
+import 'package:pixel_snap_fork/material.dart' hide ScrollController;
 
 /// Signature for [ScrollEdgeFade.builder]: build the scroll view with
 /// [controller], which the fade owns and tracks.

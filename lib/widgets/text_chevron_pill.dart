@@ -1,6 +1,6 @@
+import 'package:monet_ui/widgets/expand_arrow.dart';
 import 'package:monet_ui/widgets/padding.dart';
 import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/expand_arrow.dart';
 
 /// A tappable row of [text] + expand/collapse chevron.
 ///

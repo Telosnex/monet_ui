@@ -17,10 +17,10 @@
 
 import 'package:monet_ui/extract/quantizer_result.dart';
 
+import 'point_provider_lab.dart';
 import 'quantizer.dart';
 import 'quantizer_wsmeans.dart';
 import 'quantizer_wu.dart';
-import 'point_provider_lab.dart';
 
 class QuantizerCelebi implements Quantizer {
   @override

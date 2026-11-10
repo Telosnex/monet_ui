@@ -3,9 +3,9 @@
 import 'package:monet_ui/theming/button_style.dart';
 import 'package:monet_ui/theming/monet_theme.dart';
 import 'package:monet_ui/theming/palette.dart';
-import 'package:pixel_snap_fork/material.dart';
 import 'package:monet_ui/widgets/icon_size.dart';
 import 'package:monet_ui/widgets/padding.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 class MonetTextButton extends StatelessWidget {
   final VoidCallback? onPressed;

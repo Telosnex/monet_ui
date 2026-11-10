@@ -1,13 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:loggy/loggy.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/util/custom_cupertino_page_route.dart';
 import 'package:monet_ui/util/is_web.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// A widget that indicates its descendants should be prioritized for horizontal
 /// gestures over the TrackpadDismissGestureDetector.

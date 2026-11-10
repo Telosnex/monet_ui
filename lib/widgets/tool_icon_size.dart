@@ -1,6 +1,6 @@
-import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/icon_size.dart';
 import 'package:monet_ui/widgets/border_metrics.dart';
+import 'package:monet_ui/widgets/icon_size.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// Text style for tool and reasoning headers.
 TextStyle toolHeaderTextStyle(BuildContext context) =>

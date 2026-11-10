@@ -3,10 +3,10 @@ import 'dart:math' as math;
 import 'package:monet_ui/theming/button_style.dart';
 import 'package:monet_ui/theming/monet_theme.dart';
 import 'package:monet_ui/theming/palette.dart';
-import 'package:monet_ui/widgets/monet_tooltip.dart';
-import 'package:pixel_snap_fork/material.dart';
 import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_icon_button_child.dart';
+import 'package:monet_ui/widgets/monet_tooltip.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// An icon button that draws a [MonetIcon] with no space around it.
 ///

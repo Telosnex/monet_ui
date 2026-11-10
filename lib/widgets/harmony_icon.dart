@@ -8,8 +8,8 @@ import 'package:monet_ui/theming/monet_theme.dart';
 import 'package:monet_ui/theming/monet_theme_data.dart';
 import 'package:monet_ui/theming/palette.dart';
 import 'package:monet_ui/util/lru_cache.dart';
-import 'package:pixel_snap_fork/material.dart';
 import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// Gives descendants a position in a set of [count] sibling sections whose
 /// icons share one color harmony.

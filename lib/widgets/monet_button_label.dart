@@ -1,8 +1,8 @@
 import 'package:monet_ui/widgets/animated_color_hook.dart';
+import 'package:monet_ui/widgets/monet_button_icon.dart';
 import 'package:monet_ui/widgets/monet_rich_text.dart';
 import 'package:monet_ui/widgets/padding.dart';
 import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/monet_button_icon.dart';
 
 /// String label shared by the button factories and the compact/regular family.
 /// The icon flows inline with the text so wrapped lines use the full width.

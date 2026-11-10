@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 import 'package:monet_ui/colorspaces/luma.dart';
+import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 
 List<double> lumaToLstarRange(double luma, {bool debug = false}) {
   final argbs = findBoundaryArgbsForLuma(luma);

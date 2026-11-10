@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart' as flutter;
 import 'package:monet_ui/widgets/animated_color_hook.dart';
-import 'package:pixel_snap_fork/material.dart';
 import 'package:monet_ui/widgets/material_icon_ink.dart';
 import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// Shared ink-width icon treatment for inline labels, rows, and loading.
 ///

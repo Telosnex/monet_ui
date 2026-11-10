@@ -1,10 +1,8 @@
 import 'package:flutter/widgets.dart' as flutter;
-
-import 'package:pixel_snap_fork/widgets.dart' hide Icon;
-import 'package:pixel_snap_fork/widgets.dart' as ps show Icon;
-
 import 'package:monet_ui/widgets/snapped_icons/icon_box.dart';
 import 'package:monet_ui/widgets/snapped_icons/icon_outline.dart';
+import 'package:pixel_snap_fork/widgets.dart' as ps show Icon;
+import 'package:pixel_snap_fork/widgets.dart' hide Icon;
 
 /// The glyph of [widget] when it is a Flutter, pixel_snap or Monet icon.
 ///

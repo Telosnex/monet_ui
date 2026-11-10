@@ -18,8 +18,8 @@
 import 'dart:math' as math;
 
 import 'package:monet_ui/colorspaces/color_model.dart';
-import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 import 'package:monet_ui/colorspaces/hct.dart';
+import 'package:monet_ui/core/argb_srgb_xyz_lab.dart';
 import 'package:monet_ui/effects/afterimage.dart';
 import 'package:monet_ui/effects/uv_harmony.dart' as uv;
 

@@ -7,8 +7,8 @@ import 'bounds_centered_border.dart';
 import 'material_expressive_shape.dart';
 import 'src/material_shape_safe_area_data.dart';
 
-export 'material_expressive_shape.dart';
 export 'bounds_centered_border.dart';
+export 'material_expressive_shape.dart';
 
 /// A reusable pairing of a border and its precomputed content interiors.
 ///

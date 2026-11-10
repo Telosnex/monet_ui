@@ -16,8 +16,8 @@
 // limitations under the License.
 
 import 'dart:collection';
-import 'dart:ui';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:monet_ui/colorspaces/cam16/cam16.dart';
 import 'package:monet_ui/colorspaces/cam16/cam16_viewing_conditions.dart';

@@ -3,12 +3,12 @@
 import 'dart:async';
 
 import 'package:monet_ui/widgets/icon_size.dart';
+import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_icons.dart';
 import 'package:monet_ui/widgets/padding.dart';
 import 'package:monet_ui/widgets/semantic_colors.dart';
-import 'package:pixel_snap_fork/material.dart';
 import 'package:monet_ui/widgets/tiny_spinner.dart';
-import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// One step in a [ProgressStepList].
 @immutable

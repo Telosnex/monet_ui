@@ -1,7 +1,7 @@
 import 'package:monet_ui/widgets/animated_color_hook.dart';
+import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_icons.dart';
 import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/monet_icon.dart';
 
 class MenuDotsIcon extends StatelessWidget {
   // Ratios are calibrated for the app's menu icon size, a label-derived box

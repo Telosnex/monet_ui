@@ -1,7 +1,6 @@
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/widgets/monet_button_icon.dart';
 import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 /// A chip icon whose horizontal layout hugs its ink, not the font's square.
 ///

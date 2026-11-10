@@ -1,6 +1,6 @@
+import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_icons.dart';
 import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/monet_icon.dart';
 
 /// One cached chevron geometry.
 class _ChevronGeometry {

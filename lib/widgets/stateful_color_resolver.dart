@@ -1,7 +1,6 @@
 import 'package:monet_ui/theming/palette.dart';
-import 'package:pixel_snap_fork/material.dart';
-
 import 'package:monet_ui/util/lru_cache.dart';
+import 'package:pixel_snap_fork/material.dart';
 
 // rationale for 360 is # of hues
 final LruCache<String, Palette> _safeColorsCache = LruCache(capacity: 360);

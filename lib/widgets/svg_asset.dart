@@ -8,8 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:loggy/loggy.dart';
 import 'package:monet_ui/core/hex_codes.dart';
 import 'package:monet_ui/theming/monet_theme.dart';
-import 'package:pixel_snap_fork/material.dart';
 import 'package:monet_ui/util/lru_cache.dart';
+import 'package:pixel_snap_fork/material.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 class SvgAsset extends HookWidget with UiLoggy {

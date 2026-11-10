@@ -1,8 +1,8 @@
 import 'package:monet_ui/theming/monet_theme.dart';
 import 'package:monet_ui/widgets/icon_size.dart';
+import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_icons.dart';
 import 'package:pixel_snap_fork/material.dart';
-import 'package:monet_ui/widgets/monet_icon.dart';
 
 /// A tiny info-icon used next to labels that show a Tooltip when hovered.
 ///

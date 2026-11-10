@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
 
-import 'package:material_ui/material_ui.dart' show kThemeAnimationDuration;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:material_ui/material_ui.dart' show kThemeAnimationDuration;
 import 'package:monet_ui/theming/monet_theme_data.dart';
 
 /// Dissolves the previous rendering of [child] into its new one when [data]

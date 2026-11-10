@@ -1,6 +1,5 @@
-import 'package:pixel_snap_fork/material.dart' hide ScrollController;
-
 import 'package:monet_ui/widgets/monet_material.dart';
+import 'package:pixel_snap_fork/material.dart' hide ScrollController;
 
 /// A minimal, Scaffold-shaped container that does *not* wrap its body in a
 /// `LayoutBuilder`.

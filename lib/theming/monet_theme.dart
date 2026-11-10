@@ -2,9 +2,9 @@ import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:monet_ui/colorspaces/color_model.dart';
 import 'package:monet_ui/contrast/contrast.dart';
-import 'package:monet_ui/theming/palette.dart';
-import 'package:monet_ui/theming/monet_theme_data.dart';
 import 'package:monet_ui/theming/monet_shape_theme.dart';
+import 'package:monet_ui/theming/monet_theme_data.dart';
+import 'package:monet_ui/theming/palette.dart';
 
 class MonetTheme extends StatelessWidget {
   final MonetThemeData monetThemeData;
