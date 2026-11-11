@@ -9,8 +9,8 @@
 # filename and environment are fixed there: renaming either here breaks
 # publishing until the trusted publisher is created again.
 #
-# Before the upload: the Dart parity fixture is generated again and must
-# match the committed one, then prepublishOnly runs npm run check.
+# Before the upload: the Dart parity fixture is generated again, then
+# prepublishOnly runs npm run check against it.
 #
 # By hand (workflow_dispatch): the same checks and npm publish --dry-run.
 name: Npm publish
@@ -84,18 +84,20 @@ jobs:
           echo "$RUNNER_TEMP/npm/bin" >> "$GITHUB_PATH"
           "$RUNNER_TEMP/npm/bin/npm" --version
       - run: flutter pub get
-      - name: Parity fixture matches Dart
+      # The package's tests (prepublishOnly) then run against Dart's output
+      # on this runner. Not compared with the committed fixture: Flutter on
+      # Linux and on macOS differ in the third decimal of some superellipse
+      # points.
+      - name: Parity fixture from Dart
         env:
           DIR: ${{ steps.package.outputs.dir }}
         run: |
           if [[ "$DIR" == js ]]; then
             flutter test test/js/parity_fixture_test.dart --plain-name 'generate JS parity fixtures'
-            fixture=js/fixtures/libmonet_parity.json
           else
             flutter test test/react/controls_parity_fixture_test.dart
-            fixture=react/fixtures/monet_controls_parity.json
           fi
-          git diff --exit-code -- "$fixture"
+          git diff --stat
       # monet-ui-react builds and tests against ../js (a file: devDependency).
       - name: Build js/ for react/
         if: steps.package.outputs.dir == 'react'
