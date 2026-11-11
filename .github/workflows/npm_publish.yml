@@ -75,14 +75,17 @@ jobs:
           echo "dir=$dir" >> "$GITHUB_OUTPUT"
           echo "Publishing @telosnex/$name $actual from $dir/"
       - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@f97b50830596a30b24ea34c643a3b7dcce349972 # v0.5.15
-      # The runner's Node: actions/setup-node is not on the org's allowed
-      # actions. Trusted publishing needs npm 11.5.1 or later.
+      # No cache: a release build installs from the lockfile only.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      # Trusted publishing needs npm 11.5.1 or later.
       - name: npm 11
         run: |
+          npm install -g npm@11
           node --version
-          npm install -g --prefix "$RUNNER_TEMP/npm" npm@11
-          echo "$RUNNER_TEMP/npm/bin" >> "$GITHUB_PATH"
-          "$RUNNER_TEMP/npm/bin/npm" --version
+          npm --version
       - run: flutter pub get
       # The package's tests (prepublishOnly) then run against Dart's output
       # on this runner. Not compared with the committed fixture: Flutter on
