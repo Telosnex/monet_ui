@@ -231,7 +231,8 @@
   transition: transform 200ms ease;
 }
 
-.monet-expansion--expanded .monet-expansion__icon {
+/* Child combinators: an expansion nested in an open one keeps its own. */
+.monet-expansion--expanded > .monet-expansion__header > .monet-expansion__icon {
   transform: rotate(180deg);
 }
 

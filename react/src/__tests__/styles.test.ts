@@ -80,3 +80,15 @@ describe('styles.css', () => {
     expect(rule?.[1]).toContain('font-size: inherit;');
   });
 });
+
+describe('nested expansions', () => {
+  const css = readFileSync('src/styles.css', 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+
+  test('state selectors reach only the expansion\'s own parts', () => {
+    const rules = [...css.matchAll(/([^{}]*\.monet-expansion--expanded[^{}]*)\{/g)].map((m) => m[1]!.trim());
+    expect(rules.length).toBeGreaterThan(0);
+    for (const selector of rules) {
+      expect(selector, selector).toMatch(/^\.monet-expansion--expanded( > \.monet-expansion__[a-z]+)*$/);
+    }
+  });
+});
