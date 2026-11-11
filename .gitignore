@@ -43,3 +43,7 @@ doc/api/
 
 # Python bytecode caches
 __pycache__/
+
+# React package generated/local files
+/react/node_modules/
+/react/dist/

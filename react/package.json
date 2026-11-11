@@ -1,0 +1,48 @@
+{
+  "name": "@telosnex/monet-ui-react",
+  "version": "0.1.0",
+  "description": "React versions of the monet_ui controls, checked against the Dart controls.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp src/styles.css dist/styles.css",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json",
+    "test": "vitest run",
+    "test:parity:generate": "cd .. && flutter test test/react/controls_parity_fixture_test.dart",
+    "check": "npm run typecheck && npm run build && npm test",
+    "check:parity": "npm run test:parity:generate && git -C .. diff --exit-code -- react/fixtures/monet_controls_parity.json && npm run check",
+    "demo": "vite demo"
+  },
+  "peerDependencies": {
+    "@telosnex/libmonet": "*",
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@telosnex/libmonet": "file:../js",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "jsdom": "^26.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.6.3",
+    "vitest": "^4.1.12"
+  }
+}

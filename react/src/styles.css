@@ -1,0 +1,543 @@
+/*
+ * @telosnex/monet-ui-react styles. Colours, sizes, radii and shadows come
+ * from CSS variables that each component sets from its spec (src/spec.ts);
+ * the palette variables come from MonetThemeScope.
+ *
+ * Inputs an app may set:
+ *   --monet-dp                  one logical pixel (default 1px)
+ *   --monet-font-label          label font (default inherit)
+ *   --monet-type-label-large    button, menu and header text (default 1rem)
+ *   --monet-type-label-medium   segment text (default 0.875rem)
+ *
+ * Web-only additions, not in the Dart controls: a focus-visible ring in
+ * the tertiary colour role, and the pointer cursor.
+ */
+
+@supports (corner-shape: squircle) {
+  .monet-superellipse {
+    corner-shape: squircle;
+  }
+}
+
+/* ── MonetButton ─────────────────────────────────────────────────────── */
+
+.monet-button {
+  --_background: var(--monet-button-rest-background);
+  --_foreground: var(--monet-button-rest-foreground);
+  --_icon: var(--monet-button-rest-icon);
+
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: var(--monet-button-min-width);
+  min-height: var(--monet-button-min-height);
+  max-width: 100%;
+  gap: var(--monet-button-padding-x);
+  align-items: center;
+  justify-content: center;
+  padding: var(--monet-button-padding-y) var(--monet-button-padding-x);
+  margin: 0;
+  border: var(--monet-button-border-width) solid var(--monet-button-border-color);
+  border-radius: var(--monet-button-radius);
+  appearance: none;
+  background: var(--_background);
+  box-shadow: var(--monet-button-shadows);
+  color: var(--_foreground);
+  cursor: pointer;
+  font-family: var(--monet-font-label, inherit);
+  font-size: var(--monet-type-label-large, 1rem);
+  line-height: normal;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.monet-button--compact,
+.monet-button--tool {
+  font-size: var(--monet-type-label-medium, 0.875rem);
+}
+
+/* The Dart button keeps a touch-height input target around the visual. */
+.monet-button--regular::after {
+  position: absolute;
+  inset: calc(-4 * var(--monet-dp, 1px)) 0;
+  content: '';
+}
+
+.monet-button[data-selected],
+.monet-button:not(:disabled):not([aria-disabled='true']):hover {
+  --_background: var(--monet-button-hovered-background);
+  --_foreground: var(--monet-button-hovered-foreground);
+  --_icon: var(--monet-button-hovered-icon);
+}
+
+.monet-button:focus-visible {
+  --_background: var(--monet-button-focused-background);
+  --_foreground: var(--monet-button-focused-foreground);
+  --_icon: var(--monet-button-focused-icon);
+
+  outline: calc(2 * var(--monet-dp, 1px)) solid var(--monet-tertiary-color);
+  outline-offset: calc(2 * var(--monet-dp, 1px));
+}
+
+.monet-button:not(:disabled):not([aria-disabled='true']):active {
+  --_background: var(--monet-button-pressed-background);
+  --_foreground: var(--monet-button-pressed-foreground);
+  --_icon: var(--monet-button-pressed-icon);
+}
+
+.monet-button:disabled,
+.monet-button[aria-disabled='true'] {
+  --_background: var(--monet-button-disabled-background);
+  --_foreground: var(--monet-button-disabled-foreground);
+  --_icon: var(--monet-button-disabled-icon);
+
+  cursor: default;
+}
+
+.monet-button__icon {
+  display: inline-grid;
+  width: 1.2em;
+  height: 1.2em;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--_icon);
+}
+
+.monet-button__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.monet-button__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Bordered ────────────────────────────────────────────────────────── */
+
+.monet-bordered {
+  box-sizing: border-box;
+  border: var(--monet-bordered-border-width) solid var(--monet-bordered-border-color);
+  border-radius: var(--monet-bordered-radius);
+  background: var(--monet-bordered-background);
+}
+
+.monet-bordered--square-top {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.monet-bordered--square-bottom {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.monet-bordered--clip {
+  overflow: hidden;
+}
+
+/* ── MonetExpansion ──────────────────────────────────────────────────── */
+
+.monet-expansion {
+  --_background: var(--monet-expansion-collapsed-background);
+  --_icon: var(--monet-expansion-collapsed-icon);
+  --_border-color: var(--monet-expansion-collapsed-border-color);
+  --_border-width: var(--monet-expansion-collapsed-border-width);
+
+  box-sizing: border-box;
+  border-radius: var(--monet-expansion-radius);
+  background: var(--_background);
+  /* An outline, so the border does not move the content. */
+  box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
+  transition: box-shadow 200ms ease;
+}
+
+.monet-expansion--expanded {
+  --_background: var(--monet-expansion-expanded-background);
+  --_icon: var(--monet-expansion-expanded-icon);
+  --_border-color: var(--monet-expansion-expanded-border-color);
+  --_border-width: var(--monet-expansion-expanded-border-width);
+}
+
+.monet-expansion__header {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--monet-expansion-header-min-height);
+  gap: calc(4 * var(--monet-dp, 1px));
+  align-items: center;
+  padding: 0 0 0 var(--monet-expansion-header-padding-start);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--monet-font-label, inherit);
+  font-size: var(--monet-type-label-large, 1rem);
+  text-align: start;
+}
+
+.monet-expansion__header:focus-visible {
+  outline: calc(2 * var(--monet-dp, 1px)) solid var(--monet-tertiary-color);
+  outline-offset: calc(-2 * var(--monet-dp, 1px));
+}
+
+.monet-expansion__icon {
+  flex: 0 0 auto;
+  color: var(--_icon);
+  transition: transform 200ms ease;
+}
+
+.monet-expansion--expanded .monet-expansion__icon {
+  transform: rotate(180deg);
+}
+
+.monet-expansion__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease;
+}
+
+.monet-expansion--expanded > .monet-expansion__body {
+  grid-template-rows: 1fr;
+}
+
+.monet-expansion__content {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── MonetSegmented ──────────────────────────────────────────────────── */
+
+.monet-segmented {
+  display: inline-flex;
+  /* Sized by the segments, also inside a stretching flex column. */
+  width: fit-content;
+  align-self: flex-start;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--monet-segmented-radius);
+  box-shadow: var(--monet-segmented-shadows);
+  isolation: isolate;
+}
+
+.monet-segmented__segment {
+  --_background: var(--monet-segmented-unselected-rest-background);
+  --_foreground: var(--monet-segmented-unselected-rest-foreground);
+  --_icon: var(--monet-segmented-unselected-rest-icon);
+
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--monet-segmented-padding-x);
+  margin: 0;
+  border: 0;
+  background: var(--_background);
+  color: var(--_foreground);
+  cursor: pointer;
+  font-family: var(--monet-font-label, inherit);
+  font-size: var(--monet-type-label-medium, 0.875rem);
+  text-align: center;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+/* Content keeps each segment at least the touch size wide, while the row
+   may still shrink a segment below it, as `_RenderSegmentedRow` does. */
+.monet-segmented__content {
+  display: inline-flex;
+  min-width: calc(
+    var(--monet-segmented-min-segment-width) - 2 * var(--monet-segmented-padding-x)
+  );
+  gap: calc(4 * var(--monet-dp, 1px));
+  align-items: center;
+  justify-content: center;
+}
+
+.monet-segmented__segment:hover {
+  --_background: var(--monet-segmented-unselected-hovered-background);
+  --_foreground: var(--monet-segmented-unselected-hovered-foreground);
+  --_icon: var(--monet-segmented-unselected-hovered-icon);
+}
+
+.monet-segmented__segment:active {
+  --_background: var(--monet-segmented-unselected-pressed-background);
+  --_foreground: var(--monet-segmented-unselected-pressed-foreground);
+  --_icon: var(--monet-segmented-unselected-pressed-icon);
+}
+
+.monet-segmented__segment[data-selected] {
+  --_background: var(--monet-segmented-selected-rest-background);
+  --_foreground: var(--monet-segmented-selected-rest-foreground);
+  --_icon: var(--monet-segmented-selected-rest-icon);
+
+  z-index: 1;
+}
+
+.monet-segmented__segment[data-selected]:hover {
+  --_background: var(--monet-segmented-selected-hovered-background);
+  --_foreground: var(--monet-segmented-selected-hovered-foreground);
+  --_icon: var(--monet-segmented-selected-hovered-icon);
+}
+
+.monet-segmented__segment[data-selected]:active {
+  --_background: var(--monet-segmented-selected-pressed-background);
+  --_foreground: var(--monet-segmented-selected-pressed-foreground);
+  --_icon: var(--monet-segmented-selected-pressed-icon);
+}
+
+.monet-segmented__segment[data-divider-after]::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--monet-segmented-divider-width);
+  background: var(--monet-segmented-divider-color);
+  content: '';
+}
+
+.monet-segmented__segment:focus-visible {
+  z-index: 3;
+  outline: calc(2 * var(--monet-dp, 1px)) solid var(--monet-tertiary-color);
+  outline-offset: calc(-2 * var(--monet-dp, 1px));
+}
+
+.monet-segmented__icon {
+  display: inline-grid;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--_icon);
+}
+
+.monet-segmented__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.monet-segmented__label {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* ── MonetSlider ─────────────────────────────────────────────────────── */
+
+.monet-slider {
+  --_active: var(--monet-slider-rest-active-track);
+  --_inactive: var(--monet-slider-rest-inactive-track);
+  --_border: var(--monet-slider-rest-border);
+  --_content: var(--monet-slider-rest-thumb-content);
+
+  position: relative;
+  width: 100%;
+  height: var(--monet-slider-height);
+  flex: 0 0 auto;
+  border-radius: calc(var(--monet-slider-height) / 2);
+  background: var(--_inactive);
+  box-shadow: 0 0 var(--monet-slider-glow) var(--_border);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.monet-slider:focus {
+  --_active: var(--monet-slider-focused-active-track);
+  --_inactive: var(--monet-slider-focused-inactive-track);
+  --_border: var(--monet-slider-focused-border);
+  --_content: var(--monet-slider-focused-thumb-content);
+
+  outline: none;
+}
+
+.monet-slider:focus-visible {
+  outline: calc(2 * var(--monet-dp, 1px)) solid var(--monet-tertiary-color);
+  outline-offset: calc(3 * var(--monet-dp, 1px));
+}
+
+.monet-slider[aria-disabled='true'] {
+  --_active: var(--monet-slider-disabled-active-track);
+  --_inactive: var(--monet-slider-disabled-inactive-track);
+  --_border: var(--monet-slider-disabled-border);
+  --_content: var(--monet-slider-disabled-thumb-content);
+
+  cursor: default;
+}
+
+.monet-slider__active {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(
+    var(--monet-slider-height) + var(--monet-slider-value) * (100% - var(--monet-slider-height))
+  );
+  border-radius: inherit;
+  background: var(--_active);
+  pointer-events: none;
+}
+
+.monet-slider__border {
+  position: absolute;
+  inset: 0;
+  border: var(--monet-slider-border-width) solid var(--_border);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.monet-slider__thumb {
+  position: absolute;
+  top: 0;
+  left: calc(
+    var(--monet-slider-height) / 2 + var(--monet-slider-value) *
+      (100% - var(--monet-slider-height))
+  );
+  display: grid;
+  width: var(--monet-slider-height);
+  height: var(--monet-slider-height);
+  place-items: center;
+  color: var(--_content);
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+/* The thumb's right half-circle. */
+.monet-slider__thumb-border {
+  position: absolute;
+  inset: 0;
+  border: var(--monet-slider-border-width) solid var(--_border);
+  border-radius: 50%;
+  clip-path: inset(0 0 0 50%);
+}
+
+.monet-slider__thumb-content {
+  display: grid;
+  width: var(--monet-slider-thumb-content-size);
+  height: var(--monet-slider-thumb-content-size);
+  place-items: center;
+}
+
+.monet-slider__thumb-content > svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .monet-slider__active,
+  .monet-slider__thumb {
+    transition:
+      width 100ms ease,
+      left 100ms ease;
+  }
+
+  .monet-slider[data-dragging] .monet-slider__active,
+  .monet-slider[data-dragging] .monet-slider__thumb {
+    transition: none;
+  }
+}
+
+/* ── MonetDropdown ───────────────────────────────────────────────────── */
+
+.monet-dropdown {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.monet-dropdown__trigger {
+  display: inline-flex;
+  min-width: 0;
+  gap: calc(4 * var(--monet-dp, 1px));
+  align-items: center;
+}
+
+.monet-dropdown__selected {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.monet-dropdown__chevron {
+  width: 1.2em;
+  height: 1.2em;
+  flex: 0 0 auto;
+  color: var(--_icon);
+}
+
+.monet-menu {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 2 * var(--monet-dp, 1px));
+  left: 0;
+  box-sizing: border-box;
+  min-width: 100%;
+  max-height: 22rem;
+  padding: var(--monet-menu-padding-y) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: var(--monet-menu-border-width) solid var(--monet-menu-border-color);
+  border-radius: var(--monet-menu-radius);
+  background: var(--monet-menu-background);
+  box-shadow: var(--monet-menu-shadows);
+}
+
+.monet-menu__item {
+  --_background: var(--monet-menu-item-rest-background);
+  --_foreground: var(--monet-menu-item-rest-foreground);
+  --_icon: var(--monet-menu-item-rest-icon);
+
+  display: flex;
+  box-sizing: border-box;
+  /* `MenuEntryCompat`: 36 at a 21px label, 0.66 × 36 at least. */
+  min-height: max(calc(23.76 * var(--monet-dp, 1px)), calc(1em * 36 / 21));
+  gap: calc(8 * var(--monet-dp, 1px));
+  align-items: center;
+  padding: 0 calc(12 * var(--monet-dp, 1px)) 0 calc(8 * var(--monet-dp, 1px));
+  background: var(--_background);
+  color: var(--_foreground);
+  cursor: pointer;
+  font-family: var(--monet-font-label, inherit);
+  font-size: var(--monet-type-label-large, 1rem);
+  outline: none;
+  white-space: nowrap;
+}
+
+.monet-menu__item[data-selected] {
+  --_background: var(--monet-menu-selected-item-rest-background);
+  --_foreground: var(--monet-menu-selected-item-rest-foreground);
+  --_icon: var(--monet-menu-selected-item-rest-icon);
+}
+
+.monet-menu__item:hover,
+.monet-menu__item:focus-visible {
+  --_background: var(--monet-menu-item-hovered-background);
+  --_foreground: var(--monet-menu-item-hovered-foreground);
+  --_icon: var(--monet-menu-item-hovered-icon);
+}
+
+.monet-menu__item:active {
+  --_background: var(--monet-menu-item-pressed-background);
+  --_foreground: var(--monet-menu-item-pressed-foreground);
+  --_icon: var(--monet-menu-item-pressed-icon);
+}
+
+.monet-menu__item[aria-disabled='true'] {
+  cursor: default;
+}
+
+.monet-menu__icon {
+  display: inline-grid;
+  width: 1.2em;
+  height: 1.2em;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--_icon);
+}
