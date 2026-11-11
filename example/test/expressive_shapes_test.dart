@@ -143,8 +143,8 @@ void main() {
     expect(border.progress, 1);
     _expectHeartOutline(border.path);
     final context = tester.element(find.byType(MonetClip));
-    expect(
-        MonetTheme.shapesOf(context).border(), isA<RoundedRectangleBorder>());
+    expect(MonetTheme.shapesOf(context).border(),
+        isA<RoundedSuperellipseBorder>());
     expect(tester.takeException(), isNull);
   });
 
