@@ -41,7 +41,7 @@ export interface MonetGeometry {
 export const defaultGeometry: MonetGeometry = {
   scale: 1,
   radius: 8,
-  corner: 'rounded',
+  corner: 'superellipse',
 };
 
 /** `MonetThemeData.touchSize`. */

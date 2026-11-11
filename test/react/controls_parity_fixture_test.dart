@@ -120,7 +120,7 @@ final _themes = [
     backgroundTone: 10,
     brightness: .dark,
     scale: 1,
-    shapeTheme: MonetShapeTheme(),
+    shapeTheme: MonetShapeTheme(borderBuilder: RoundedRectangleBorder.new),
     corner: 'rounded',
   ),
   const _ThemeCase(

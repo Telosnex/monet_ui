@@ -21,8 +21,8 @@ export interface MonetThemeScopeProps {
   scale?: number;
   /** The `MonetShapeTheme` corner radius at scale 1. Defaults to 8. */
   radius?: number;
-  /** Defaults to `rounded`, as `MonetShapeTheme()`. The Telosnex app uses
-   * `superellipse` with radius 9 (`kMonetFallbackShapeTheme`). */
+  /** Defaults to `superellipse`, as `MonetShapeTheme()`. The Telosnex app
+   * uses radius 9 (`kMonetFallbackShapeTheme`). */
   corner?: MonetCorner;
   className?: string;
   style?: React.CSSProperties;

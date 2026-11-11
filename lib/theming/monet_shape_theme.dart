@@ -14,11 +14,6 @@ typedef MonetInputBorderBuilder = InputBorder Function({
   required double gapPadding,
 });
 
-OutlinedBorder _roundedBorderBuilder({
-  required BorderRadiusGeometry borderRadius,
-  required BorderSide side,
-}) => RoundedRectangleBorder(borderRadius: borderRadius, side: side);
-
 InputBorder _roundedInputBorderBuilder({
   required BorderRadius borderRadius,
   required BorderSide borderSide,
@@ -31,6 +26,10 @@ InputBorder _roundedInputBorderBuilder({
 
 /// Shape policy stored in Monet theme data.
 ///
+/// Borders default to [RoundedSuperellipseBorder]. For plain rounded
+/// corners, pass `borderBuilder: RoundedRectangleBorder.new`. Input borders
+/// are [OutlineInputBorder] either way.
+///
 /// Radius and gap values are design-space lengths. [resolve] applies Monet's
 /// linear size scale before a border builder receives them.
 @immutable
@@ -38,7 +37,7 @@ class MonetShapeTheme {
   const MonetShapeTheme({
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
     this.inputGapPadding = 4,
-    this.borderBuilder = _roundedBorderBuilder,
+    this.borderBuilder = RoundedSuperellipseBorder.new,
     this.inputBorderBuilder = _roundedInputBorderBuilder,
   });
 

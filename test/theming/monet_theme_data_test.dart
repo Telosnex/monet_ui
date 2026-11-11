@@ -158,12 +158,12 @@ void main() {
     const expectedRadius = BorderRadius.all(Radius.circular(18));
 
     expect(
-      (theme.cardTheme.shape! as RoundedRectangleBorder).borderRadius,
+      (theme.cardTheme.shape! as RoundedSuperellipseBorder).borderRadius,
       expectedRadius,
     );
     expect(
       (theme.elevatedButtonTheme.style!.shape!.resolve({})!
-              as RoundedRectangleBorder)
+              as RoundedSuperellipseBorder)
           .borderRadius,
       expectedRadius,
     );

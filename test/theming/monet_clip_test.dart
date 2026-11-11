@@ -28,7 +28,7 @@ void main() {
 
     final clip = tester.widget<ClipPath>(find.byType(ClipPath));
     final clipper = clip.clipper! as ShapeBorderClipper;
-    final shape = clipper.shape as RoundedRectangleBorder;
+    final shape = clipper.shape as RoundedSuperellipseBorder;
     expect(shape.borderRadius, const BorderRadius.all(Radius.circular(18)));
   });
 

@@ -3,6 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:monet_ui/theming/monet_shape_theme.dart';
 
 void main() {
+  test('borders are superellipses unless a builder says otherwise', () {
+    expect(
+      const MonetShapeTheme().resolve(1).border(),
+      isA<RoundedSuperellipseBorder>(),
+    );
+    const rounded = MonetShapeTheme(borderBuilder: RoundedRectangleBorder.new);
+    expect(rounded.resolve(1).border(), isA<RoundedRectangleBorder>());
+  });
+
   test('scales radii and gap padding with the linear Monet scale', () {
     const theme = MonetShapeTheme(
       borderRadius: BorderRadius.all(Radius.circular(18)),
@@ -14,15 +23,15 @@ void main() {
     final large = theme.resolve(4);
 
     expect(
-      (small.border() as RoundedRectangleBorder).borderRadius,
+      (small.border() as RoundedSuperellipseBorder).borderRadius,
       const BorderRadius.all(Radius.circular(9)),
     );
     expect(
-      (normal.border() as RoundedRectangleBorder).borderRadius,
+      (normal.border() as RoundedSuperellipseBorder).borderRadius,
       const BorderRadius.all(Radius.circular(18)),
     );
     expect(
-      (large.border() as RoundedRectangleBorder).borderRadius,
+      (large.border() as RoundedSuperellipseBorder).borderRadius,
       const BorderRadius.all(Radius.circular(36)),
     );
 
@@ -45,7 +54,7 @@ void main() {
     final border = shapes.border(
       borderRadius: designRadius,
       side: side,
-    ) as RoundedRectangleBorder;
+    ) as RoundedSuperellipseBorder;
     expect(border.side, side);
     expect(
       border.borderRadius,

@@ -15,8 +15,10 @@ import '@telosnex/monet-ui-react/styles.css';
 
 `theme` is a libmonet `MonetThemeData`. `scale`, `radius` and `corner` are
 the Dart theme's `scale` and `MonetShapeTheme`. The defaults are Dart's
-`MonetThemeData` defaults: scale 1, radius 8, rounded corners. The Telosnex
-app uses radius 9 with superellipse corners.
+`MonetThemeData` defaults: scale 1, radius 8, superellipse corners. The
+Telosnex app uses radius 9. For plain rounded corners, pass
+`corner="rounded"` here and `borderBuilder: RoundedRectangleBorder.new` in
+Dart.
 
 Apps may set `--monet-dp` (one logical pixel), `--monet-font-label`,
 `--monet-type-label-large` and `--monet-type-label-medium`.

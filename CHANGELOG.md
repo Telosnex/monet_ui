@@ -1,3 +1,10 @@
+## Unreleased
+
+- `MonetShapeTheme()` borders are now `RoundedSuperellipseBorder`, as
+  `kMonetFallbackShapeTheme` and the Telosnex app already use. For the old
+  rounded rectangles, pass `borderBuilder: RoundedRectangleBorder.new`.
+  Input borders are still `OutlineInputBorder`.
+
 ## 1.6.2
 
 - Requires pixel_snap_fork 1.0.0. It is the same code as 0.2.0.

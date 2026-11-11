@@ -53,6 +53,15 @@ describe('MonetThemeScope', () => {
 });
 
 describe('MonetButton', () => {
+  test('has superellipse corners by default, as MonetShapeTheme()', () => {
+    render(
+      <MonetThemeScope theme={theme}>
+        <MonetButton>Plain</MonetButton>
+      </MonetThemeScope>
+    );
+    expect(screen.getByRole('button', {name: 'Plain'}).className).toContain('monet-superellipse');
+  });
+
   test('reads its colours, size and corners from the spec', () => {
     inTheme(<MonetButton kind="fill">Go</MonetButton>, {scale: 0.64, radius: 9});
     const button = screen.getByRole('button', {name: 'Go'});
