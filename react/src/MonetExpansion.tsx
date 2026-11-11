@@ -96,11 +96,12 @@ export function MonetExpansion({
         </svg>
       </button>
       <div id={bodyId} ref={bodyRef} className="monet-expansion__body" aria-hidden={!expanded}>
-        <div
-          className="monet-expansion__content"
-          style={childrenPadding === undefined ? undefined : {padding: childrenPadding}}
-        >
-          {children}
+        {/* The padding is inside the clipped box: padding on the box itself
+            would stay visible while collapsed. */}
+        <div className="monet-expansion__content">
+          <div style={childrenPadding === undefined ? undefined : {padding: childrenPadding}}>
+            {children}
+          </div>
         </div>
       </div>
     </div>

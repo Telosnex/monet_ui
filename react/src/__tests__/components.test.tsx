@@ -213,6 +213,18 @@ describe('MonetExpansion', () => {
     expect(header.getAttribute('aria-expanded')).toBe('true');
     expect(body.inert).toBe(false);
   });
+
+  test('pads the children inside the clipped box', () => {
+    inTheme(
+      <MonetExpansion title="More" childrenPadding="0 12px 12px">
+        <span>Inside</span>
+      </MonetExpansion>
+    );
+    const clipped = screen.getByText('Inside').parentElement!.parentElement!;
+    expect(clipped.className).toBe('monet-expansion__content');
+    expect(clipped.style.padding).toBe('');
+    expect(screen.getByText('Inside').parentElement!.style.padding).toBe('0px 12px 12px');
+  });
 });
 
 describe('MonetDropdown', () => {
