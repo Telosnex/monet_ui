@@ -1,0 +1,112 @@
+# Publishes one of the npm packages from a release tag:
+#   npm-monet-ui-v1.2.3        js/     @telosnex/monet-ui
+#   npm-monet-ui-react-v1.2.3  react/  @telosnex/monet-ui-react
+# The tag's version must be the one in the package's package.json.
+#
+# Publishes through npm trusted publishing (OIDC): no stored token. On
+# npmjs.com, each package's Settings > Trusted Publisher names this
+# repository, this file (npm_publish.yml) and the environment npm. The
+# filename and environment are fixed there: renaming either here breaks
+# publishing until the trusted publisher is created again.
+#
+# Before the upload: the Dart parity fixture is generated again and must
+# match the committed one, then prepublishOnly runs npm run check.
+#
+# By hand (workflow_dispatch): the same checks and npm publish --dry-run.
+name: Npm publish
+
+on:
+  push:
+    tags:
+      - 'npm-monet-ui-v[0-9]+.[0-9]+.[0-9]+*'
+      - 'npm-monet-ui-react-v[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
+    inputs:
+      package:
+        description: The package to check. Always a dry run.
+        type: choice
+        options: [monet-ui, monet-ui-react]
+        default: monet-ui-react
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Package and version
+        id: package
+        env:
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+          INPUT: ${{ inputs.package }}
+        run: |
+          if [[ -n "$TAG" ]]; then
+            name=${TAG#npm-}
+            name=${name%-v*}
+            version=${TAG##*-v}
+          else
+            name=$INPUT
+            version=
+          fi
+          case "$name" in
+            monet-ui) dir=js ;;
+            monet-ui-react) dir=react ;;
+            *) echo "::error::Unknown package $name"; exit 1 ;;
+          esac
+          actual=$(jq -r .version "$dir/package.json")
+          if [[ -n "$version" && "$version" != "$actual" ]]; then
+            echo "::error::Tag $TAG is $version; $dir/package.json is $actual."
+            exit 1
+          fi
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+          echo "Publishing @telosnex/$name $actual from $dir/"
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@f97b50830596a30b24ea34c643a3b7dcce349972 # v0.5.15
+      # No cache: a release build installs from the lockfile only.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      # Trusted publishing needs npm 11.5.1 or later.
+      - run: npm install -g npm@11
+      - run: flutter pub get
+      - name: Parity fixture matches Dart
+        env:
+          DIR: ${{ steps.package.outputs.dir }}
+        run: |
+          if [[ "$DIR" == js ]]; then
+            flutter test test/js/parity_fixture_test.dart --plain-name 'generate JS parity fixtures'
+            fixture=js/fixtures/libmonet_parity.json
+          else
+            flutter test test/react/controls_parity_fixture_test.dart
+            fixture=react/fixtures/monet_controls_parity.json
+          fi
+          git diff --exit-code -- "$fixture"
+      # monet-ui-react builds and tests against ../js (a file: devDependency).
+      - name: Build js/ for react/
+        if: steps.package.outputs.dir == 'react'
+        working-directory: js
+        run: npm ci && npm run build
+      - run: npm ci
+        working-directory: ${{ steps.package.outputs.dir }}
+      - name: Publish
+        if: github.ref_type == 'tag'
+        working-directory: ${{ steps.package.outputs.dir }}
+        run: npm publish
+      - name: Dry run
+        if: github.ref_type != 'tag'
+        working-directory: ${{ steps.package.outputs.dir }}
+        run: npm publish --dry-run
