@@ -80,8 +80,9 @@ jobs:
       - name: npm 11
         run: |
           node --version
-          npm install -g npm@11
-          npm --version
+          npm install -g --prefix "$RUNNER_TEMP/npm" npm@11
+          echo "$RUNNER_TEMP/npm/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/npm/bin/npm" --version
       - run: flutter pub get
       - name: Parity fixture matches Dart
         env:
