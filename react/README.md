@@ -22,7 +22,12 @@ Telosnex app uses radius 9. For plain rounded corners, pass
 Dart.
 
 Apps may set `--monet-dp` (one logical pixel), `--monet-font-label`,
-`--monet-type-label-large` and `--monet-type-label-medium`.
+`--monet-font-mono` and the text sizes `--monet-type-label-large`,
+`--monet-type-label-medium`, `--monet-type-body-large` and
+`--monet-type-headline-small`. Unset text sizes are the Dart theme's for
+Roboto: 17, 15, 19 and 24 logical pixels, scaled as the theme's lengths
+are. For another font, multiply by Dart's correction for it
+(`visualHeightScaleForFontFamily`).
 
 ## Parity with Dart
 

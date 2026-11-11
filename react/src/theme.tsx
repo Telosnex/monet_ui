@@ -1,7 +1,7 @@
 import {themeCssVars, type MonetThemeData} from '@telosnex/monet-ui';
 import React, {createContext, useContext, useMemo} from 'react';
 
-import {defaultGeometry, type MonetCorner, type MonetGeometry} from './spec.js';
+import {defaultGeometry, linearScale, type MonetCorner, type MonetGeometry} from './spec.js';
 
 const GeometryContext = createContext<MonetGeometry>(defaultGeometry);
 
@@ -32,6 +32,7 @@ export interface MonetThemeScopeProps {
 /**
  * Peer of `MonetTheme`: a div that sets the `--monet-*` palette variables
  * and gives the controls inside it the theme's scale and corners.
+ * `--monet-size-scale` carries the scale to the default text sizes.
  */
 export function MonetThemeScope({
   theme,
@@ -48,7 +49,7 @@ export function MonetThemeScope({
     <GeometryContext.Provider value={geometry}>
       <div
         className={className ? `monet-theme ${className}` : 'monet-theme'}
-        style={{...vars, ...style} as React.CSSProperties}
+        style={{...vars, '--monet-size-scale': linearScale(scale), ...style} as React.CSSProperties}
       >
         {children}
       </div>

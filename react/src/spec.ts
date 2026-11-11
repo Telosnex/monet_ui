@@ -47,6 +47,17 @@ export const defaultGeometry: MonetGeometry = {
 /** `MonetThemeData.touchSize`. */
 export const touchSize = 36;
 
+/**
+ * `MonetThemeData`'s text sizes at scale 1, in logical pixels, for Roboto:
+ * the `--monet-type-*` defaults in styles.css. Text scales as lengths do.
+ */
+export const textSizes = {
+  labelLarge: 17,
+  labelMedium: 15,
+  bodyLarge: 19,
+  headlineSmall: 24,
+} as const;
+
 /** `SizeScale.sizeScale`: lengths scale by the square root of the scale. */
 export function linearScale(scale: number): number {
   return Math.sqrt(scale);

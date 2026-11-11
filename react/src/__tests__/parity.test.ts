@@ -13,6 +13,8 @@ import {
   sliderRowSpec,
   sliderSpec,
   superellipseCss,
+  linearScale,
+  textSizes,
   type MonetButtonKind,
   type MonetButtonPreset,
   type MonetCorner,
@@ -42,6 +44,7 @@ interface Fixture {
   themes: Record<string, ThemeFixture>;
   cases: CaseFixture[];
   superellipseCorner: {radius: number; points: Array<[number, number]>};
+  textSizes: Record<string, Record<keyof typeof textSizes, number>>;
 }
 
 const fixture = JSON.parse(
@@ -171,5 +174,36 @@ describe('superellipse corners', () => {
   test('the fallback circle is within 2%; a same-radius squircle is not', () => {
     expect(cssCornerError(radius, 1) / radius).toBeLessThan(0.02);
     expect(cssCornerError(radius, 2) / radius).toBeGreaterThan(0.1);
+  });
+});
+
+describe('text sizes', () => {
+  const css = readFileSync('src/styles.css', 'utf8');
+  const kebab = (name: string): string => name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+
+  for (const [name, size] of Object.entries(textSizes)) {
+    test(`styles.css defaults ${name} to textSizes`, () => {
+      const pattern = new RegExp(
+        `var\\(--monet-type-${kebab(name)}, calc\\(([0-9.]+) \\* var\\(--monet-size-scale, 1\\)`,
+        'g'
+      );
+      const found = [...css.matchAll(pattern)].map((m) => Number(m[1]));
+      expect(found.length).toBeGreaterThan(0);
+      expect(new Set(found)).toEqual(new Set([size]));
+    });
+  }
+
+  for (const [themeName, sizes] of Object.entries(fixture.textSizes)) {
+    test(`textSizes are the Dart theme's / ${themeName}`, () => {
+      const scale = linearScale(fixture.themes[themeName]!.scale);
+      for (const [name, size] of Object.entries(textSizes)) {
+        expect(round(size * scale), name).toBe(sizes[name as keyof typeof textSizes]);
+      }
+    });
+  }
+
+  test('every --monet-type- variable has a default from textSizes', () => {
+    const read = new Set([...css.matchAll(/var\((--monet-type-[a-z-]+)/g)].map((m) => m[1]));
+    expect(read).toEqual(new Set(Object.keys(textSizes).map((n) => `--monet-type-${kebab(n)}`)));
   });
 });

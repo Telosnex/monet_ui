@@ -51,6 +51,11 @@ describe('MonetThemeScope', () => {
     const scope = container.firstElementChild!;
     expect(styleVar(scope, '--monet-primary-color')).toMatch(/^#[0-9A-F]{6}$/);
   });
+
+  test('gives the text sizes the square root of its scale', () => {
+    const {container} = inTheme(null, {scale: 0.64});
+    expect(styleVar(container.firstElementChild!, '--monet-size-scale')).toBe('0.8');
+  });
 });
 
 describe('MonetButton', () => {

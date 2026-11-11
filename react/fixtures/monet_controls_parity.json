@@ -4066,5 +4066,25 @@
         0.007
       ]
     ]
+  },
+  "textSizes": {
+    "light": {
+      "labelLarge": 17.0,
+      "labelMedium": 15.0,
+      "bodyLarge": 19.0,
+      "headlineSmall": 24.0
+    },
+    "dark": {
+      "labelLarge": 17.0,
+      "labelMedium": 15.0,
+      "bodyLarge": 19.0,
+      "headlineSmall": 24.0
+    },
+    "small": {
+      "labelLarge": 13.6,
+      "labelMedium": 12.0,
+      "bodyLarge": 15.2,
+      "headlineSmall": 19.2
+    }
   }
 }

@@ -767,6 +767,32 @@ Future<Map<String, Object?>> _borderedCase(
   };
 }
 
+/// The theme's text sizes that the React controls use as their defaults
+/// (`--monet-type-*` in styles.css), in logical pixels.
+Future<Map<String, Object?>> _textSizes(
+  WidgetTester tester,
+  _ThemeCase theme,
+) async {
+  late TextTheme textTheme;
+  await tester.pumpWidget(
+    _app(
+      theme,
+      Builder(
+        builder: (context) {
+          textTheme = Theme.of(context).textTheme;
+          return const SizedBox();
+        },
+      ),
+    ),
+  );
+  return {
+    'labelLarge': _round(textTheme.labelLarge!.fontSize!),
+    'labelMedium': _round(textTheme.labelMedium!.fontSize!),
+    'bodyLarge': _round(textTheme.bodyLarge!.fontSize!),
+    'headlineSmall': _round(textTheme.headlineSmall!.fontSize!),
+  };
+}
+
 void main() {
   testWidgets('generate React controls parity fixture', (tester) async {
     final cases = <Map<String, Object?>>[];
@@ -832,6 +858,9 @@ void main() {
       'themes': {for (final t in _themes) t.name: t.toJson()},
       'cases': cases,
       'superellipseCorner': _superellipseCorner(),
+      'textSizes': {
+        for (final t in _themes) t.name: await _textSizes(tester, t),
+      },
     };
     final file = File(_fixturePath);
     // Real file IO does not complete inside the test's fake async zone.

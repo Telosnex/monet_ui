@@ -1,6 +1,6 @@
 {
   "name": "@telosnex/monet-ui-react",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "React versions of the monet_ui controls, checked against the Dart controls.",
   "license": "MIT",
   "repository": {

@@ -6,11 +6,17 @@
  * Inputs an app may set:
  *   --monet-dp                  one logical pixel (default 1px)
  *   --monet-font-label          label font (default inherit)
- *   --monet-type-label-large    button, menu and header text (default 1rem)
- *   --monet-type-label-medium   segment text (default 0.875rem)
- *   --monet-type-body-large     regular button and menu icons (default 1rem)
- *   --monet-type-headline-small prominent slider row labels (default 1.5rem)
+ *   --monet-type-label-large    button, menu and header text
+ *   --monet-type-label-medium   segment text
+ *   --monet-type-body-large     regular button and menu icons
+ *   --monet-type-headline-small prominent slider row labels
  *   --monet-font-mono           slider row values (default monospace)
+ *
+ * The --monet-type-* defaults are the Dart theme's text sizes for Roboto
+ * (textSizes in spec.ts): 17, 15, 19 and 24 logical pixels, times
+ * --monet-size-scale, which MonetThemeScope sets to the square root of its
+ * scale. An app whose font is not Roboto sets them with Dart's per-font
+ * correction.
  *
  * Web-only additions, not in the Dart controls: a focus-visible ring in
  * the tertiary colour role, and the pointer cursor. Tooltips are the
@@ -81,7 +87,7 @@
   color: var(--_foreground);
   cursor: pointer;
   font-family: var(--monet-font-label, inherit);
-  font-size: var(--monet-type-label-large, 1rem);
+  font-size: var(--monet-type-label-large, calc(17 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
   line-height: normal;
   text-align: center;
   text-decoration: none;
@@ -91,7 +97,7 @@
 
 .monet-button--compact,
 .monet-button--tool {
-  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 /* The Dart button keeps a touch-height input target around the visual. */
@@ -134,15 +140,15 @@
 
 /* MonetButton.iconSizeFor: bodyLarge, labelLarge, labelMedium. */
 .monet-button--regular .monet-button__icon {
-  font-size: var(--monet-type-body-large, 1rem);
+  font-size: var(--monet-type-body-large, calc(19 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 .monet-button--tool .monet-button__icon {
-  font-size: var(--monet-type-label-large, 1rem);
+  font-size: var(--monet-type-label-large, calc(17 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 .monet-button--compact .monet-button__icon {
-  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 .monet-button__label {
@@ -210,7 +216,7 @@
   color: inherit;
   cursor: pointer;
   font-family: var(--monet-font-label, inherit);
-  font-size: var(--monet-type-label-large, 1rem);
+  font-size: var(--monet-type-label-large, calc(17 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
   text-align: start;
 }
 
@@ -276,7 +282,7 @@
   color: var(--_foreground);
   cursor: pointer;
   font-family: var(--monet-font-label, inherit);
-  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
   text-align: center;
   transition:
     background-color 200ms ease,
@@ -490,7 +496,7 @@
   justify-content: space-between;
   gap: var(--monet-slider-row-gap);
   font-family: var(--monet-font-label, inherit);
-  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 .monet-slider-row__name {
@@ -508,7 +514,7 @@
 
 .monet-slider-row[data-prominent] .monet-slider-row__text {
   padding-left: var(--monet-slider-row-gap);
-  font-size: var(--monet-type-headline-small, 1.5rem);
+  font-size: var(--monet-type-headline-small, calc(24 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
   font-weight: 400;
 }
 
@@ -519,7 +525,7 @@
   width: 1em;
   height: 1em;
   flex: 0 0 auto;
-  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 .monet-slider-row__icon {
@@ -537,14 +543,14 @@
   overflow: hidden;
   color: var(--monet-slider-row-value);
   font-family: var(--monet-font-mono, monospace);
-  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
   font-variant-numeric: tabular-nums lining-nums;
   white-space: nowrap;
 }
 
 .monet-slider-row[data-prominent] .monet-slider-row__value {
   font-family: inherit;
-  font-size: var(--monet-type-body-large, 1rem);
+  font-size: var(--monet-type-body-large, calc(19 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }
 
 .monet-slider-row__track {
@@ -675,7 +681,7 @@
   color: var(--_foreground);
   cursor: pointer;
   font-family: var(--monet-font-label, inherit);
-  font-size: var(--monet-type-label-large, 1rem);
+  font-size: var(--monet-type-label-large, calc(17 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
   outline: none;
   white-space: nowrap;
 }
@@ -705,5 +711,5 @@
 
 /* Sized from bodyLarge, a step up from the label, as in MenuEntry. */
 .monet-menu__icon {
-  font-size: var(--monet-type-body-large, 1rem);
+  font-size: var(--monet-type-body-large, calc(19 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
 }

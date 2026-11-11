@@ -31,6 +31,7 @@ const inputs = [
   /^--monet-dp$/,
   /^--monet-font-/,
   /^--monet-type-/,
+  /^--monet-size-scale$/,
   /^--monet-slider-value$/,
   /^--monet-corner-scale$/,
   /^--monet-ink-(left|width)$/,
