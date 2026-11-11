@@ -8,6 +8,7 @@
  *   --monet-font-label          label font (default inherit)
  *   --monet-type-label-large    button, menu and header text (default 1rem)
  *   --monet-type-label-medium   segment text (default 0.875rem)
+ *   --monet-type-body-large     regular button and menu icons (default 1rem)
  *
  * Web-only additions, not in the Dart controls: a focus-visible ring in
  * the tertiary colour role, and the pointer cursor.
@@ -27,6 +28,25 @@
 
     corner-shape: superellipse(1.585);
   }
+}
+
+/* ── Icons ───────────────────────────────────────────────────────────── */
+
+/* One font size high; as wide as the ink when InkIcon measured it. */
+.monet-icon {
+  display: inline-flex;
+  width: calc(var(--monet-ink-width, 1) * 1em);
+  height: 1em;
+  flex: 0 0 auto;
+  align-items: center;
+  color: var(--_icon);
+}
+
+.monet-icon > * {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  margin-left: calc(var(--monet-ink-left, 0) * -1em);
 }
 
 /* ── MonetButton ─────────────────────────────────────────────────────── */
@@ -106,18 +126,17 @@
   cursor: default;
 }
 
-.monet-button__icon {
-  display: inline-grid;
-  width: 1.2em;
-  height: 1.2em;
-  flex: 0 0 auto;
-  place-items: center;
-  color: var(--_icon);
+/* MonetButton.iconSizeFor: bodyLarge, labelLarge, labelMedium. */
+.monet-button--regular .monet-button__icon {
+  font-size: var(--monet-type-body-large, 1rem);
 }
 
-.monet-button__icon > svg {
-  width: 100%;
-  height: 100%;
+.monet-button--tool .monet-button__icon {
+  font-size: var(--monet-type-label-large, 1rem);
+}
+
+.monet-button--compact .monet-button__icon {
+  font-size: var(--monet-type-label-medium, 0.875rem);
 }
 
 .monet-button__label {
@@ -317,20 +336,6 @@
   z-index: 3;
   outline: calc(2 * var(--monet-dp, 1px)) solid var(--monet-tertiary-color);
   outline-offset: calc(-2 * var(--monet-dp, 1px));
-}
-
-.monet-segmented__icon {
-  display: inline-grid;
-  width: 1em;
-  height: 1em;
-  flex: 0 0 auto;
-  place-items: center;
-  color: var(--_icon);
-}
-
-.monet-segmented__icon > svg {
-  width: 100%;
-  height: 100%;
 }
 
 .monet-segmented__label {
@@ -543,11 +548,7 @@
   cursor: default;
 }
 
+/* Sized from bodyLarge, a step up from the label, as in MenuEntry. */
 .monet-menu__icon {
-  display: inline-grid;
-  width: 1.2em;
-  height: 1.2em;
-  flex: 0 0 auto;
-  place-items: center;
-  color: var(--_icon);
+  font-size: var(--monet-type-body-large, 1rem);
 }

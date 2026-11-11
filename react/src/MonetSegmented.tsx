@@ -1,6 +1,7 @@
 import React, {useMemo, useRef} from 'react';
 
 import {cx, withVars} from './classes.js';
+import {InkIcon} from './InkIcon.js';
 import type {MonetFamily} from './paint.js';
 import {segmentedSpec} from './spec.js';
 import {useMonetGeometry} from './theme.js';
@@ -94,9 +95,7 @@ export function MonetSegmented<T extends string>({
           >
             <span className="monet-segmented__content">
               {option.icon != null && (
-                <span className="monet-segmented__icon" aria-hidden="true">
-                  {option.icon}
-                </span>
+                <InkIcon className="monet-segmented__icon">{option.icon}</InkIcon>
               )}
               <span className="monet-segmented__label">{option.label}</span>
             </span>

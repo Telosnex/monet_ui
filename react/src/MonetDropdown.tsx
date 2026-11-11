@@ -1,6 +1,7 @@
 import React, {useEffect, useId, useMemo, useRef, useState} from 'react';
 
 import {cx, withVars} from './classes.js';
+import {InkIcon} from './InkIcon.js';
 import {MonetButton} from './MonetButton.js';
 import {dropdownSpec} from './spec.js';
 import {useMonetGeometry} from './theme.js';
@@ -178,9 +179,10 @@ export function MonetDropdown<T>({
                 onKeyDown={(event) => onMenuKeyDown(event, index)}
               >
                 {icon != null && (
-                  <span className="monet-menu__icon" aria-hidden="true">
+                  // Dart's menu keeps the square icon box.
+                  <InkIcon className="monet-menu__icon" trim={false}>
                     {icon}
-                  </span>
+                  </InkIcon>
                 )}
                 <span className="monet-menu__label">
                   {renderItem ? renderItem(item) : itemLabel(item)}

@@ -31,6 +31,7 @@ const inputs = [
   /^--monet-type-/,
   /^--monet-slider-value$/,
   /^--monet-corner-scale$/,
+  /^--monet-ink-(left|width)$/,
 ];
 
 const set = new Set(

@@ -1,6 +1,7 @@
 import React, {forwardRef, useMemo} from 'react';
 
 import {cx, withVars} from './classes.js';
+import {InkIcon} from './InkIcon.js';
 import type {MonetFamily} from './paint.js';
 import {buttonSpec, type MonetButtonKind, type MonetButtonPreset} from './spec.js';
 import {useMonetGeometry} from './theme.js';
@@ -56,9 +57,7 @@ export const MonetButton = forwardRef<HTMLButtonElement & HTMLAnchorElement, Mon
     const content = (
       <>
         {icon != null && (
-          <span className="monet-button__icon" aria-hidden="true">
-            {icon}
-          </span>
+          <InkIcon className="monet-button__icon">{icon}</InkIcon>
         )}
         {children != null && <span className="monet-button__label">{children}</span>}
       </>
