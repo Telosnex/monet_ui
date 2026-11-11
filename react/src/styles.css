@@ -42,11 +42,14 @@
   color: var(--_icon);
 }
 
-.monet-icon > * {
+/* Doubled class: icon libraries style their svg with one class (MUI sets
+   font-size: 1.5rem), and their styles load after this sheet. */
+.monet-icon.monet-icon > * {
   width: 1em;
   height: 1em;
   flex: 0 0 auto;
-  margin-left: calc(var(--monet-ink-left, 0) * -1em);
+  margin: 0 0 0 calc(var(--monet-ink-left, 0) * -1em);
+  font-size: inherit;
 }
 
 /* ── MonetButton ─────────────────────────────────────────────────────── */

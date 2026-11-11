@@ -70,4 +70,9 @@ describe('styles.css', () => {
     const radii = [...css.matchAll(/border-radius: var\((--monet-[a-z-]+-radius)\)/g)];
     expect(radii.map((m) => m[1])).toEqual([]);
   });
+
+  test('icon children take the icon box size over library styles', () => {
+    const rule = css.match(/\.monet-icon\.monet-icon > \* \{([^}]*)\}/);
+    expect(rule?.[1]).toContain('font-size: inherit;');
+  });
 });
