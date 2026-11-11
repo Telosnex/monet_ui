@@ -37,6 +37,31 @@ import 'package:pixel_snap_fork/material.dart';
 /// passes to it, and a comment names the private code.
 const _fixturePath = 'react/fixtures/monet_controls_parity.json';
 
+/// The top-left corner of Flutter's `RSuperellipse` at radius 100 in a
+/// large square, as points every 2 logical pixels along the path. The
+/// curve reaches about 3 × the radius along each edge.
+Map<String, Object?> _superellipseCorner() {
+  const radius = 100.0;
+  const reach = 300.0;
+  final path = Path()
+    ..addRSuperellipse(
+      RSuperellipse.fromRectAndRadius(
+        const Rect.fromLTWH(0, 0, 1000, 1000),
+        const Radius.circular(radius),
+      ),
+    );
+  final points = <List<double>>[];
+  for (final metric in path.computeMetrics()) {
+    for (var d = 0.0; d < metric.length; d += 2) {
+      final p = metric.getTangentForOffset(d)!.position;
+      if (p.dx <= reach && p.dy <= reach) {
+        points.add([_round(p.dx), _round(p.dy)]);
+      }
+    }
+  }
+  return {'radius': radius, 'points': points};
+}
+
 class _ThemeCase {
   const _ThemeCase({
     required this.name,
@@ -666,6 +691,7 @@ void main() {
       'schema': 1,
       'themes': {for (final t in _themes) t.name: t.toJson()},
       'cases': cases,
+      'superellipseCorner': _superellipseCorner(),
     };
     final file = File(_fixturePath);
     // Real file IO does not complete inside the test's fake async zone.

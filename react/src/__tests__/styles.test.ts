@@ -10,6 +10,7 @@ import {
   expansionSpec,
   segmentedSpec,
   sliderSpec,
+  superellipseCss,
 } from '../spec.js';
 import {
   borderedVars,
@@ -29,6 +30,7 @@ const inputs = [
   /^--monet-font-/,
   /^--monet-type-/,
   /^--monet-slider-value$/,
+  /^--monet-corner-scale$/,
 ];
 
 const set = new Set(
@@ -59,5 +61,12 @@ describe('styles.css', () => {
       (name) => !read.has(name) && !/^--monet-menu-selected-item-(hovered|pressed)-/.test(name)
     );
     expect(unused).toEqual([]);
+  });
+
+  test('superellipse corners use the values in spec.ts', () => {
+    expect(css).toContain(`corner-shape: superellipse(${superellipseCss.shape});`);
+    expect(css).toContain(`--monet-corner-scale: ${superellipseCss.radiusScale};`);
+    const radii = [...css.matchAll(/border-radius: var\((--monet-[a-z-]+-radius)\)/g)];
+    expect(radii.map((m) => m[1])).toEqual([]);
   });
 });

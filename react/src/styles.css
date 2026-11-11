@@ -13,9 +13,19 @@
  * the tertiary colour role, and the pointer cursor.
  */
 
-@supports (corner-shape: squircle) {
+/* Flutter's RoundedSuperellipseBorder; see superellipseCss in spec.ts. */
+/* Set per element: a rounded control inside a superellipse one keeps 1. */
+@property --monet-corner-scale {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+@supports (corner-shape: superellipse(2)) {
   .monet-superellipse {
-    corner-shape: squircle;
+    --monet-corner-scale: 1.4142;
+
+    corner-shape: superellipse(1.585);
   }
 }
 
@@ -38,7 +48,7 @@
   padding: var(--monet-button-padding-y) var(--monet-button-padding-x);
   margin: 0;
   border: var(--monet-button-border-width) solid var(--monet-button-border-color);
-  border-radius: var(--monet-button-radius);
+  border-radius: calc(var(--monet-button-radius) * var(--monet-corner-scale, 1));
   appearance: none;
   background: var(--_background);
   box-shadow: var(--monet-button-shadows);
@@ -121,7 +131,7 @@
 .monet-bordered {
   box-sizing: border-box;
   border: var(--monet-bordered-border-width) solid var(--monet-bordered-border-color);
-  border-radius: var(--monet-bordered-radius);
+  border-radius: calc(var(--monet-bordered-radius) * var(--monet-corner-scale, 1));
   background: var(--monet-bordered-background);
 }
 
@@ -148,7 +158,7 @@
   --_border-width: var(--monet-expansion-collapsed-border-width);
 
   box-sizing: border-box;
-  border-radius: var(--monet-expansion-radius);
+  border-radius: calc(var(--monet-expansion-radius) * var(--monet-corner-scale, 1));
   background: var(--_background);
   /* An outline, so the border does not move the content. */
   box-shadow: inset 0 0 0 var(--_border-width) var(--_border-color);
@@ -218,7 +228,7 @@
   align-self: flex-start;
   max-width: 100%;
   overflow: hidden;
-  border-radius: var(--monet-segmented-radius);
+  border-radius: calc(var(--monet-segmented-radius) * var(--monet-corner-scale, 1));
   box-shadow: var(--monet-segmented-shadows);
   isolation: isolate;
 }
@@ -484,7 +494,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   border: var(--monet-menu-border-width) solid var(--monet-menu-border-color);
-  border-radius: var(--monet-menu-radius);
+  border-radius: calc(var(--monet-menu-radius) * var(--monet-corner-scale, 1));
   background: var(--monet-menu-background);
   box-shadow: var(--monet-menu-shadows);
 }

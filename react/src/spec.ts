@@ -13,6 +13,21 @@ import {aestheticShadows, fabShadows, type ShadowSpec} from './shadow.js';
  * `RoundedSuperellipseBorder`. */
 export type MonetCorner = 'rounded' | 'superellipse';
 
+/**
+ * How CSS draws Flutter's `RoundedSuperellipseBorder`. Flutter's corner
+ * meets a circle of the radius on the diagonal and blends into the edges
+ * over about 3 × the radius. CSS `corner-shape: squircle` at the same
+ * radius is much squarer. `superellipse(log2 3)` at √2 × the radius is
+ * within 0.75% of the radius of Flutter's curve. Without `corner-shape`,
+ * a plain circle at the radius is within 1.7%.
+ */
+export const superellipseCss = {
+  /** The `corner-shape: superellipse()` parameter: log2 of the exponent. */
+  shape: 1.585,
+  /** Multiplies the Flutter radius for `border-radius`. */
+  radiusScale: 1.4142,
+} as const;
+
 /** The geometry part of a Monet theme. */
 export interface MonetGeometry {
   /** The UI size preference, as `MonetThemeData.scale`. */
