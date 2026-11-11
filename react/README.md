@@ -1,7 +1,8 @@
 # @telosnex/monet-ui-react
 
 React versions of the monet_ui controls: `MonetButton`, `MonetSegmented`,
-`MonetSlider`, `MonetExpansion`, `MonetDropdown` and `Bordered`, inside a
+`MonetSlider`, `SliderRow`, `MonetExpansion`, `MonetDropdown` and
+`Bordered`, inside a
 `MonetThemeScope`. Colours come from `@telosnex/monet-ui`.
 
 ```tsx

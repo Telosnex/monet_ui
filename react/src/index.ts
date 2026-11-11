@@ -4,6 +4,7 @@ export {MonetDropdown, type MonetDropdownProps} from './MonetDropdown.js';
 export {MonetExpansion, type MonetExpansionProps} from './MonetExpansion.js';
 export {MonetSegmented, type MonetSegment, type MonetSegmentedProps} from './MonetSegmented.js';
 export {MonetSlider, type MonetSliderProps} from './MonetSlider.js';
+export {SliderRow, type SliderRowProps} from './SliderRow.js';
 export {MonetThemeScope, useMonetGeometry, type MonetThemeScopeProps} from './theme.js';
 export {dp, paint, paintCss, transparent, type MonetFamily, type Paint, type PaintValue} from './paint.js';
 export * from './shadow.js';

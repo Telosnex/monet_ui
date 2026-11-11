@@ -15,6 +15,7 @@ import type {
   SegmentStates,
   SegmentedSpec,
   SliderPaints,
+  SliderRowSpec,
   SliderSpec,
   StatePaints,
 } from './spec.js';
@@ -110,6 +111,23 @@ export function sliderVars(spec: SliderSpec): CssVars {
     [`${p}-border-width`]: dp(spec.borderWidth),
     [`${p}-glow`]: dp(spec.glowSigma * 2),
     [`${p}-thumb-content-size`]: `${spec.thumbContentFraction * 100}%`,
+  };
+}
+
+export function sliderRowVars(spec: SliderRowSpec): CssVars {
+  const p = '--monet-slider-row';
+  return {
+    [`${p}-label`]: paintCss(spec.label),
+    [`${p}-value`]: paintCss(spec.value),
+    [`${p}-info`]: paintCss(spec.info),
+    [`${p}-icon`]: spec.icon ? paintCss(spec.icon) : 'currentColor',
+    [`${p}-label-width`]: dp(spec.labelWidth),
+    [`${p}-value-width`]: dp(spec.valueWidth),
+    [`${p}-gap`]: dp(spec.gap),
+    [`${p}-min-height`]: dp(spec.minHeight ?? 0),
+    [`${p}-small-gap`]: dp(spec.smallSliderGap),
+    [`${p}-small-inset`]: dp(spec.smallSliderInset),
+    [`${p}-small-bottom`]: dp(spec.smallBottom),
   };
 }
 

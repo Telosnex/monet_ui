@@ -787,6 +787,75 @@
       }
     },
     {
+      "control": "SliderRow",
+      "theme": "light",
+      "props": {
+        "prominent": false,
+        "small": false
+      },
+      "values": {
+        "label": "#5C798A",
+        "value": "#5C798A",
+        "info": "#709AB2",
+        "icon": "#709AB2",
+        "valueLeft": 188.0,
+        "sliderLeft": 286.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "light",
+      "props": {
+        "prominent": false,
+        "small": true
+      },
+      "values": {
+        "label": "#5C798A",
+        "value": "#5C798A",
+        "info": "#709AB2",
+        "icon": "#709AB2",
+        "sliderGap": 1.0,
+        "sliderInset": 0.0,
+        "sliderInsetEnd": 0.0,
+        "bottom": 0.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "light",
+      "props": {
+        "prominent": true,
+        "small": false
+      },
+      "values": {
+        "label": "#5C798A",
+        "value": "#5C798A",
+        "info": "#4F7A92",
+        "icon": null,
+        "valueLeft": 188.0,
+        "sliderLeft": 286.0,
+        "minHeight": 38.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "light",
+      "props": {
+        "prominent": true,
+        "small": true
+      },
+      "values": {
+        "label": "#5C798A",
+        "value": "#5C798A",
+        "info": "#4F7A92",
+        "icon": null,
+        "sliderGap": 1.0,
+        "sliderInset": 8.0,
+        "sliderInsetEnd": 8.0,
+        "bottom": 6.0
+      }
+    },
+    {
       "control": "MonetDropdown",
       "theme": "light",
       "props": {},
@@ -1691,6 +1760,75 @@
       }
     },
     {
+      "control": "SliderRow",
+      "theme": "dark",
+      "props": {
+        "prominent": false,
+        "small": false
+      },
+      "values": {
+        "label": "#A3B7C4",
+        "value": "#A3B7C4",
+        "info": "#749EB5",
+        "icon": "#749EB5",
+        "valueLeft": 188.0,
+        "sliderLeft": 286.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "dark",
+      "props": {
+        "prominent": false,
+        "small": true
+      },
+      "values": {
+        "label": "#A3B7C4",
+        "value": "#A3B7C4",
+        "info": "#749EB5",
+        "icon": "#749EB5",
+        "sliderGap": 1.0,
+        "sliderInset": 0.0,
+        "sliderInsetEnd": 0.0,
+        "bottom": 0.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "dark",
+      "props": {
+        "prominent": true,
+        "small": false
+      },
+      "values": {
+        "label": "#A3B7C4",
+        "value": "#A3B7C4",
+        "info": "#92BAD1",
+        "icon": null,
+        "valueLeft": 188.0,
+        "sliderLeft": 286.0,
+        "minHeight": 38.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "dark",
+      "props": {
+        "prominent": true,
+        "small": true
+      },
+      "values": {
+        "label": "#A3B7C4",
+        "value": "#A3B7C4",
+        "info": "#92BAD1",
+        "icon": null,
+        "sliderGap": 1.0,
+        "sliderInset": 8.0,
+        "sliderInsetEnd": 8.0,
+        "bottom": 6.0
+      }
+    },
+    {
       "control": "MonetDropdown",
       "theme": "dark",
       "props": {},
@@ -2592,6 +2730,75 @@
         "glowSigma": 2,
         "thumbContentFraction": 0.6,
         "keyStep": 0.05
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "small",
+      "props": {
+        "prominent": false,
+        "small": false
+      },
+      "values": {
+        "label": "#877159",
+        "value": "#877159",
+        "info": "#BF8943",
+        "icon": "#BF8943",
+        "valueLeft": 180.0,
+        "sliderLeft": 260.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "small",
+      "props": {
+        "prominent": false,
+        "small": true
+      },
+      "values": {
+        "label": "#877159",
+        "value": "#877159",
+        "info": "#BF8943",
+        "icon": "#BF8943",
+        "sliderGap": 1.0,
+        "sliderInset": 0.0,
+        "sliderInsetEnd": 0.0,
+        "bottom": 0.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "small",
+      "props": {
+        "prominent": true,
+        "small": false
+      },
+      "values": {
+        "label": "#877159",
+        "value": "#877159",
+        "info": "#9D6A1F",
+        "icon": null,
+        "valueLeft": 180.0,
+        "sliderLeft": 260.0,
+        "minHeight": 38.0
+      }
+    },
+    {
+      "control": "SliderRow",
+      "theme": "small",
+      "props": {
+        "prominent": true,
+        "small": true
+      },
+      "values": {
+        "label": "#877159",
+        "value": "#877159",
+        "info": "#9D6A1F",
+        "icon": null,
+        "sliderGap": 1.0,
+        "sliderInset": 8.0,
+        "sliderInsetEnd": 8.0,
+        "bottom": 6.0
       }
     },
     {

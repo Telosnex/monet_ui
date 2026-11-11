@@ -9,6 +9,7 @@ import {
   dropdownSpec,
   expansionSpec,
   segmentedSpec,
+  sliderRowSpec,
   sliderSpec,
   superellipseCss,
 } from '../spec.js';
@@ -18,6 +19,7 @@ import {
   expansionVars,
   menuVars,
   segmentedVars,
+  sliderRowVars,
   sliderVars,
 } from '../vars.js';
 
@@ -40,6 +42,7 @@ const set = new Set(
     ...expansionVars(expansionSpec(defaultGeometry)),
     ...segmentedVars(segmentedSpec(defaultGeometry)),
     ...sliderVars(sliderSpec(defaultGeometry)),
+    ...sliderRowVars(sliderRowSpec(defaultGeometry)),
     ...menuVars(dropdownSpec(defaultGeometry)),
     ...borderedVars(borderedSpec(defaultGeometry)),
   })

@@ -11,6 +11,7 @@ import {
   MonetSegmented,
   MonetSlider,
   MonetThemeScope,
+  SliderRow,
   type MonetCorner,
 } from '../src/index.js';
 import '../src/styles.css';
@@ -89,6 +90,31 @@ function Panel({
       />
       <MonetSlider aria-label="Value" value={value} onChange={setValue} thumbIcon={plus} />
       <MonetSlider aria-label="Disabled" value={0.7} enabled={false} />
+      <SliderRow
+        label="Contrast"
+        tooltip="How far apart the tones are"
+        value={value}
+        valueToString={(v) => `${Math.round(v * 100)}%`}
+        thumbIcon={plus}
+        onChangeEnd={setValue}
+      />
+      <SliderRow
+        label="Size"
+        tooltip="Size of everything"
+        value={value}
+        valueToString={(v) => `${Math.round(v * 100)}%`}
+        thumbIcon={plus}
+        prominent
+        onChangeEnd={setValue}
+      />
+      <SliderRow
+        label="Small layout"
+        value={value}
+        thumbIcon={plus}
+        forceSmallWidth
+        trailing={<MonetButton preset="compact" onClick={() => setValue(0.5)}>Reset</MonetButton>}
+        onChangeEnd={setValue}
+      />
       <MonetExpansion title="Collapsed">
         <p>Hidden</p>
       </MonetExpansion>

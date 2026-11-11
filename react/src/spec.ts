@@ -308,6 +308,58 @@ export function roundSliderValue(value: number): number {
   return Math.round(value * 1000) / 1000;
 }
 
+// ── SliderRow ──────────────────────────────────────────────────────────────
+
+/** `ScreenBreakpoints.screenSmallWidth`: narrower screens stack the row. */
+export const screenSmallWidth = 480;
+
+export interface SliderRowSpec {
+  readonly label: PaintValue;
+  readonly value: PaintValue;
+  /** The info icon beside the label. */
+  readonly info: PaintValue;
+  /** The thumb icon beside the label; prominent rows show none. */
+  readonly icon: PaintValue | null;
+  /** `SettingsRow.labelWidth`: the label column in the wide layout. */
+  readonly labelWidth: number;
+  /** `SettingsRow.valueWidth` at text scale 1. */
+  readonly valueWidth: number;
+  /** `HorizontalPadding`. */
+  readonly gap: number;
+  /** `SettingsRow.height` for prominent rows. */
+  readonly minHeight: number | null;
+  /** Small layout: space between the header and the slider. */
+  readonly smallSliderGap: number;
+  /** Small layout: the slider's inset at each end. */
+  readonly smallSliderInset: number;
+  /** Small layout: room under the slider for the thumb's shadow. */
+  readonly smallBottom: number;
+}
+
+/** `SliderRow` and `SliderRow.prominent`. */
+export function sliderRowSpec(
+  geometry: MonetGeometry,
+  {prominent = false}: {prominent?: boolean} = {}
+): SliderRowSpec {
+  const scale = linearScale(geometry.scale);
+  const gap = 8;
+  return {
+    label: paint('primary', 'backgroundText'),
+    value: paint('primary', 'backgroundText'),
+    info: paint('primary', prominent ? 'text' : 'fill'),
+    icon: prominent ? null : paint('primary', 'fill'),
+    labelWidth: 140 + scale * 40,
+    valueWidth: 90 * scale,
+    gap,
+    minHeight: prominent ? touchSize + 2 : null,
+    smallSliderGap: 1,
+    // ScreenPadding cancels the system gesture inset, which is 0 on the web.
+    smallSliderInset: prominent ? gap : 0,
+    // VerticalPaddingHalf and 2.
+    smallBottom: prominent ? 6 : 0,
+  };
+}
+
 // ── MonetDropdown ──────────────────────────────────────────────────────────
 
 export interface MenuItemSpec {

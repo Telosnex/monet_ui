@@ -25,7 +25,11 @@ import 'package:monet_ui/widgets/monet_dropdown.dart';
 import 'package:monet_ui/widgets/monet_expansion.dart';
 import 'package:monet_ui/widgets/monet_fallback_shapes.dart';
 import 'package:monet_ui/widgets/monet_segmented.dart';
+import 'package:monet_ui/widgets/monet_icon.dart';
+import 'package:monet_ui/widgets/monet_icons.dart';
+import 'package:monet_ui/widgets/monet_rich_text.dart';
 import 'package:monet_ui/widgets/monet_slider.dart';
+import 'package:monet_ui/widgets/slider_row.dart';
 import 'package:pixel_snap_fork/material.dart';
 
 /// Writes `react/fixtures/monet_controls_parity.json`: what the Dart controls
@@ -519,6 +523,130 @@ Future<Map<String, Object?>> _sliderCase(
   };
 }
 
+/// [SliderRow]'s colours and layout, measured from the laid-out row.
+Future<Map<String, Object?>> _sliderRowCase(
+  WidgetTester tester,
+  _ThemeCase theme, {
+  required bool prominent,
+  required bool small,
+}) async {
+  const label = 'Label';
+  String valueToString(double v) => '${(v * 100).round()}%';
+  // Prominent rows have no forceSmallWidth: a narrow screen makes them
+  // small.
+  tester.view.devicePixelRatio = 1;
+  tester.view.physicalSize = Size(small && prominent ? 400 : 800, 600);
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MonetTheme(
+        monetThemeData: theme.data,
+        child: Scaffold(
+          body: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 380,
+              child: prominent
+                  ? SliderRow.prominent(
+                      label: label,
+                      tooltip: 'Tip',
+                      value: 0.5,
+                      valueMin: 0,
+                      valueMax: 1,
+                      valueToString: valueToString,
+                      thumbIcon: Icons.add,
+                      onChanged: (_) {},
+                    )
+                  : SliderRow(
+                      label: label,
+                      tooltip: 'Tip',
+                      value: 0.5,
+                      valueMin: 0,
+                      valueMax: 1,
+                      valueToString: valueToString,
+                      thumbIcon: Icons.add,
+                      forceSmallWidth: small,
+                      onChanged: (_) {},
+                    ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  final row = find.byType(SliderRow);
+  MonetRichText text(String t) => tester.widget<MonetRichText>(
+    find.descendant(
+      of: row,
+      matching: find.byWidgetPredicate(
+        (w) => w is MonetRichText && w.text == t,
+      ),
+    ),
+  );
+  Color? iconColor(IconData icon) {
+    final found = find.descendant(
+      of: row,
+      matching: find.byWidgetPredicate((w) => w is MonetIcon && w.icon == icon),
+    );
+    return found.evaluate().isEmpty
+        ? null
+        : tester.widget<MonetIcon>(found.first).color;
+  }
+
+  final rowRect = tester.getRect(row);
+  final slider = tester.getRect(
+    find.descendant(of: row, matching: find.byType(MonetSlider)),
+  );
+  final valueRect = tester.getRect(
+    find.descendant(
+      of: row,
+      matching: find.byWidgetPredicate(
+        (w) => w is MonetRichText && w.text == valueToString(0.5),
+      ),
+    ),
+  );
+  final Map<String, Object?> layout;
+  if (small) {
+    // The header is the column's first child.
+    final column = tester.renderObject<RenderBox>(
+      find.descendant(of: row, matching: find.byType(Column)).first,
+    );
+    // pixel_snap's RenderFlex; firstChild comes from ContainerRenderObjectMixin.
+    final header = (column as dynamic).firstChild as RenderBox;
+    final headerBottom =
+        header.localToGlobal(Offset.zero).dy + header.size.height;
+    layout = {
+      'sliderGap': _round(slider.top - headerBottom),
+      'sliderInset': _round(slider.left - rowRect.left),
+      'sliderInsetEnd': _round(rowRect.right - slider.right),
+      'bottom': _round(rowRect.bottom - slider.bottom),
+    };
+  } else {
+    layout = {
+      // The label column, then a gap; the value column, then a gap.
+      'valueLeft': _round(valueRect.left - rowRect.left),
+      'sliderLeft': _round(slider.left - rowRect.left),
+      // SettingsRow.height; the default row is as tall as its slider.
+      if (prominent) 'minHeight': _round(rowRect.height),
+    };
+  }
+  final infoColor = iconColor(MonetIcons.info)!;
+  final thumbColor = prominent ? null : iconColor(Icons.add);
+  return {
+    'control': 'SliderRow',
+    'theme': theme.name,
+    'props': {'prominent': prominent, 'small': small},
+    'values': {
+      'label': _hex(text(label).textStyle.color!),
+      'value': _hex(text(valueToString(0.5)).textStyle.color!),
+      'info': _hex(infoColor),
+      'icon': thumbColor == null ? null : _hex(thumbColor),
+      ...layout,
+    },
+  };
+}
+
 Future<Map<String, Object?>> _dropdownCase(
   WidgetTester tester,
   _ThemeCase theme,
@@ -684,6 +812,18 @@ void main() {
       cases.add(await _segmentedCase(tester, theme, isSmall: true));
       cases.add(await _segmentedCase(tester, theme, isSmall: false));
       cases.add(await _sliderCase(tester, theme));
+      for (final prominent in [false, true]) {
+        for (final small in [false, true]) {
+          cases.add(
+            await _sliderRowCase(
+              tester,
+              theme,
+              prominent: prominent,
+              small: small,
+            ),
+          );
+        }
+      }
       cases.add(await _dropdownCase(tester, theme));
       cases.add(await _borderedCase(tester, theme));
     }

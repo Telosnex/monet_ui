@@ -11,6 +11,7 @@ import {
   MonetSegmented,
   MonetSlider,
   MonetThemeScope,
+  SliderRow,
 } from '../index.js';
 
 afterEach(cleanup);
@@ -268,6 +269,56 @@ describe('Bordered', () => {
     expect(styleVar(panel, '--monet-bordered-background')).toBe('var(--monet-secondary-background)');
     expect(styleVar(panel, '--monet-bordered-border-color')).toBe(
       'var(--monet-secondary-background-border)'
+    );
+  });
+});
+
+describe('SliderRow', () => {
+  test('labels the slider and shows the value it is dragged to', () => {
+    const changes: number[] = [];
+    function Row() {
+      const [value, setValue] = useState(0.5);
+      return (
+        <SliderRow
+          label="Contrast"
+          tooltip="How far apart the tones are"
+          value={value}
+          valueToString={(v) => `${Math.round(v * 100)}%`}
+          onChange={(v) => changes.push(v)}
+          onChangeEnd={setValue}
+        />
+      );
+    }
+    inTheme(<Row />);
+    const slider = screen.getByRole('slider', {name: 'Contrast'});
+    expect(slider.getAttribute('aria-valuetext')).toBe('50%');
+    const row = slider.closest('.monet-slider-row')!;
+    expect(row.querySelector('[title]')?.getAttribute('title')).toBe(
+      'How far apart the tones are'
+    );
+    const value = row.querySelector('.monet-slider-row__value')!;
+    expect(value.textContent).toBe('50%');
+    fireEvent.keyDown(slider, {key: 'ArrowRight'});
+    expect(changes).toEqual([0.55]);
+    expect(value.textContent).toBe('55%');
+  });
+
+  test('sets its widths from the spec and can be forced small', () => {
+    inTheme(
+      <SliderRow label="Size" value={0.5} prominent forceSmallWidth trailing={<button>+</button>} />,
+      {scale: 0.64}
+    );
+    const row = screen.getByRole('slider').closest<HTMLElement>('.monet-slider-row')!;
+    expect(row.dataset.small).toBe('true');
+    expect(row.dataset.prominent).toBe('true');
+    expect(row.style.getPropertyValue('--monet-slider-row-label-width')).toBe(
+      'calc(172 * var(--monet-dp, 1px))'
+    );
+    expect(row.style.getPropertyValue('--monet-slider-row-small-inset')).toBe(
+      'calc(8 * var(--monet-dp, 1px))'
+    );
+    expect(screen.getByRole('button', {name: '+'}).parentElement?.className).toBe(
+      'monet-slider-row__track'
     );
   });
 });

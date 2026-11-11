@@ -9,9 +9,12 @@
  *   --monet-type-label-large    button, menu and header text (default 1rem)
  *   --monet-type-label-medium   segment text (default 0.875rem)
  *   --monet-type-body-large     regular button and menu icons (default 1rem)
+ *   --monet-type-headline-small prominent slider row labels (default 1.5rem)
+ *   --monet-font-mono           slider row values (default monospace)
  *
  * Web-only additions, not in the Dart controls: a focus-visible ring in
- * the tertiary colour role, and the pointer cursor.
+ * the tertiary colour role, and the pointer cursor. Tooltips are the
+ * browser's `title`.
  */
 
 /* Flutter's RoundedSuperellipseBorder; see superellipseCss in spec.ts. */
@@ -458,6 +461,155 @@
   .monet-slider[data-dragging] .monet-slider__active,
   .monet-slider[data-dragging] .monet-slider__thumb {
     transition: none;
+  }
+}
+
+/* ── SliderRow ───────────────────────────────────────────────────────── */
+
+.monet-slider-row {
+  display: flex;
+  min-height: var(--monet-slider-row-min-height);
+  align-items: center;
+  gap: var(--monet-slider-row-gap);
+  color: var(--monet-slider-row-label);
+}
+
+.monet-slider-row__header {
+  display: flex;
+  min-width: 0;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--monet-slider-row-gap);
+}
+
+.monet-slider-row__label {
+  display: flex;
+  width: var(--monet-slider-row-label-width);
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--monet-slider-row-gap);
+  font-family: var(--monet-font-label, inherit);
+  font-size: var(--monet-type-label-medium, 0.875rem);
+}
+
+.monet-slider-row__name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: calc(4 * var(--monet-dp, 1px));
+}
+
+.monet-slider-row__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.monet-slider-row[data-prominent] .monet-slider-row__text {
+  padding-left: var(--monet-slider-row-gap);
+  font-size: var(--monet-type-headline-small, 1.5rem);
+  font-weight: 400;
+}
+
+/* Doubled class: icon libraries style their svg with one class. */
+.monet-slider-row__icon.monet-slider-row__icon,
+.monet-slider-row__icon.monet-slider-row__icon > *,
+.monet-slider-row__info {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  font-size: var(--monet-type-label-medium, 0.875rem);
+}
+
+.monet-slider-row__icon {
+  display: inline-flex;
+  color: var(--monet-slider-row-icon);
+}
+
+.monet-slider-row__info {
+  color: var(--monet-slider-row-info);
+}
+
+.monet-slider-row__value {
+  width: var(--monet-slider-row-value-width);
+  flex: 0 0 auto;
+  overflow: hidden;
+  color: var(--monet-slider-row-value);
+  font-family: var(--monet-font-mono, monospace);
+  font-size: var(--monet-type-label-medium, 0.875rem);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+.monet-slider-row[data-prominent] .monet-slider-row__value {
+  font-family: inherit;
+  font-size: var(--monet-type-body-large, 1rem);
+}
+
+.monet-slider-row__track {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--monet-slider-row-gap);
+}
+
+/* The trailing content keeps its width; the slider takes the rest. */
+.monet-slider-row__track > * {
+  flex: 0 0 auto;
+}
+
+.monet-slider-row__track > .monet-slider {
+  width: auto;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+/* The small layout: forced, or on a small screen (screenSmallWidth). */
+.monet-slider-row[data-small] {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--monet-slider-row-small-gap);
+  min-height: 0;
+  padding-bottom: var(--monet-slider-row-small-bottom);
+}
+
+.monet-slider-row[data-small] .monet-slider-row__label {
+  width: auto;
+  flex: 0 1 auto;
+  justify-content: flex-start;
+}
+
+.monet-slider-row[data-small] .monet-slider-row__value {
+  width: auto;
+}
+
+.monet-slider-row[data-small] .monet-slider-row__track {
+  padding-inline: var(--monet-slider-row-small-inset);
+}
+
+@media (max-width: 480px) {
+  .monet-slider-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--monet-slider-row-small-gap);
+    min-height: 0;
+    padding-bottom: var(--monet-slider-row-small-bottom);
+  }
+
+  .monet-slider-row .monet-slider-row__label {
+    width: auto;
+    flex: 0 1 auto;
+    justify-content: flex-start;
+  }
+
+  .monet-slider-row .monet-slider-row__value {
+    width: auto;
+  }
+
+  .monet-slider-row .monet-slider-row__track {
+    padding-inline: var(--monet-slider-row-small-inset);
   }
 }
 

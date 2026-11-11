@@ -10,6 +10,7 @@ import {
   dropdownSpec,
   expansionSpec,
   segmentedSpec,
+  sliderRowSpec,
   sliderSpec,
   superellipseCss,
   type MonetButtonKind,
@@ -83,6 +84,26 @@ function spec(c: CaseFixture, geometry: MonetGeometry): unknown {
       return dropdownSpec(geometry);
     case 'Bordered':
       return borderedSpec(geometry);
+    case 'SliderRow': {
+      const prominent = props.prominent as boolean;
+      const s = sliderRowSpec(geometry, {prominent});
+      const colors = {label: s.label, value: s.value, info: s.info, icon: s.icon};
+      if (props.small) {
+        return {
+          ...colors,
+          sliderGap: s.smallSliderGap,
+          sliderInset: s.smallSliderInset,
+          sliderInsetEnd: s.smallSliderInset,
+          bottom: s.smallBottom,
+        };
+      }
+      return {
+        ...colors,
+        valueLeft: s.labelWidth + s.gap,
+        sliderLeft: s.labelWidth + s.gap + s.valueWidth + s.gap,
+        ...(prominent ? {minHeight: s.minHeight} : {}),
+      };
+    }
     default:
       throw new Error(`No React spec for ${c.control}`);
   }
