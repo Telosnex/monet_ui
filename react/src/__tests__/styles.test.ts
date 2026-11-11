@@ -92,3 +92,17 @@ describe('nested expansions', () => {
     }
   });
 });
+
+describe('link buttons', () => {
+  const css = readFileSync('src/styles.css', 'utf8');
+
+  test('keep their colors over page link rules such as a:hover', () => {
+    const rule = /a\.monet-button:is\(([^)]*)\)\s*\{([^}]*)\}/.exec(css);
+    expect(rule).not.toBeNull();
+    for (const state of [':link', ':visited', ':hover', ':focus', ':active']) {
+      expect(rule![1]).toContain(state);
+    }
+    expect(rule![2]).toContain('color: var(--_foreground);');
+    expect(rule![2]).toContain('text-decoration: none;');
+  });
+});

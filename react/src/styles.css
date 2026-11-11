@@ -95,6 +95,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* A button with href is a link. The page's link rules (a:hover and the
+   like) are more specific than .monet-button and would set the color and
+   underline. */
+a.monet-button:is(:link, :visited, :hover, :focus, :active) {
+  color: var(--_foreground);
+  text-decoration: none;
+}
+
 .monet-button--compact,
 .monet-button--tool {
   font-size: var(--monet-type-label-medium, calc(15 * var(--monet-size-scale, 1) * var(--monet-dp, 1px)));
