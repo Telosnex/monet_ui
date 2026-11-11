@@ -482,7 +482,8 @@ describe('Dart libmonet parity fixtures', () => {
     });
   }
 
-  test('Palette.from sweep parity budget', () => {
+  // Seconds on a CI runner: more than the default 5 s.
+  test('Palette.from sweep parity budget', {timeout: 30_000}, () => {
     const overBudget: Array<{label: string; actual: string; expected: string; delta: number}> = [];
     let maxDelta = 0;
     for (const c of fixture.paletteSweepCases) {

@@ -12,7 +12,7 @@
 # Before the upload: the Dart parity fixture is generated again, then
 # prepublishOnly runs npm run check against it.
 #
-# By hand (workflow_dispatch): the same checks and npm publish --dry-run.
+# By hand (workflow_dispatch): the same checks and npm pack --dry-run.
 name: Npm publish
 
 on:
@@ -109,7 +109,8 @@ jobs:
         if: github.ref_type == 'tag'
         working-directory: ${{ steps.package.outputs.dir }}
         run: npm publish
+      # Not npm publish --dry-run: it fails for a version already on npm.
       - name: Dry run
         if: github.ref_type != 'tag'
         working-directory: ${{ steps.package.outputs.dir }}
-        run: npm publish --dry-run
+        run: npm run check && npm pack --dry-run
