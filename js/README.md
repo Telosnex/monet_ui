@@ -1,6 +1,9 @@
-# @telosnex/libmonet
+# @telosnex/monet-ui
 
-Browser/TypeScript sibling implementation of Dart `libmonet` dynamic theming.
+The colour and theme part of the Dart `monet_ui` package, in TypeScript:
+colour spaces, contrast, palettes, `MonetThemeData`, image colour
+extraction and CSS variables. It has no framework dependency. The React
+controls are in `@telosnex/monet-ui-react`.
 
 ```ts
 import {
@@ -8,7 +11,7 @@ import {
   argbFromHex,
   themeCssVars,
   applyCssVars,
-} from '@telosnex/libmonet';
+} from '@telosnex/monet-ui';
 
 const theme = MonetThemeData.fromColor({
   color: argbFromHex('#1177AA'),
@@ -23,7 +26,7 @@ applyCssVars(themeCssVars(theme));
 Image extraction:
 
 ```ts
-import {MonetThemeData, quantizeImage} from '@telosnex/libmonet';
+import {MonetThemeData, quantizeImage} from '@telosnex/monet-ui';
 
 const result = await quantizeImage(imgElement, 128, 96);
 const theme = MonetThemeData.fromQuantizerResult({
@@ -36,13 +39,13 @@ const theme = MonetThemeData.fromQuantizerResult({
 Runtime animation:
 
 ```ts
-import {PaletteLerped, paletteCssVars, applyCssVars} from '@telosnex/libmonet';
+import {PaletteLerped, paletteCssVars, applyCssVars} from '@telosnex/monet-ui';
 
 const lerped = new PaletteLerped(oldTheme.primary, newTheme.primary, 0.5, 'polar');
 applyCssVars(paletteCssVars('primary', lerped.toRecord()));
 ```
 
-The implementation intentionally lives next to Dart libmonet so parity fixtures/tests can be generated from the Dart source of truth.
+The implementation lives next to the Dart code so parity fixtures/tests can be generated from the Dart source of truth.
 
 Parity workflow:
 

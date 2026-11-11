@@ -1,4 +1,4 @@
-import type {PaletteRole} from '@telosnex/libmonet';
+import type {PaletteRole} from '@telosnex/monet-ui';
 
 /** One of the theme's three palettes. */
 export type MonetFamily = 'primary' | 'secondary' | 'tertiary';

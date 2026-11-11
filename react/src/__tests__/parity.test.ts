@@ -1,6 +1,6 @@
 // @vitest-environment node
 import {readFileSync} from 'node:fs';
-import {argbFromHex, hexFromArgb, MonetThemeData} from '@telosnex/libmonet';
+import {argbFromHex, hexFromArgb, MonetThemeData} from '@telosnex/monet-ui';
 import {describe, expect, test} from 'vitest';
 
 import {isPaint, round, type PaintValue} from '../paint.js';

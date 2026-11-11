@@ -1,4 +1,4 @@
-import {themeCssVars, type MonetThemeData} from '@telosnex/libmonet';
+import {themeCssVars, type MonetThemeData} from '@telosnex/monet-ui';
 import React, {createContext, useContext, useMemo} from 'react';
 
 import {defaultGeometry, type MonetCorner, type MonetGeometry} from './spec.js';

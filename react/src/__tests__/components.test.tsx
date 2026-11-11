@@ -1,4 +1,4 @@
-import {MonetThemeData, argbFromHex} from '@telosnex/libmonet';
+import {MonetThemeData, argbFromHex} from '@telosnex/monet-ui';
 import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
 import React, {useState} from 'react';
 import {afterEach, describe, expect, test, vi} from 'vitest';

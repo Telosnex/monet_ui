@@ -2,7 +2,7 @@
 
 React versions of the monet_ui controls: `MonetButton`, `MonetSegmented`,
 `MonetSlider`, `MonetExpansion`, `MonetDropdown` and `Bordered`, inside a
-`MonetThemeScope`. Colours come from `@telosnex/libmonet`.
+`MonetThemeScope`. Colours come from `@telosnex/monet-ui`.
 
 ```tsx
 import {MonetThemeScope, MonetButton} from '@telosnex/monet-ui-react';
@@ -13,7 +13,7 @@ import '@telosnex/monet-ui-react/styles.css';
 </MonetThemeScope>;
 ```
 
-`theme` is a libmonet `MonetThemeData`. `scale`, `radius` and `corner` are
+`theme` is a `MonetThemeData` from `@telosnex/monet-ui`. `scale`, `radius` and `corner` are
 the Dart theme's `scale` and `MonetShapeTheme`. The defaults are Dart's
 `MonetThemeData` defaults: scale 1, radius 8, superellipse corners. The
 Telosnex app uses radius 9. For plain rounded corners, pass
@@ -40,6 +40,17 @@ npm run demo           # every control in three themes
 npm 10.9 crashes (`edgesOut`) when it resolves this package's dependencies
 without the lockfile. `npm ci` works. To change dependencies, use npm 11:
 `npx npm@11 install`.
+
+## Publishing
+
+Publish `@telosnex/monet-ui` (`../js`) first when it changed, then this
+package. Bump `version` in each, and the `@telosnex/monet-ui` peer range
+here when it needs a newer release. `prepublishOnly` runs `npm run check`.
+
+```bash
+cd ../js && npm publish
+cd ../react && npm publish
+```
 
 Web-only additions, not in the Dart controls: a focus ring in the tertiary
 colour role, and keyboard handling for the segmented control and the menu.

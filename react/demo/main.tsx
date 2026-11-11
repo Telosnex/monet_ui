@@ -1,5 +1,5 @@
 /** A page with every control in three themes, for looking at the CSS. */
-import {argbFromHex, MonetThemeData} from '@telosnex/libmonet';
+import {argbFromHex, MonetThemeData} from '@telosnex/monet-ui';
 import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 
