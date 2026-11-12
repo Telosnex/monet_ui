@@ -1,5 +1,9 @@
-## Unreleased
+## 1.7.0
 
+- A menu entry that its parent rebuilds with a new icon, title or child now
+  shows it. `MenuEntry.create`, `MenuEntryCompat`, `MenuEntryWidget` and
+  `MenuEntryDivider` kept their first build, so for example a checkbox row
+  in an open menu did not change when tapped.
 - `MonetShapeTheme()` borders are now `RoundedSuperellipseBorder`, as
   `kMonetFallbackShapeTheme` and the Telosnex app already use. For the old
   rounded rectangles, pass `borderBuilder: RoundedRectangleBorder.new`.

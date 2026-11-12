@@ -228,6 +228,15 @@ class _MenuEntryWidgetElement extends ComponentElement {
   @override
   MenuEntryWidget get widget => super.widget as MenuEntryWidget;
 
+  // ComponentElement does not rebuild for a new widget; StatelessElement
+  // does it here. Without this, a parent that rebuilds the entry with a new
+  // icon or title while the menu is open still shows the first build.
+  @override
+  void update(MenuEntryWidget newWidget) {
+    super.update(newWidget);
+    rebuild(force: true);
+  }
+
   // Intentionally returns [widget.child] verbatim: callers of
   // [MenuEntryWidget] are responsible for matching [MenuEntryImpl]'s visual
   // rhythm (padding, height) themselves when they want to slot a raw widget
@@ -320,6 +329,15 @@ class _MenuEntryActionElement extends ComponentElement {
 
   @override
   MenuEntryCompat get widget => super.widget as MenuEntryCompat;
+
+  // ComponentElement does not rebuild for a new widget; StatelessElement
+  // does it here. Without this, a parent that rebuilds the entry with a new
+  // icon or title while the menu is open still shows the first build.
+  @override
+  void update(MenuEntryCompat newWidget) {
+    super.update(newWidget);
+    rebuild(force: true);
+  }
 
   @override
   Widget build() {

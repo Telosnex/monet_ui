@@ -44,6 +44,14 @@ class _MenuEntryDividerElement extends ComponentElement {
   @override
   MenuEntryDivider get widget => super.widget as MenuEntryDivider;
 
+  // ComponentElement does not rebuild for a new widget; StatelessElement
+  // does it here. Without this, a new color or padding is not shown.
+  @override
+  void update(MenuEntryDivider newWidget) {
+    super.update(newWidget);
+    rebuild(force: true);
+  }
+
   @override
   Widget build() {
     return _MenuEntryDividerBody(
