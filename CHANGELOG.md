@@ -1,3 +1,9 @@
+## 1.7.1
+
+- The menu of `MonetDropdownButton` has the same shape as every other menu:
+  a border of width 1 and the `kOverlayRadius` corners. Its border was
+  width 2, at the theme's radius.
+
 ## 1.7.0
 
 - A menu entry that its parent rebuilds with a new icon, title or child now

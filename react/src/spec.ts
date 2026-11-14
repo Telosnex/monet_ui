@@ -419,10 +419,11 @@ export function dropdownSpec(geometry: MonetGeometry): DropdownSpec {
     trigger: buttonSpec(geometry),
     menu: {
       background: paint('primary', 'background'),
-      border: {color: border, width: 2},
+      border: {color: border, width: 1},
       shadows: fabShadows(border),
       paddingY: 4,
-      ...shape(themeRadius(geometry), geometry.corner),
+      // `MenuButton.shapeBorder`: every menu has `kOverlayRadius` corners.
+      ...shape(16 * linearScale(geometry.scale), geometry.corner),
     },
     item: menuItemSpec(false),
     selectedItem: menuItemSpec(true),

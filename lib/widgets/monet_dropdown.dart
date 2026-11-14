@@ -318,13 +318,9 @@ class MonetDropdownButton extends HookWidget with UiLoggy {
     this.colors,
   });
 
-  static ShapeBorder shapeBorder(BuildContext context, Color? borderColor) {
-    // Double width because clipping is applied to the center of the border,
-    // and clipping is required to avoid shape of menu being over-width.
-    return MonetTheme.shapesOf(context).border(
-      side: BorderSide(color: borderColor ?? Colors.transparent, width: 2),
-    );
-  }
+  /// The same shape as every other menu.
+  static ShapeBorder shapeBorder(BuildContext context, Color? borderColor) =>
+      MenuButton.shapeBorder(context, borderColor);
 
   @override
   Widget build(BuildContext context) {

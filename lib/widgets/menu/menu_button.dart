@@ -104,9 +104,8 @@ class MenuButton extends StatefulWidget {
     this.anchorOnly = false,
   });
 
+  /// The shape of a menu's surface: [MonetDropdownButton] uses it too.
   static ShapeBorder shapeBorder(BuildContext context, Color? borderColor) {
-    // Double width because clipping is applied to the center of the border,
-    // and clipping is required to avoid shape of menu being over-width.
     return MonetTheme.shapesOf(context).border(
       borderRadius: BorderRadiusGeometry.circular(kOverlayRadius),
       side: BorderSide(color: borderColor ?? Colors.transparent, width: 1),

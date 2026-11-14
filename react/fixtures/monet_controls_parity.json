@@ -921,7 +921,7 @@
           "background": "#D5EFFF",
           "border": {
             "color": "#B6D0E1",
-            "width": 2.0
+            "width": 1.0
           },
           "shadows": [
             {
@@ -950,7 +950,7 @@
             }
           ],
           "paddingY": 4.0,
-          "radius": 9.0,
+          "radius": 16.0,
           "corner": "superellipse"
         },
         "item": {
@@ -1894,7 +1894,7 @@
           "background": "#001E2C",
           "border": {
             "color": "#445A67",
-            "width": 2.0
+            "width": 1.0
           },
           "shadows": [
             {
@@ -1923,7 +1923,7 @@
             }
           ],
           "paddingY": 4.0,
-          "radius": 8.0,
+          "radius": 16.0,
           "corner": "rounded"
         },
         "item": {
@@ -2867,7 +2867,7 @@
           "background": "#FFE7CE",
           "border": {
             "color": "#E0C8B0",
-            "width": 2.0
+            "width": 1.0
           },
           "shadows": [
             {
@@ -2896,7 +2896,7 @@
             }
           ],
           "paddingY": 4.0,
-          "radius": 7.2,
+          "radius": 12.8,
           "corner": "superellipse"
         },
         "item": {
