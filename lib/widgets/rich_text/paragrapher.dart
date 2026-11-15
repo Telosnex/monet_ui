@@ -188,6 +188,12 @@ class Paragrapher {
     if (key != null) {
       final cached = _tailDecisionCache[key];
       if (cached != null) {
+        if (cached.breakAt case final breakAt?) {
+          final wrapped = _breakInput(input, breakAt);
+          configure(_primary, wrapped);
+          _primary.layout(maxWidth: wrapped.maxWidth);
+          return _harvest(wrapped, _primary, didTruncate: false);
+        }
         final cutAt = cached.cutAt;
         if (cutAt == null) {
           // Full text fits with tail slack; lay it out once for painting.
@@ -206,6 +212,28 @@ class Paragrapher {
         _fits(_primary, input, reservedTailWidth)) {
       if (key != null) _tailDecisionCache[key] = const _TailDecision(null);
       return _harvest(input, _primary, didTruncate: false);
+    }
+
+    // ---- 1b. Wrap before truncating. -------------------------------------
+    // The tail does not fit after the last line, but a line is left: the
+    // last word goes down to a new line with the tail, or, when that word
+    // and the tail are too wide for one line, the tail goes down alone.
+    if (!_primary.didExceedMaxLines) {
+      for (final breakAt in _breakCandidates(input)) {
+        final wrapped = _breakInput(input, breakAt);
+        configure(_primary, wrapped);
+        _primary.layout(maxWidth: wrapped.maxWidth);
+        if (!_primary.didExceedMaxLines &&
+            _fits(_primary, wrapped, reservedTailWidth)) {
+          if (key != null) {
+            _tailDecisionCache[key] = _TailDecision(null, breakAt: breakAt);
+          }
+          return _harvest(wrapped, _primary, didTruncate: false);
+        }
+      }
+      // Neither fits: truncate the full text as below.
+      configure(_primary, input);
+      _primary.layout(maxWidth: input.maxWidth);
     }
 
     // ---- 2. Seed: estimate where the cut should happen. -----------------
@@ -461,6 +489,38 @@ class Paragrapher {
     configure(_primary, finalInput);
     _primary.layout(maxWidth: finalInput.maxWidth);
     return _harvest(finalInput, _primary, didTruncate: true);
+  }
+
+  /// Where a line break can make room for the tail, in order of preference:
+  /// before the last word, then at the end of the text. A one-line layout
+  /// has no line to give.
+  static List<int> _breakCandidates(ParagraphInput input) {
+    if (input.maxLines == 1) return const [];
+    final text = input.text;
+    final lastSpace = text.trimRight().lastIndexOf(' ');
+    return [if (lastSpace > 0) lastSpace, text.length];
+  }
+
+  /// [input] with a line break at [breakAt]: the space there becomes a
+  /// newline, or, at the end of the text, a newline is added. A replaced
+  /// space keeps every offset of the text.
+  static ParagraphInput _breakInput(ParagraphInput input, int breakAt) {
+    final text = input.text;
+    if (breakAt >= text.length) {
+      return input.copyWith(
+        text: '$text\n',
+        textSpan: TextSpan(
+          children: [
+            input.textSpan,
+            const TextSpan(text: '\n'),
+          ],
+        ),
+      );
+    }
+    return input.copyWith(
+      text: text.replaceRange(breakAt, breakAt + 1, '\n'),
+      textSpan: _InlineSpanCharReplacer(breakAt, '\n').build(input.textSpan),
+    );
   }
 
   /// Cheap fit check. For single-line text, `painter.width` is the last
@@ -828,8 +888,58 @@ Object debugTruncationTailCacheKey(
 /// otherwise it is the already-trimmed UTF-16 text offset where the rich span
 /// should be cut before appending the ellipsis.
 class _TailDecision {
-  const _TailDecision(this.cutAt);
+  const _TailDecision(this.cutAt, {this.breakAt});
   final int? cutAt;
+
+  /// Where a line break makes room for the tail, without truncation.
+  final int? breakAt;
+}
+
+/// Copies a span tree with the character at [index] replaced by
+/// [replacement], a single character. Placeholders count as one character,
+/// as in [ParagraphInput.text].
+class _InlineSpanCharReplacer {
+  _InlineSpanCharReplacer(this.index, this.replacement);
+
+  final int index;
+  final String replacement;
+  int _offset = 0;
+
+  InlineSpan build(InlineSpan span) => _visit(span);
+
+  InlineSpan _visit(InlineSpan span) {
+    switch (span) {
+      case TextSpan():
+        final sourceText = span.text;
+        String? text = sourceText;
+        if (sourceText != null) {
+          final local = index - _offset;
+          if (local >= 0 && local < sourceText.length) {
+            text = sourceText.replaceRange(local, local + 1, replacement);
+          }
+          _offset += sourceText.length;
+        }
+        final children = span.children?.map(_visit).toList();
+        return TextSpan(
+          text: text,
+          children: children,
+          style: span.style,
+          recognizer: span.recognizer,
+          mouseCursor: span.mouseCursor,
+          onEnter: span.onEnter,
+          onExit: span.onExit,
+          semanticsLabel: span.semanticsLabel,
+          semanticsIdentifier: span.semanticsIdentifier,
+          locale: span.locale,
+          spellOut: span.spellOut,
+        );
+      case PlaceholderSpan():
+        _offset++;
+        return span;
+      default:
+        return span;
+    }
+  }
 }
 
 /// Key covering every input that can change the truncation decision:

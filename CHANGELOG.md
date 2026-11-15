@@ -1,3 +1,10 @@
+## 1.7.3
+
+- `MonetRichText` wraps before it truncates for trailing children: when
+  the last line has no room for them and a line is left, the last word
+  goes down to a new line with them, or they go down alone. Before, the
+  text was truncated with an ellipsis even without a line limit.
+
 ## 1.7.2
 
 - `MonetDropdown` takes `selectedIcon`: an icon before the label of the
