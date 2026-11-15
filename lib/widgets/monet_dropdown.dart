@@ -12,6 +12,7 @@ import 'package:monet_ui/widgets/menu/menu_entry.dart';
 import 'package:monet_ui/widgets/menu/monet_menu_overlay.dart';
 import 'package:monet_ui/widgets/monet_button.dart';
 import 'package:monet_ui/widgets/monet_dropdown_controller.dart';
+import 'package:monet_ui/widgets/monet_icon.dart';
 import 'package:monet_ui/widgets/monet_rich_text.dart';
 import 'package:monet_ui/widgets/monet_scrollbar.dart';
 import 'package:monet_ui/widgets/padding.dart';
@@ -29,6 +30,7 @@ class MonetDropdown<T> extends HookWidget with UiLoggy {
   /// [onChanged] is called when the selected item changes.
   /// [menuItemBuilder] is a function that builds the widget for each item.
   /// [selectedWidget] is the widget to display when an item is selected.
+  /// [selectedIcon] is an icon before the label of the menu button.
   MonetDropdown({
     required this.items,
     required this.selectedLabel,
@@ -38,6 +40,7 @@ class MonetDropdown<T> extends HookWidget with UiLoggy {
     this.longestLabel,
     super.key,
     this.selectedWidget,
+    this.selectedIcon,
     this.chevronStyle,
     this.closedButton,
     this.isItemEnabled,
@@ -76,6 +79,12 @@ class MonetDropdown<T> extends HookWidget with UiLoggy {
   /// paint-driven button, consume [PaintDrivenColorScope] inside that widget.
   /// The default string label and chevron already do so.
   final Widget? selectedWidget;
+
+  /// An icon before the label of the standard menu button, for example the
+  /// icon of the selected item. It has the size of the label's letters and
+  /// the color of the chevron, in every state of the button. It has no
+  /// effect with [closedButton].
+  final IconData? selectedIcon;
 
   /// Text style the chevron is sized from ([iconSizeForTextStyle]).
   ///
@@ -154,9 +163,10 @@ class MonetDropdown<T> extends HookWidget with UiLoggy {
       () => _DropdownLabel(
         label: selectedLabel,
         selectedWidget: selectedWidget,
+        selectedIcon: selectedIcon,
         chevronStyle: chevronStyle,
       ),
-      [selectedLabel, selectedWidget, chevronStyle],
+      [selectedLabel, selectedWidget, selectedIcon, chevronStyle],
     );
 
     // Memoize hiddenLongestLabel to avoid rebuilds
@@ -173,6 +183,17 @@ class MonetDropdown<T> extends HookWidget with UiLoggy {
                 mainAxisSize: .min,
                 mainAxisAlignment: .spaceBetween,
                 children: [
+                  // The width of _DropdownLabel's icon and its gap.
+                  if (selectedIcon != null)
+                    Builder(
+                      builder: (context) => SizedBox(
+                        width:
+                            iconSizeForTextStyle(
+                              DefaultTextStyle.of(context).style,
+                            ) +
+                            HorizontalPaddingHalf.amount,
+                      ),
+                    ),
                   Text(longestLabel ?? '', maxLines: 1, overflow: .ellipsis),
                   // The same size as _DropdownLabel's chevron, so the
                   // measured width matches. Builder: read the button's text
@@ -187,7 +208,7 @@ class MonetDropdown<T> extends HookWidget with UiLoggy {
                 ],
               ),
             ),
-      [longestLabel],
+      [longestLabel, selectedIcon],
     );
     final standardButton = colors != null
         ? MonetButton.color(
@@ -252,11 +273,13 @@ class _DropdownLabel extends StatelessWidget {
   const _DropdownLabel({
     required this.label,
     required this.selectedWidget,
+    required this.selectedIcon,
     required this.chevronStyle,
   });
 
   final String label;
   final Widget? selectedWidget;
+  final IconData? selectedIcon;
   final TextStyle? chevronStyle;
 
   @override
@@ -269,6 +292,18 @@ class _DropdownLabel extends StatelessWidget {
       mainAxisSize: .min,
       mainAxisAlignment: .spaceBetween,
       children: [
+        // The icon follows the paint bus as the chevron does: a hover or a
+        // press repaints it without a rebuild.
+        if (selectedIcon != null) ...[
+          MonetIcon(
+            selectedIcon,
+            size: iconSizeForTextStyle(style),
+            color: scope?.iconColor,
+            paintColorListenable: scope?.repaint,
+            paintColor: scope?.paintIconColor,
+          ),
+          const HorizontalPaddingHalf(),
+        ],
         // Hug short labels, but allow long values to ellipsize. The hidden
         // longestLabel remains ordinary, non-painting Text for width measurement.
         Flexible(

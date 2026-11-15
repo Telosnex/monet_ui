@@ -1,3 +1,9 @@
+## 1.7.2
+
+- `MonetDropdown` takes `selectedIcon`: an icon before the label of the
+  standard menu button. It has the size of the label's letters and the
+  color of the chevron in every state of the button.
+
 ## 1.7.1
 
 - The menu of `MonetDropdownButton` has the same shape as every other menu:
