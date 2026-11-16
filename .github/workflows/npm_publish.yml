@@ -74,7 +74,7 @@ jobs:
           fi
           echo "dir=$dir" >> "$GITHUB_OUTPUT"
           echo "Publishing @telosnex/$name $actual from $dir/"
-      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@461a03187b073db7df0237e9666e4fbd6782627d # v0.5.18
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@6747daa138553c20271dc0bd40bfb9522638537c # v0.5.19
       # No cache: a release build installs from the lockfile only.
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
