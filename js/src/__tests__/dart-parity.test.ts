@@ -2,6 +2,8 @@ import {readFileSync} from 'node:fs';
 import {describe, expect, test} from 'vitest';
 import {
   Algo,
+  Cam16V11,
+  Cam16V11ViewingConditions,
   Hct,
   argbFromHex,
   hexFromArgb,
@@ -229,6 +231,7 @@ interface Fixture {
   hctSolveCases: HctSolveCaseFixture[];
   hctSolveSweepCases: HctSolveCaseFixture[];
   hctModelCases: HctModelCaseFixture[];
+  cam16ViewingCases: Cam16ViewingCaseFixture[];
   temperatureCases: TemperatureCaseFixture[];
   lumaCases: LumaCaseFixture[];
   apcaInverseCases: ApcaInverseCaseFixture[];
@@ -244,6 +247,19 @@ interface Fixture {
   scorerCases: ScorerCaseFixture[];
   triadCases: TriadCaseFixture[];
   wallpaperGoldenCases: WallpaperGoldenCaseFixture[];
+}
+
+interface Cam16ViewingCaseFixture {
+  name: string;
+  argb: string;
+  whitePoint: [number, number, number];
+  backgroundLstar: number;
+  surround: number;
+  discountingIlluminant: boolean;
+  conditions: {aw: number; nbb: number; c: number; nC: number; rgbD: number[]; fl: number; z: number};
+  xyzInConditions: [number, number, number];
+  viewed: string;
+  camInConditions: Record<'hue' | 'chroma' | 'j' | 'q' | 'm' | 's' | 'jstar' | 'astar' | 'bstar', number>;
 }
 
 interface ScrimCaseFixture {
@@ -296,7 +312,7 @@ function hexRecord(map: Map<number, number>): Record<string, number> {
 
 describe('Dart libmonet parity fixtures', () => {
   test('fixture has the expected schema', () => {
-    expect(fixture.schema).toBe(13);
+    expect(fixture.schema).toBe(14);
     expect(fixture.paletteRoles.length).toBeGreaterThan(40);
     expect(fixture.paletteCases.length).toBeGreaterThan(0);
     expect(fixture.hctRoundTripSweepCases.length).toBeGreaterThan(700);
@@ -344,6 +360,29 @@ describe('Dart libmonet parity fixtures', () => {
       expect(hct.tone, c.name).toBeCloseTo(c.actualTone, 3);
     }
   });
+
+  for (const c of fixture.cam16ViewingCases) {
+    test(`Cam16V11 viewing conditions parity: ${c.name}`, () => {
+      const vc = Cam16V11ViewingConditions.make({
+        whitePoint: c.whitePoint,
+        backgroundLstar: c.backgroundLstar,
+        surround: c.surround,
+        discountingIlluminant: c.discountingIlluminant,
+      });
+      for (const key of ['aw', 'nbb', 'c', 'nC', 'fl', 'z'] as const) {
+        expect(vc[key], key).toBeCloseTo(c.conditions[key], 10);
+      }
+      c.conditions.rgbD.forEach((v, i) => expect(vc.rgbD[i]).toBeCloseTo(v, 10));
+      const argb = argbFromHex(c.argb);
+      const cam = Cam16V11.fromInt(argb);
+      cam.xyzInViewingConditions(vc).forEach((v, i) => expect(v).toBeCloseTo(c.xyzInConditions[i]!, 8));
+      expect(hexFromArgb(cam.viewed(vc))).toBe(c.viewed);
+      const inVc = Cam16V11.fromIntInViewingConditions(argb, vc);
+      for (const [key, value] of Object.entries(c.camInConditions)) {
+        expect(inVc[key as keyof typeof c.camInConditions], key).toBeCloseTo(value, 8);
+      }
+    });
+  }
 
   for (const c of fixture.hctModelCases) {
     test(`Hct colorModel parity: ${c.name}`, () => {

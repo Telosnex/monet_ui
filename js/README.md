@@ -45,6 +45,18 @@ const lerped = new PaletteLerped(oldTheme.primary, newTheme.primary, 0.5, 'polar
 applyCssVars(paletteCssVars('primary', lerped.toRecord()));
 ```
 
+A colour in other viewing conditions, for example under a light:
+
+```ts
+import {Cam16V11, Cam16V11ViewingConditions, xyzFromArgb} from '@telosnex/monet-ui';
+
+const conditions = Cam16V11ViewingConditions.make({
+  whitePoint: xyzFromArgb(lightArgb),
+  backgroundLstar: 30,
+});
+const xyz = Cam16V11.fromInt(colorArgb).xyzInViewingConditions(conditions);
+```
+
 The implementation lives next to the Dart code so parity fixtures/tests can be generated from the Dart source of truth.
 
 Parity workflow:

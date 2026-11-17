@@ -10,6 +10,8 @@ import 'dart:ui' show Color;
 
 import 'package:material_ui/material_ui.dart' show Brightness;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:monet_ui/colorspaces/cam16V11/cam16_v11.dart';
+import 'package:monet_ui/colorspaces/cam16V11/cam16_v11_viewing_conditions.dart';
 import 'package:monet_ui/colorspaces/color_model.dart';
 import 'package:monet_ui/contrast/apca_contrast.dart' as apca_contrast;
 import 'package:monet_ui/monet_ui.dart';
@@ -168,6 +170,61 @@ Map<String, Object?> _hctSolveCase({
     'actualHue': hct.hue,
     'actualChroma': hct.chroma,
     'actualTone': hct.tone,
+  };
+}
+
+/// A colour seen under a light: the light's XYZ is the white point, as
+/// Telosnex's `viewedInLighting`. Checks both directions of CAM16 v11 in
+/// custom viewing conditions.
+Map<String, Object?> _cam16ViewingCase({
+  required String name,
+  required int argb,
+  required int light,
+  required double backgroundLstar,
+  double surround = 2.0,
+  bool discountingIlluminant = false,
+}) {
+  final whitePoint = Cam16V11.fromInt(light).xyzInViewingConditions(
+    Cam16V11ViewingConditions.sRgb,
+  );
+  final vc = Cam16V11ViewingConditions.make(
+    whitePoint: whitePoint,
+    backgroundLstar: backgroundLstar,
+    surround: surround,
+    discountingIlluminant: discountingIlluminant,
+  );
+  final inSrgb = Cam16V11.fromInt(argb);
+  final xyz = inSrgb.xyzInViewingConditions(vc);
+  final inVc = Cam16V11.fromIntInViewingConditions(argb, vc);
+  return {
+    'name': name,
+    'argb': _hex(Color(argb)),
+    'whitePoint': whitePoint,
+    'backgroundLstar': backgroundLstar,
+    'surround': surround,
+    'discountingIlluminant': discountingIlluminant,
+    'conditions': {
+      'aw': vc.aw,
+      'nbb': vc.nbb,
+      'c': vc.c,
+      'nC': vc.nC,
+      'rgbD': vc.rgbD,
+      'fl': vc.fl,
+      'z': vc.z,
+    },
+    'xyzInConditions': xyz,
+    'viewed': _hex(Color(inSrgb.viewed(vc))),
+    'camInConditions': {
+      'hue': inVc.hue,
+      'chroma': inVc.chroma,
+      'j': inVc.j,
+      'q': inVc.q,
+      'm': inVc.m,
+      's': inVc.s,
+      'jstar': inVc.jstar,
+      'astar': inVc.astar,
+      'bstar': inVc.bstar,
+    },
   };
 }
 
@@ -680,7 +737,7 @@ Map<String, Object?> _triadCase() {
 void main() {
   test('generate JS parity fixtures', () async {
     final fixture = {
-      'schema': 13,
+      'schema': 14,
       'paletteRoles': _paletteRoles,
       'hctColorCases': [
         _hctColorCase(0xff1177aa),
@@ -742,6 +799,40 @@ void main() {
           name: 'oklch-red',
           argb: 0xffff0033,
           model: ColorModel.oklch,
+        ),
+      ],
+      'cam16ViewingCases': [
+        _cam16ViewingCase(
+          name: 'green-under-warm-dim',
+          argb: 0xff5a7a3c,
+          light: 0xff4d4a45,
+          backgroundLstar: 30,
+        ),
+        _cam16ViewingCase(
+          name: 'sky-under-white',
+          argb: 0xff9cc4e4,
+          light: 0xffffffff,
+          backgroundLstar: 50,
+        ),
+        _cam16ViewingCase(
+          name: 'red-under-blue-dark',
+          argb: 0xffd03a2b,
+          light: 0xff3a4660,
+          backgroundLstar: 10,
+        ),
+        _cam16ViewingCase(
+          name: 'gray-dim-surround',
+          argb: 0xff808080,
+          light: 0xffe0d0b0,
+          backgroundLstar: 0,
+          surround: 0.5,
+        ),
+        _cam16ViewingCase(
+          name: 'black-discounting',
+          argb: 0xff000000,
+          light: 0xffc0c8ff,
+          backgroundLstar: 70,
+          discountingIlluminant: true,
         ),
       ],
       'temperatureCases': [
