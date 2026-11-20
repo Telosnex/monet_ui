@@ -184,9 +184,8 @@ Map<String, Object?> _cam16ViewingCase({
   double surround = 2.0,
   bool discountingIlluminant = false,
 }) {
-  final whitePoint = Cam16V11.fromInt(light).xyzInViewingConditions(
-    Cam16V11ViewingConditions.sRgb,
-  );
+  final whitePoint = Cam16V11.fromInt(light)
+      .xyzInViewingConditions(Cam16V11ViewingConditions.sRgb);
   final vc = Cam16V11ViewingConditions.make(
     whitePoint: whitePoint,
     backgroundLstar: backgroundLstar,

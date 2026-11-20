@@ -4,8 +4,9 @@ library;
 
 import 'dart:ui' as ui;
 
-import 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart';
-import 'package:material_ui/material_ui.dart' hide MaterialShapes;
+import 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart'
+    as shapes;
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monet_ui/shapes/expressive_button.dart';
 
@@ -21,9 +22,9 @@ void main() {
             // Independent reference: Compose scales the unit path, obtains
             // its bounds, and translates the bounds' center to the box center.
             final source = border.source;
-            final raw = source is MorphBorder
+            final raw = source is shapes.MorphBorder
                 ? source.path
-                : (source as RoundedPolygonBorder).path;
+                : (source as shapes.RoundedPolygonBorder).path;
             final matrix = Matrix4.diagonal3Values(
               240 * (stretch ? 1 : .5),
               120,
@@ -171,7 +172,7 @@ void main() {
   test('Fan before-after bounds-centering golden', () async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder)..drawColor(Colors.white, BlendMode.src);
-    final raw = RoundedPolygonBorder(polygon: MaterialShapes.fan);
+    final raw = shapes.RoundedPolygonBorder(polygon: shapes.MaterialShapes.fan);
     for (var row = 0; row < 2; row++) {
       for (var column = 0; column < 2; column++) {
         final rect = Rect.fromLTWH(20 + column * 220, 20 + row * 180, 180, 140);

@@ -1,5 +1,6 @@
-import 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart';
-import 'package:material_ui/material_ui.dart' hide MaterialShapes;
+import 'package:androidx_graphics_shapes/androidx_graphics_shapes.dart'
+    as shapes;
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:monet_ui/shapes/expressive_button.dart';
 import 'package:monet_ui/theming/monet_clip.dart';
@@ -29,7 +30,8 @@ void main() {
     BoundsCenteredBorder centeredBorder() =>
         tester.widget<MonetClip>(find.byType(MonetClip)).shape!
             as BoundsCenteredBorder;
-    MorphBorder border() => centeredBorder().source as MorphBorder;
+    shapes.MorphBorder border() =>
+        centeredBorder().source as shapes.MorphBorder;
     void action(String label) => tester
         .widget<TextButton>(find.widgetWithText(TextButton, label))
         .onPressed!();
@@ -139,7 +141,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Selected: Heart'), findsOneWidget);
     final clip = tester.widget<MonetClip>(find.byType(MonetClip));
-    final border = (clip.shape! as BoundsCenteredBorder).source as MorphBorder;
+    final border =
+        (clip.shape! as BoundsCenteredBorder).source as shapes.MorphBorder;
     expect(border.progress, 1);
     _expectHeartOutline(border.path);
     final context = tester.element(find.byType(MonetClip));
@@ -246,7 +249,7 @@ void main() {
                     (widget) => widget is ButtonStyleButton)))
             .style!;
         final shape = (style.shape!.resolve({})! as BoundsCenteredBorder).source
-            as MorphBorder;
+            as shapes.MorphBorder;
         expect(shape.progress, 1);
         _expectHeartOutline(shape.path);
         expect(shape.squash, 1);
@@ -263,7 +266,7 @@ void main() {
 }
 
 void _expectHeartOutline(Path actual) {
-  final expected = MaterialShapes.heart.toPath();
+  final expected = shapes.MaterialShapes.heart.toPath();
   // Morph subdivides cubics: control-point bounds can change even though the
   // filled outline is identical. Compare occupancy, not Path.getBounds().
   for (var y = 0; y < 40; y++) {
