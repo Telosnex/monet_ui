@@ -1,3 +1,8 @@
+## 1.7.5
+
+- Snap mirrored icon dots to the same distance from the mirror line. Small
+  differences in the outline no longer make the dots round a pixel apart.
+
 ## 1.7.4
 
 - `MonetSlider` shows keyboard focus with the hover colors that buttons

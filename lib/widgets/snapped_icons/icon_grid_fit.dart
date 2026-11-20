@@ -673,13 +673,9 @@ final class IconPathCache {
   }
 }
 
-/// Per dot, in order: its center on [axis] (0 x, 1 y) in device pixels,
-/// through [map] and then onto a pixel center or corner as [_rowParity]
-/// picks.
-///
-/// When the outline mirrors across [mirror], the mirror line lands on a
-/// pixel center or corner, dots on one side are placed, and the other side
-/// mirrors them. Placed one by one, mirrored dots could round apart.
+/// Per dot, in contour order: its center along [axis], in device pixels.
+/// Dots in a row share a pixel center or corner, picked by the smallest dot.
+/// Mirrored rows also share one rounded distance from the mirror line.
 List<double> _placeDots(
   List<OutlineDot> dots,
   double k,
@@ -687,71 +683,83 @@ List<double> _placeDots(
   double Function(double) map,
   double? mirror,
 ) {
-  final odd = _rowParity(dots, k, axis);
+  const tolerance = 2 * kSameEdge;
   double place(double v, bool odd) =>
       odd ? v.floorToDouble() + 0.5 : v.roundToDouble();
-  double center(OutlineDot d) =>
-      axis == 0 ? (d.left + d.right) / 2 : (d.top + d.bottom) / 2;
-  if (mirror == null) {
-    return [
-      for (var i = 0; i < dots.length; i++) place(map(center(dots[i])), odd[i]),
-    ];
-  }
-  bool onMirror(OutlineDot d) => (center(d) - mirror).abs() <= 2 * kSameEdge;
-  // The mirror line, on a pixel center or corner. Edges already snapped
-  // usually put it on one; otherwise dots on the line pick.
-  var m = map(mirror);
-  if (((2 * m) - (2 * m).roundToDouble()).abs() > 1e-6) {
-    final onLine = [
-      for (var i = 0; i < dots.length; i++)
-        if (onMirror(dots[i])) i,
-    ];
-    m = onLine.isEmpty
-        ? (2 * m).roundToDouble() / 2
-        : place(m, odd[onLine.first]);
-  }
-  return [
-    for (var i = 0; i < dots.length; i++)
-      () {
-        final d = dots[i];
-        if (onMirror(d)) return m;
-        final dist = map(center(d)) - map(mirror);
-        final far = place(m + dist.abs(), odd[i]);
-        return dist >= 0 ? far : 2 * m - far;
-      }(),
+  double width(OutlineDot d) => axis == 0 ? d.right - d.left : d.bottom - d.top;
+  final centers = [
+    for (final d in dots)
+      axis == 0 ? (d.left + d.right) / 2 : (d.top + d.bottom) / 2,
   ];
+  bool odd(List<int> row) {
+    final smallest = row.map((i) => width(dots[i])).reduce(math.min);
+    return math.max(1, (smallest * k - _kDotCenterBias).round()).isOdd;
+  }
+
+  final result = List.filled(dots.length, 0.0);
+  if (mirror == null) {
+    for (final row in _dotRows(centers, tolerance)) {
+      final parity = odd(row);
+      for (final i in row) {
+        result[i] = place(map(centers[i]), parity);
+      }
+    }
+    return result;
+  }
+
+  final onLine = [
+    for (var i = 0; i < dots.length; i++)
+      if ((centers[i] - mirror).abs() <= tolerance) i,
+  ];
+  final mappedMirror = map(mirror);
+  final nearestHalf = (2 * mappedMirror).roundToDouble() / 2;
+  // Keep the mirror line set by snapped edges; otherwise place it using
+  // the center row's parity when there is one.
+  final m = (mappedMirror - nearestHalf).abs() <= 1e-6 || onLine.isEmpty
+      ? nearestHalf
+      : place(mappedMirror, odd(onLine));
+  for (final i in onLine) {
+    result[i] = m;
+  }
+
+  // Fold both sides together before grouping rows. Font coordinates can
+  // differ by a unit across the mirror. Rounding each side independently
+  // can turn that difference into a full pixel, even with the same parity.
+  final distances = [for (final c in centers) (c - mirror).abs()];
+  for (final row in _dotRows(distances, tolerance, above: tolerance)) {
+    final distance =
+        row.fold(
+          0.0,
+          (sum, i) => sum + (map(centers[i]) - mappedMirror).abs(),
+        ) /
+        row.length;
+    final far = place(m + distance, odd(row));
+    for (final i in row) {
+      result[i] = centers[i] > mirror ? far : 2 * m - far;
+    }
+  }
+  return result;
 }
 
-/// Per dot: whether its center goes on a pixel center (true) or a pixel
-/// corner on [axis] (0 x, 1 y). Dots whose centers line up on this axis form
-/// one row and share the choice of the smallest, so the row stays straight.
-List<bool> _rowParity(List<OutlineDot> dots, double k, int axis) {
-  double center(OutlineDot d) =>
-      axis == 0 ? (d.left + d.right) / 2 : (d.top + d.bottom) / 2;
-  double width(OutlineDot d) => axis == 0 ? d.right - d.left : d.bottom - d.top;
-  final sorted = [for (var i = 0; i < dots.length; i++) i]
-    ..sort((a, b) => center(dots[a]).compareTo(center(dots[b])));
-  final result = List.filled(dots.length, false);
+/// Groups dots with nearly equal coordinates, or distances from a mirror.
+Iterable<List<int>> _dotRows(
+  List<double> coordinates,
+  double tolerance, {
+  double above = double.negativeInfinity,
+}) sync* {
+  final sorted = [
+    for (var i = 0; i < coordinates.length; i++)
+      if (coordinates[i] > above) i,
+  ]..sort((a, b) => coordinates[a].compareTo(coordinates[b]));
   var row = <int>[];
-  void flush() {
-    if (row.isEmpty) return;
-    final smallest = row.map((i) => width(dots[i])).reduce(math.min);
-    final pixels = math.max(1, (smallest * k - _kDotCenterBias).round());
-    for (final i in row) {
-      result[i] = pixels.isOdd;
-    }
-    row = [];
-  }
-
   for (final i in sorted) {
-    if (row.isNotEmpty &&
-        center(dots[i]) - center(dots[row.last]) > 2 * kSameEdge) {
-      flush();
+    if (row.isNotEmpty && coordinates[i] - coordinates[row.last] > tolerance) {
+      yield row;
+      row = [];
     }
     row.add(i);
   }
-  flush();
-  return result;
+  if (row.isNotEmpty) yield row;
 }
 
 /// Where one dot's center moves: from its designed center, in font units,
