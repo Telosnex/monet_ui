@@ -766,10 +766,10 @@
           "opacity": 1.0
         },
         "focused": {
-          "activeTrack": "#4B778F",
+          "activeTrack": "#759EB6",
           "inactiveTrack": "#D5EFFF",
           "border": "#4B778F",
-          "thumbContent": "#A7CFE6",
+          "thumbContent": "#CFECFF",
           "opacity": 1.0
         },
         "disabled": {
@@ -780,7 +780,8 @@
           "opacity": 0.6
         },
         "trackHeight": 36.0,
-        "borderWidth": 1,
+        "borderWidth": 1.0,
+        "focusedBorderWidth": 2.0,
         "glowSigma": 2,
         "thumbContentFraction": 0.6,
         "keyStep": 0.05
@@ -1739,10 +1740,10 @@
           "opacity": 1.0
         },
         "focused": {
-          "activeTrack": "#4B778F",
+          "activeTrack": "#759EB6",
           "inactiveTrack": "#001E2C",
           "border": "#4B778F",
-          "thumbContent": "#A7CFE6",
+          "thumbContent": "#CFECFF",
           "opacity": 1.0
         },
         "disabled": {
@@ -1753,7 +1754,8 @@
           "opacity": 0.6
         },
         "trackHeight": 36.0,
-        "borderWidth": 1,
+        "borderWidth": 1.0,
+        "focusedBorderWidth": 2.0,
         "glowSigma": 2,
         "thumbContentFraction": 0.6,
         "keyStep": 0.05
@@ -2712,10 +2714,10 @@
           "opacity": 1.0
         },
         "focused": {
-          "activeTrack": "#D29C57",
+          "activeTrack": "#A7732B",
           "inactiveTrack": "#FFE7CE",
           "border": "#D29C57",
-          "thumbContent": "#573600",
+          "thumbContent": "#FFC985",
           "opacity": 1.0
         },
         "disabled": {
@@ -2726,7 +2728,8 @@
           "opacity": 0.6
         },
         "trackHeight": 28.8,
-        "borderWidth": 1,
+        "borderWidth": 1.0,
+        "focusedBorderWidth": 2.0,
         "glowSigma": 2,
         "thumbContentFraction": 0.6,
         "keyStep": 0.05

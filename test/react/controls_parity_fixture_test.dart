@@ -494,9 +494,16 @@ Future<Map<String, Object?>> _sliderCase(
         ),
       )
       .firstWhere((f) => f.focusNode != null);
+  // Focus shows only in keyboard (traditional) highlight mode.
+  final strategy = FocusManager.instance.highlightStrategy;
+  FocusManager.instance.highlightStrategy = .alwaysTraditional;
   focus.focusNode!.requestFocus();
   await tester.pump();
+  expect(focus.focusNode!.hasFocus, isTrue);
+  await tester.pump();
   final focused = colors();
+  final focusedBorderWidth = painter().borderWidth as double;
+  FocusManager.instance.highlightStrategy = strategy;
   await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
   await tester.pumpAndSettle();
   final keyStep = value - 0.5;
@@ -513,9 +520,10 @@ Future<Map<String, Object?>> _sliderCase(
       'disabled': disabled,
       'trackHeight': _round(trackHeight),
       // _MonetSliderPainter.paint: the track border and the thumb's
-      // half-circle are 1px strokes; an outer blur of sigma 2 in the border
-      // colour; thumb content is 1.2 × the radius.
-      'borderWidth': 1,
+      // half-circle are 1px strokes, 2px with keyboard focus; an outer blur
+      // of sigma 2 in the border colour; thumb content is 1.2 × the radius.
+      'borderWidth': MonetSlider.kBorderWidth,
+      'focusedBorderWidth': _round(focusedBorderWidth),
       'glowSigma': 2,
       'thumbContentFraction': 0.6,
       'keyStep': _round(keyStep),

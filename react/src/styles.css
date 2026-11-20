@@ -373,6 +373,7 @@ a.monet-button:is(:link, :visited, :hover, :focus, :active) {
   --_inactive: var(--monet-slider-rest-inactive-track);
   --_border: var(--monet-slider-rest-border);
   --_content: var(--monet-slider-rest-thumb-content);
+  --_border-width: var(--monet-slider-border-width);
 
   position: relative;
   width: 100%;
@@ -387,17 +388,16 @@ a.monet-button:is(:link, :visited, :hover, :focus, :active) {
 }
 
 .monet-slider:focus {
+  outline: none;
+}
+
+/* Keyboard focus only: the hover colours and a thicker border. */
+.monet-slider:focus-visible {
   --_active: var(--monet-slider-focused-active-track);
   --_inactive: var(--monet-slider-focused-inactive-track);
   --_border: var(--monet-slider-focused-border);
   --_content: var(--monet-slider-focused-thumb-content);
-
-  outline: none;
-}
-
-.monet-slider:focus-visible {
-  outline: calc(2 * var(--monet-dp, 1px)) solid var(--monet-tertiary-color);
-  outline-offset: calc(3 * var(--monet-dp, 1px));
+  --_border-width: var(--monet-slider-focused-border-width);
 }
 
 .monet-slider[aria-disabled='true'] {
@@ -423,7 +423,7 @@ a.monet-button:is(:link, :visited, :hover, :focus, :active) {
 .monet-slider__border {
   position: absolute;
   inset: 0;
-  border: var(--monet-slider-border-width) solid var(--_border);
+  border: var(--_border-width) solid var(--_border);
   border-radius: inherit;
   pointer-events: none;
 }
@@ -448,7 +448,7 @@ a.monet-button:is(:link, :visited, :hover, :focus, :active) {
 .monet-slider__thumb-border {
   position: absolute;
   inset: 0;
-  border: var(--monet-slider-border-width) solid var(--_border);
+  border: var(--_border-width) solid var(--_border);
   border-radius: 50%;
   clip-path: inset(0 0 0 50%);
 }

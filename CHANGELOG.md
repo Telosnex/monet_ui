@@ -1,3 +1,16 @@
+## 1.7.4
+
+- `MonetSlider` shows keyboard focus with the hover colors that buttons
+  use (`colorHovered`, `colorHoveredBorder`, `colorHoveredIcon`) and a
+  border of width 2, as text fields do. Before, focus drew the border in
+  the active track color. That border could have no contrast with the
+  active track or the background. Focus from a pointer shows nothing until
+  a key is pressed. New: `focusedActiveTrackColor`, `focusedBorderColor`,
+  `focusedThumbContentColor`, `kBorderWidth` and `kFocusedBorderWidth`.
+  `SliderRow` passes the hover colors of its `colors`.
+- React `MonetSlider` does the same with `:focus-visible`, in place of
+  its tertiary outline.
+
 ## 1.7.3
 
 - `MonetRichText` wraps before it truncates for trailing children: when

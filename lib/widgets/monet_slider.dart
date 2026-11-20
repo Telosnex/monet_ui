@@ -10,8 +10,20 @@ import 'package:pixel_snap_fork/material.dart';
 
 /// A custom slider implementation that follows Monet design principles.
 /// This implementation is lightweight and doesn't rely on the Material slider.
+///
+/// Keyboard focus shows the hover colors that buttons use, and a border of
+/// [kFocusedBorderWidth]. The palette solves the hover colors to contrast
+/// with each other, as it does the rest colors. Focus from a pointer shows
+/// nothing until a key is pressed, like CSS `:focus-visible`.
 class MonetSlider extends StatefulWidget {
   static const kDefaultTrackHeight = MonetThemeData.touchSize;
+
+  /// The width of the track border and the thumb's half circle at rest.
+  static const kBorderWidth = 1.0;
+
+  /// The width of the track border and the thumb's half circle while
+  /// keyboard focus is shown, like a focused text field.
+  static const kFocusedBorderWidth = 2.0;
 
   /// The current value of the slider.
   final double value;
@@ -58,6 +70,24 @@ class MonetSlider extends StatefulWidget {
   /// The color of the icon or letter in the thumb.
   final Color? thumbContentColor;
 
+  /// The active track color while keyboard focus is shown.
+  ///
+  /// Defaults to `primary.colorHovered`, or to [activeTrackColor] when that
+  /// is set.
+  final Color? focusedActiveTrackColor;
+
+  /// The border color while keyboard focus is shown.
+  ///
+  /// Defaults to `primary.colorHoveredBorder`, or to [borderColor] when that
+  /// is set.
+  final Color? focusedBorderColor;
+
+  /// The thumb's icon or letter color while keyboard focus is shown.
+  ///
+  /// Defaults to `primary.colorHoveredIcon`, or to [thumbContentColor] when
+  /// that is set.
+  final Color? focusedThumbContentColor;
+
   /// Creates a MonetSlider widget.
   const MonetSlider({
     super.key,
@@ -76,6 +106,9 @@ class MonetSlider extends StatefulWidget {
     this.inactiveTrackColor,
     this.borderColor,
     this.thumbContentColor,
+    this.focusedActiveTrackColor,
+    this.focusedBorderColor,
+    this.focusedThumbContentColor,
   }) : assert(min < max),
        assert(value >= min && value <= max),
        assert(
@@ -89,6 +122,9 @@ class MonetSlider extends StatefulWidget {
 
 class _MonetSliderState extends State<MonetSlider> {
   final FocusNode _focusNode = FocusNode();
+
+  /// A pointer gave the slider focus, and no key was pressed since.
+  bool _pointerFocused = false;
   bool _dragging = false;
   double? _acceptedDragValue;
   int? _interactionPointer;
@@ -98,6 +134,7 @@ class _MonetSliderState extends State<MonetSlider> {
   void _beginInteraction(PointerDownEvent event) {
     if (!widget.enabled || _interactionPointer != null) return;
     _settleEndValue = null;
+    if (!_focusNode.hasFocus) _pointerFocused = true;
     _focusNode.requestFocus();
     _interactionPointer = event.pointer;
     _endInteractionCallback = widget.onChangeEnd;
@@ -134,8 +171,24 @@ class _MonetSliderState extends State<MonetSlider> {
     if (end != null) scheduleMicrotask(() => end(value));
   }
 
+  /// Whether to show focus: the enabled slider has focus from the keyboard,
+  /// or a key was pressed after a pointer gave it focus.
+  bool get _showFocus =>
+      widget.enabled &&
+      _focusNode.hasFocus &&
+      !_pointerFocused &&
+      FocusManager.instance.highlightMode == FocusHighlightMode.traditional;
+
+  void _handleHighlightModeChange(FocusHighlightMode mode) {
+    // ignore: avoid-empty-setstate, no-empty-block
+    if (_focusNode.hasFocus) setState(() {});
+  }
+
   @override
   void dispose() {
+    FocusManager.instance.removeHighlightModeListener(
+      _handleHighlightModeChange,
+    );
     _abandonInteraction();
     _focusNode.dispose();
     super.dispose();
@@ -151,6 +204,7 @@ class _MonetSliderState extends State<MonetSlider> {
   void initState() {
     super.initState();
     _currentValue = widget.value;
+    FocusManager.instance.addHighlightModeListener(_handleHighlightModeChange);
   }
 
   @override
@@ -286,6 +340,9 @@ class _MonetSliderState extends State<MonetSlider> {
   }
 
   KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (_pointerFocused && event is KeyDownEvent) {
+      setState(() => _pointerFocused = false);
+    }
     if (!widget.enabled ||
         _interactionPointer != null ||
         (event is! KeyDownEvent && event is! KeyRepeatEvent)) {
@@ -321,13 +378,27 @@ class _MonetSliderState extends State<MonetSlider> {
   Widget build(BuildContext context) {
     final MonetTheme monet = MonetTheme.of(context);
 
-    // Determine colors from theme if not provided
-    final activeTrackColor = widget.activeTrackColor ?? monet.primary.color;
+    // Determine colors from theme if not provided. Focus uses the hover
+    // colors, as buttons do: each focus color keeps the palette's contrast
+    // with the others.
+    final showFocus = _showFocus;
+    final activeTrackColor = showFocus
+        ? widget.focusedActiveTrackColor ??
+              widget.activeTrackColor ??
+              monet.primary.colorHovered
+        : widget.activeTrackColor ?? monet.primary.color;
     final inactiveTrackColor =
         widget.inactiveTrackColor ?? monet.primary.background;
-    final borderColor = widget.borderColor ?? monet.primary.colorBorder;
-    final thumbContentColor =
-        widget.thumbContentColor ?? monet.primary.colorIcon;
+    final borderColor = showFocus
+        ? widget.focusedBorderColor ??
+              widget.borderColor ??
+              monet.primary.colorHoveredBorder
+        : widget.borderColor ?? monet.primary.colorBorder;
+    final thumbContentColor = showFocus
+        ? widget.focusedThumbContentColor ??
+              widget.thumbContentColor ??
+              monet.primary.colorHoveredIcon
+        : widget.thumbContentColor ?? monet.primary.colorIcon;
 
     final double normalizedValue =
         (_currentValue - widget.min) / (widget.max - widget.min);
@@ -342,8 +413,9 @@ class _MonetSliderState extends State<MonetSlider> {
       focusNode: _focusNode,
       canRequestFocus: widget.enabled,
       includeSemantics: false,
-      // ignore: avoid-empty-setstate, no-empty-block
-      onFocusChange: (_) => setState(() {}),
+      onFocusChange: (hasFocus) => setState(() {
+        if (!hasFocus) _pointerFocused = false;
+      }),
       onKeyEvent: _handleKeyEvent,
       child: Semantics(
         slider: true,
@@ -388,9 +460,10 @@ class _MonetSliderState extends State<MonetSlider> {
                     inactiveTrackColor: inactiveTrackColor.withOpacityNeue(
                       opacity,
                     ),
-                    borderColor:
-                        (_focusNode.hasFocus ? activeTrackColor : borderColor)
-                            .withOpacityNeue(opacity),
+                    borderColor: borderColor.withOpacityNeue(opacity),
+                    borderWidth: showFocus
+                        ? MonetSlider.kFocusedBorderWidth
+                        : MonetSlider.kBorderWidth,
                     thumbIcon: widget.thumbIcon,
                     thumbLetter: widget.thumbLetter,
                     thumbLetterStyle: widget.thumbLetterStyle,
@@ -415,6 +488,7 @@ class _MonetSliderPainter extends CustomPainter {
   final Color activeTrackColor;
   final Color inactiveTrackColor;
   final Color borderColor;
+  final double borderWidth;
   final IconData? thumbIcon;
   final String? thumbLetter;
   final TextStyle? thumbLetterStyle;
@@ -432,6 +506,7 @@ class _MonetSliderPainter extends CustomPainter {
     required this.activeTrackColor,
     required this.inactiveTrackColor,
     required this.borderColor,
+    required this.borderWidth,
     this.thumbIcon,
     this.thumbLetter,
     this.thumbLetterStyle,
@@ -444,7 +519,7 @@ class _MonetSliderPainter extends CustomPainter {
     _borderPaint = Paint()
       ..color = borderColor
       ..style = .stroke
-      ..strokeWidth = 1.0;
+      ..strokeWidth = borderWidth;
 
     _blurPaint = Paint()
       ..color = borderColor
@@ -458,7 +533,6 @@ class _MonetSliderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final double radius = trackHeight / 2;
-    final double borderWidth = 1.0;
 
     // Center the track vertically
     final double trackY = size.height / 2;
@@ -603,6 +677,7 @@ class _MonetSliderPainter extends CustomPainter {
         oldPainter.activeTrackColor != activeTrackColor ||
         oldPainter.inactiveTrackColor != inactiveTrackColor ||
         oldPainter.borderColor != borderColor ||
+        oldPainter.borderWidth != borderWidth ||
         oldPainter.thumbIcon != thumbIcon ||
         oldPainter.thumbLetter != thumbLetter ||
         oldPainter.thumbContentColor != thumbContentColor;

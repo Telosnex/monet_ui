@@ -200,6 +200,9 @@ class SliderRow extends HookWidget {
       inactiveTrackColor: colors?.background,
       borderColor: colors?.colorBorder,
       thumbContentColor: colors?.colorIcon,
+      focusedActiveTrackColor: colors?.colorHovered,
+      focusedBorderColor: colors?.colorHoveredBorder,
+      focusedThumbContentColor: colors?.colorHoveredIcon,
       thumbLetterStyle: thumbLetter != null
           ? textTheme.labelLarge!.copyWith(color: palette.colorText)
           : null,

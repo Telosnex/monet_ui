@@ -287,13 +287,19 @@ export interface SliderSpec {
   readonly disabled: SliderPaints;
   readonly trackHeight: number;
   readonly borderWidth: number;
+  /** The border width while keyboard focus is shown. */
+  readonly focusedBorderWidth: number;
   readonly glowSigma: number;
   readonly thumbContentFraction: number;
   /** Arrow keys move by this fraction of the range. */
   readonly keyStep: number;
 }
 
-/** `MonetSlider`. Focus colours the border like the active track. */
+/**
+ * `MonetSlider`. Keyboard focus uses the hover colours, as buttons do, and a
+ * thicker border, as text fields do. The palette solves the hover colours to
+ * contrast with each other.
+ */
 export function sliderSpec(geometry: MonetGeometry): SliderSpec {
   const rest: SliderPaints = {
     activeTrack: paint('primary', 'color'),
@@ -304,10 +310,16 @@ export function sliderSpec(geometry: MonetGeometry): SliderSpec {
   };
   return {
     rest,
-    focused: {...rest, border: rest.activeTrack},
+    focused: {
+      ...rest,
+      activeTrack: paint('primary', 'colorHovered'),
+      border: paint('primary', 'colorHoveredBorder'),
+      thumbContent: paint('primary', 'colorHoveredIcon'),
+    },
     disabled: {...rest, opacity: 0.6},
     trackHeight: touchSizeFor(geometry.scale),
     borderWidth: 1,
+    focusedBorderWidth: 2,
     glowSigma: 2,
     thumbContentFraction: 0.6,
     keyStep: 1 / 20,

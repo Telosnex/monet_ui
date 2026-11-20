@@ -109,6 +109,7 @@ export function sliderVars(spec: SliderSpec): CssVars {
     ...sliderPaints(`${p}-disabled`, spec.disabled),
     [`${p}-height`]: dp(spec.trackHeight),
     [`${p}-border-width`]: dp(spec.borderWidth),
+    [`${p}-focused-border-width`]: dp(spec.focusedBorderWidth),
     [`${p}-glow`]: dp(spec.glowSigma * 2),
     [`${p}-thumb-content-size`]: `${spec.thumbContentFraction * 100}%`,
   };
