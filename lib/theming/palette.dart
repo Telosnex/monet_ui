@@ -193,7 +193,12 @@ class _ComputedPalette extends Palette {
     model: _colorModel,
   );
 
-  late final double _colorHue = _baseColorHct.hue;
+  // An achromatic base color (black, white, gray) has a meaningless HCT hue
+  // (0.0). Since chroma may be borrowed from the background below, borrow
+  // its hue too; otherwise the palette gets a saturated hue-0 (pink/red) tint.
+  late final double _colorHue = _baseColorHct.chroma < 1.0
+      ? _baseBackgroundHct.hue
+      : _baseColorHct.hue;
   late final double _colorChroma = math.max(
     _baseColorHct.chroma,
     _baseBackgroundHct.chroma,

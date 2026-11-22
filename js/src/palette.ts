@@ -66,7 +66,9 @@ export class Palette {
   ) {
     this.colorHct = Hct.fromInt(this.baseColor, this.colorModel);
     this.backgroundHct = Hct.fromInt(this.baseBackground, this.colorModel);
-    this.colorHue = this.colorHct.hue;
+    // Achromatic base colors have a meaningless hue (0); borrow the background's,
+    // since chroma may be borrowed from it below. Mirrors lib/theming/palette.dart.
+    this.colorHue = this.colorHct.chroma < 1.0 ? this.backgroundHct.hue : this.colorHct.hue;
     this.colorChroma = Math.max(this.colorHct.chroma, this.backgroundHct.chroma);
     this.colorTone = this.colorHct.tone;
     this.backgroundHue = this.backgroundHct.hue;
