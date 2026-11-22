@@ -1,3 +1,10 @@
+## 1.7.6
+
+- `Palette.fromColorAndBackground`: when the base color is gray, black or
+  white, the palette now uses the background hue as well as its chroma.
+  Before, it used hue 0, so hovered and pressed colors could turn pink or
+  red on a colored background.
+
 ## 1.7.5
 
 - Snap mirrored icon dots to the same distance from the mirror line. Small
