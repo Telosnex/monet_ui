@@ -29,7 +29,8 @@ void main() {
         expect(
           _hueDelta(hct.hue, bgHue),
           lessThan(20),
-          reason: '$name ${hct.hue.toStringAsFixed(1)} vs bg '
+          reason:
+              '$name ${hct.hue.toStringAsFixed(1)} vs bg '
               '${bgHue.toStringAsFixed(1)}',
         );
       }
