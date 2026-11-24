@@ -2,6 +2,8 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:monet_ui/util/lru_cache.dart';
+import 'package:monet_ui/widgets/raster_cache_diagnostics.dart';
 import 'package:monet_ui/widgets/snapped_icons/icon_outline_analysis.dart';
 
 /// Device pixels taken off a dot's width before rounding it to whole
@@ -36,6 +38,10 @@ Path gridFitIconOutline(
     flipX: flipX,
     snap: snap,
   );
+  return _pathFromPoints(outline, points);
+}
+
+Path _pathFromPoints(IconOutline outline, Float64List points) {
   final path = Path()..fillType = .nonZero;
   var p = 0;
   for (final verb in outline.verbs) {
@@ -78,7 +84,8 @@ Path gridFitIconOutline(
 /// stroke's warped its size: in lens_blur, the center dots grew from 4.5 to
 /// 7 device pixels at 18 dp on a 2x screen.
 ///
-/// Uses [IconOutline.analysis]; [analysis] replaces it.
+/// Uses [IconOutline.analysis]; [analysis] replaces it. With [cache], reuse
+/// independent axis fits exactly as [IconPathCache.lookup] does.
 Float64List gridFitIconPoints(
   IconOutline outline, {
   required double size,
@@ -88,6 +95,7 @@ Float64List gridFitIconPoints(
   bool flipX = false,
   bool snap = true,
   IconOutlineAnalysis? analysis,
+  IconPathCache? cache,
 }) {
   final em = outline.em;
   final k = size * deviceScale / em;
@@ -97,8 +105,9 @@ Float64List gridFitIconPoints(
   final dotMoves = <int, _DotMove>{};
   if (snap && outline.fits) {
     final a = analysis ?? outline.analysis(flipX: flipX);
-    mapX = _axisFit(a.x, k, phaseX);
-    mapY = _axisFit(a.y, k, phaseY);
+    final fit = cache?._fitAxis ?? _axisFit;
+    mapX = fit(a.x, k, phaseX);
+    mapY = fit(a.y, k, phaseY);
     if (a.dots.isNotEmpty) {
       final tx = _placeDots(a.dots, k, 0, mapX, a.x.mirrorAxis);
       final ty = _placeDots(a.dots, k, 1, mapY, a.y.mirrorAxis);
@@ -637,6 +646,28 @@ final class IconPathCache {
   final int capacity;
   final _paths = <_PathKey, Path>{};
 
+  // The path key rounds size and DPR. On a path miss the original solver
+  // uses the exact scale; rounding it here would change fitted coordinates.
+  late final _axes =
+      LruCache<(AxisAnalysis, double, double), double Function(double)>(
+        capacity: capacity,
+      );
+
+  double Function(double) _fitAxis(
+    AxisAnalysis axis,
+    double scale,
+    double phase,
+  ) {
+    final key = (axis, scale, phase);
+    final hit = _axes[key];
+    if (hit != null) {
+      RasterCacheDiagnostics.record(.icon, .axisFitReused);
+      return hit;
+    }
+    RasterCacheDiagnostics.record(.icon, .axisFitBuilt);
+    return _axes[key] = _axisFit(axis, scale, phase);
+  }
+
   Path lookup(
     IconOutline outline, {
     required double size,
@@ -662,13 +693,18 @@ final class IconPathCache {
     final cached = _paths.remove(key);
     if (cached != null) return _paths[key] = cached;
     if (_paths.length >= capacity) _paths.remove(_paths.keys.first);
-    return _paths[key] = gridFitIconOutline(
+    return _paths[key] = _pathFromPoints(
       outline,
-      size: size,
-      deviceScale: deviceScale,
-      phase: Offset(px / phaseSteps, py / phaseSteps),
-      flipX: flipX,
-      snap: fit,
+      gridFitIconPoints(
+        outline,
+        cache: this,
+        size: size,
+        deviceScale: deviceScale,
+        phaseX: px / phaseSteps,
+        phaseY: py / phaseSteps,
+        flipX: flipX,
+        snap: fit,
+      ),
     );
   }
 }

@@ -181,6 +181,26 @@ class Paragrapher {
     required double reservedTailWidth,
     required String ellipsis,
   }) {
+    // During resize, a fitting one-line label still needs one layout to
+    // paint, even on a cache hit. Try that layout before building the key.
+    // The previous geometry is only a hint: verify the *current* text and
+    // style with the primary painter. Remounts and narrow titles look up
+    // their cached ellipsis before paying for a full-text layout.
+    final previous = _currentResult;
+    final tryFullFirst =
+        truncationTailDecisionCacheEnabled &&
+        reservedTailWidth == 0 &&
+        input.maxLines == 1 &&
+        previous != null &&
+        !previous.didTruncate &&
+        !previous.didExceedMaxLines &&
+        input.maxWidth >= previous.size.width &&
+        input.placeholderSizes.isEmpty &&
+        input.inlinePlaceholderDimensions.isEmpty;
+    if (tryFullFirst && _layoutFullAndFits(input, reservedTailWidth)) {
+      return _harvest(input, _primary, didTruncate: false);
+    }
+
     // ---- 0. Consult the global decision cache. ---------------------------
     final _TailCacheKey? key = truncationTailDecisionCacheEnabled
         ? _TailCacheKey(input, reservedTailWidth, ellipsis)
@@ -206,10 +226,7 @@ class Paragrapher {
     }
 
     // ---- 1. Try the full text first on the primary painter. --------------
-    configure(_primary, input);
-    _primary.layout(maxWidth: input.maxWidth);
-    if (!_primary.didExceedMaxLines &&
-        _fits(_primary, input, reservedTailWidth)) {
+    if (!tryFullFirst && _layoutFullAndFits(input, reservedTailWidth)) {
       if (key != null) _tailDecisionCache[key] = const _TailDecision(null);
       return _harvest(input, _primary, didTruncate: false);
     }
@@ -370,6 +387,12 @@ class Paragrapher {
     final cutAt = _trimmedCutAt(input.text, winningCut);
     if (key != null) _tailDecisionCache[key] = _TailDecision(cutAt);
     return _finaliseTruncated(input, cutAt: cutAt, ellipsis: ellipsis);
+  }
+
+  bool _layoutFullAndFits(ParagraphInput input, double tailWidth) {
+    configure(_primary, input);
+    _primary.layout(maxWidth: input.maxWidth);
+    return !_primary.didExceedMaxLines && _fits(_primary, input, tailWidth);
   }
 
   /// Binary search in `breaks[lo..hi)` for the largest fitting cut. `lo`

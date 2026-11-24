@@ -128,23 +128,40 @@ TextStyle _spreadStrokeStyle(TextStyle base, Shadow shadow, Color color) {
 /// reusing [painter]. With [asMask] false, strokes carry real shadow colors
 /// (direct path); with true, white at each shadow's alpha (tint path), for
 /// the paint-time srcIn tint.
-void _paintSpreadStrokes(
+@visibleForTesting
+void paintSpreadStrokes(
   Canvas canvas,
   TextPainter painter,
   ParagraphResult layout,
   List<Shadow> shadows, {
   required bool asMask,
 }) {
+  // The paragraph is fixed for this call. Offset is a draw translation,
+  // not part of the stroke style. Keep the painter prepared for the next
+  // matching pass; retain no paragraph or native resources across calls.
+  Shadow? previous;
+  Color? previousColor;
   for (final s in shadows) {
-    if (spreadOf(s) <= 0 || s.color.a <= 0) continue;
+    if (!_isSpreadStroke(s)) continue;
     final color = asMask
         ? Color.from(alpha: s.color.a, red: 1, green: 1, blue: 1)
         : s.color;
-    final input = layout.input.copyWith(
-      style: _spreadStrokeStyle(layout.input.style, s, color),
-    );
-    Paragrapher.configure(painter, input);
-    painter.layout(maxWidth: input.maxWidth);
+    if (previous == null ||
+        previousColor != color ||
+        spreadOf(previous) != spreadOf(s) ||
+        previous.blurSigma != s.blurSigma ||
+        (previous.blurRadius > 0) != (s.blurRadius > 0)) {
+      final input = layout.input.copyWith(
+        style: _spreadStrokeStyle(layout.input.style, s, color),
+      );
+      Paragrapher.configure(painter, input);
+      painter.layout(maxWidth: input.maxWidth);
+      previous = s;
+      previousColor = color;
+      RasterCacheDiagnostics.record(.text, .spreadLayoutBuilt);
+    } else {
+      RasterCacheDiagnostics.record(.text, .spreadLayoutReused);
+    }
     painter.paint(canvas, s.offset);
   }
 }
@@ -407,7 +424,7 @@ class DirectPaintStrategy extends PaintStrategy {
     _spreadPicture?.dispose();
     final painter = _spreadPainter ??= TextPainter(textDirection: .ltr);
     final recorder = ui.PictureRecorder();
-    _paintSpreadStrokes(
+    paintSpreadStrokes(
       Canvas(recorder),
       painter,
       layout,
@@ -514,7 +531,7 @@ void _paintDirectFallback(
   try {
     canvas.translate(offset.dx, offset.dy);
     if (_hasSpread(shadows)) {
-      _paintSpreadStrokes(canvas, painter, layout, shadows, asMask: false);
+      paintSpreadStrokes(canvas, painter, layout, shadows, asMask: false);
     }
     if (stroke != null) {
       _paintStrokePass(
@@ -972,13 +989,7 @@ class LayeredShadowTintPaintStrategy extends PaintStrategy {
     // painter is reused; each configure/layout/paint executes immediately
     // into the recording.
     if (_hasSpread(shadows)) {
-      _paintSpreadStrokes(
-        canvas,
-        _shadowPainter,
-        layout,
-        shadows,
-        asMask: true,
-      );
+      paintSpreadStrokes(canvas, _shadowPainter, layout, shadows, asMask: true);
     }
     // Same-colour white layers: the order of their alpha does not matter.
     if (stroke != null) {

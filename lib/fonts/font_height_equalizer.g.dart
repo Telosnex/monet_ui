@@ -3,6 +3,7 @@
 // Source package: google_fonts-9.0.0.
 
 import 'package:monet_ui/fonts/font_size_adjust.dart';
+import 'package:monet_ui/util/lru_cache.dart';
 
 const kReferenceVisualHeightFamily = 'Roboto';
 const kReferenceRasterXHeightEm = 0.529297;
@@ -21269,7 +21270,15 @@ const kLatinInkBelowEmByFontFamily = <String, double>{
 /// more than 0.1% (docs/design/ADR_font_size_adjust.md in telosnex, D7).
 const kFontSizeAdjustExcludedFontFamilies = <String>{'bytesized'};
 
-String normalizeFontFamilyForFontMetrics(String fontFamily) {
+// A single line-height lookup can request several metrics for the same
+// spelling. Only the normalized key is independent of size adjustment.
+final _fontMetricKeys = LruCache<String, String>(capacity: 64);
+
+String normalizeFontFamilyForFontMetrics(String fontFamily) =>
+    _fontMetricKeys[fontFamily] ??
+    (_fontMetricKeys[fontFamily] = _normalizeFontMetricKey(fontFamily));
+
+String _normalizeFontMetricKey(String fontFamily) {
   final packageSeparator = fontFamily.lastIndexOf('/');
   final unprefixed = packageSeparator < 0
       ? fontFamily

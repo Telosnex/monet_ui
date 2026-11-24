@@ -1,3 +1,17 @@
+## 1.7.7
+
+Faster layout and paint. Output is the same.
+
+- Snapped icons: a fit for one axis is reused when only the other axis
+  changes its subpixel position.
+- Text shadows: consecutive spread strokes that differ only in offset
+  reuse one text layout.
+- Font metrics: the normalized font family name is cached, so a line-height
+  lookup does not run the same regular expressions more than once.
+- One-line labels: a label that fit at its previous width is laid out at
+  once, without building the truncation cache key. Labels that truncate use
+  the cache as before.
+
 ## 1.7.6
 
 - `Palette.fromColorAndBackground`: when the base color is gray, black or

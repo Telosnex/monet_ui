@@ -95,6 +95,10 @@ enum RasterCacheEvent {
   iconUnchangedByLayer,
   // A paint-bus tick skipped: the icon's colors had not changed.
   iconBusTickSkipped,
+  axisFitBuilt,
+  axisFitReused,
+  spreadLayoutBuilt,
+  spreadLayoutReused,
 }
 
 /// Counts [RasterCacheEvent.iconUnchangedByLayer] paints by the layer that
